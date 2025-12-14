@@ -13,7 +13,7 @@
 # =============================================================================
 
 .PHONY: help dev run test lint format clean docker db-migrate db-upgrade
-
+PY_TARGETS := app tests main.py alembic scripts
 # Varsayılan hedef
 .DEFAULT_GOAL := help
 
@@ -58,14 +58,14 @@ test-cov: ## Test coverage ile çalıştır
 	pytest tests/ -v --cov=app --cov-report=html
 
 lint: ## Kod kalite kontrolü (Ruff)
-	ruff check .
+	ruff check $(PY_TARGETS)
 
 lint-fix: ## Lint hatalarını otomatik düzelt
-	ruff check --fix .
+	ruff check --fix $(PY_TARGETS)
 
 format: ## Kodu formatla (Black + isort)
-	black .
-	isort .
+	black $(PY_TARGETS)
+	isort $(PY_TARGETS)
 
 type-check: ## Tip kontrolü (mypy)
 	mypy app/
