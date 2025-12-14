@@ -234,7 +234,7 @@ export function ChatInput({ replyTo, onClearReply }: ChatInputProps) {
     return (
         <div className={cn(
             "sticky bottom-0 px-4 md:px-8 py-4",
-            "bg-gradient-to-t from-(--color-bg) via-(--color-bg)/95 to-transparent"
+            "bg-linear-to-t from-(--color-bg) via-(--color-bg)/95 to-transparent"
         )}>
             {/* Attachment Preview */}
             <AnimatePresence>
