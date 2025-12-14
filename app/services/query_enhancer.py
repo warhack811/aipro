@@ -7,8 +7,8 @@ from __future__ import annotations
 import logging
 from typing import List, Optional
 
-from app.config import get_settings
 from app.chat.decider import call_groq_api_async
+from app.config import get_settings
 
 logger = logging.getLogger(__name__)
 settings = get_settings()

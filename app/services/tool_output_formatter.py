@@ -8,7 +8,7 @@ Web araması ve diğer tool çıktılarını standart formatta sunar.
 """
 
 import logging
-from typing import List, Dict, Any, Optional
+from typing import Any, Dict, List, Optional
 from urllib.parse import urlparse
 
 logger = logging.getLogger(__name__)

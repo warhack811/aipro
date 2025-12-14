@@ -1,14 +1,12 @@
 from __future__ import annotations
 
 import asyncio
-
 from typing import Any, Dict, List, Optional
 
-from app.memory.conversation import get_recent_context
-from app.memory.conversation import get_conversation_summary_text
-from app.memory.store import search_memories
 from app.core.logger import get_logger
+from app.memory.conversation import get_conversation_summary_text, get_recent_context
 from app.memory.rag import search_documents
+from app.memory.store import search_memories
 from app.services import user_preferences
 from app.services.semantic_classifier import analyze_message_semantics
 

@@ -11,12 +11,12 @@ import aiohttp
 import requests
 
 from app.config import get_settings
-from app.core.logger import get_logger
 from app.core.exceptions import ImageGenerationError
-from app.websocket_sender import send_image_progress, ImageJobStatus
-from app.image.pending_state import update_pending_job
-from app.image.gpu_state import switch_to_flux, switch_to_gemma
+from app.core.logger import get_logger
 from app.image.circuit_breaker import forge_circuit_breaker
+from app.image.gpu_state import switch_to_flux, switch_to_gemma
+from app.image.pending_state import update_pending_job
+from app.websocket_sender import ImageJobStatus, send_image_progress
 
 logger = get_logger(__name__)
 settings = get_settings()
@@ -164,7 +164,7 @@ async def _generate_image_internal(prompt: str, job, checkpoint_name: Optional[s
     try:
         # Mesaj güncelleme için import
         from app.memory.conversation import update_message
-        
+
         # İlk başta minimum bir progress gönder (frontend barı görebilsin)
         job.progress = 1
         update_pending_job(job.job_id, progress=job.progress)

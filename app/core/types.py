@@ -15,9 +15,9 @@ Kullanım:
         return {"id": user.id, "name": user.username}
 """
 
-from typing import Protocol, Any, Optional
-from typing_extensions import TypedDict
+from typing import Any, Optional, Protocol
 
+from typing_extensions import TypedDict
 
 # ============================================================================
 # USER PROTOCOLS

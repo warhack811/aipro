@@ -3,6 +3,7 @@ import logging
 import time
 from enum import Enum
 from typing import Optional
+
 import httpx
 
 from app.config import get_settings

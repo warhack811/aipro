@@ -5,8 +5,9 @@ Placeholder Image Generator
 Forge API fail durumunda gösterilecek placeholder image'leri oluşturur.
 """
 
-from PIL import Image, ImageDraw, ImageFont
 from pathlib import Path
+
+from PIL import Image, ImageDraw, ImageFont
 
 # Placeholder dizini
 PLACEHOLDER_DIR = Path("data/images/placeholders")

@@ -13,7 +13,7 @@ Aktif Pluginler:
 from __future__ import annotations
 
 import logging
-from typing import Dict, Optional, Any, Protocol, runtime_checkable
+from typing import Any, Dict, Optional, Protocol, runtime_checkable
 
 logger = logging.getLogger(__name__)
 

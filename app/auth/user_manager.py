@@ -29,10 +29,10 @@ Kullanım:
 from __future__ import annotations
 
 import logging
-from typing import Optional, Dict, Any, List
+from typing import Any, Dict, List, Optional
 
-from sqlmodel import select, func
 from passlib.context import CryptContext
+from sqlmodel import func, select
 
 # Modül logger'ı
 logger = logging.getLogger(__name__)
@@ -52,13 +52,13 @@ pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
 def _get_imports():
     """Import döngüsünü önlemek için lazy import."""
     try:
+        from app.config import get_settings
         from app.core.database import get_session
         from app.core.models import User
-        from app.config import get_settings
     except ImportError:
+        from app.config import get_settings
         from app.core.database import get_session
         from app.core.models import User
-        from app.config import get_settings
     
     return get_session, User, get_settings
 

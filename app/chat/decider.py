@@ -32,7 +32,7 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
-from typing import Any, Dict, Optional, List, AsyncGenerator
+from typing import Any, AsyncGenerator, Dict, List, Optional
 
 import httpx
 

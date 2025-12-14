@@ -4,7 +4,7 @@ Response Enhancement Plugin - Konfigürasyon
 
 Plugin ayarları ve seçenekleri
 """
-from typing import Dict, Any
+from typing import Any, Dict
 
 
 class EnhancementConfig:

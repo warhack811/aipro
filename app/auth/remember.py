@@ -26,8 +26,8 @@ Güvenlik:
 
 from __future__ import annotations
 
-import secrets
 import logging
+import secrets
 from datetime import datetime, timedelta
 from typing import Optional
 

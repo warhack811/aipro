@@ -9,10 +9,10 @@ Gelişmiş duplicate detection:
 - Configurable thresholds
 """
 
-import re
 import logging
-from typing import Optional, Tuple
+import re
 from difflib import SequenceMatcher
+from typing import Optional, Tuple
 
 logger = logging.getLogger(__name__)
 

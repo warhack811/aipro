@@ -11,9 +11,9 @@ Memory-efficient circular buffer for streaming responses.
     - Memory-safe finalization
 """
 
+import logging
 from collections import deque
 from typing import Optional
-import logging
 
 logger = logging.getLogger(__name__)
 

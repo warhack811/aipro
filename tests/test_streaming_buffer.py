@@ -5,8 +5,10 @@ Tests for Streaming Buffer Memory Management
 Bu test dosyası streaming buffer'ın memory leak'i önlediğini doğrular.
 """
 
-import pytest
 import asyncio
+
+import pytest
+
 from app.chat.streaming_buffer import StreamingBuffer
 
 

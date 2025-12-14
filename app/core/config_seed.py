@@ -23,8 +23,8 @@ Not:
 """
 
 import logging
-from typing import List, Dict, Any
 from datetime import datetime
+from typing import Any, Dict, List
 
 from sqlmodel import select
 
@@ -37,12 +37,19 @@ logger = logging.getLogger(__name__)
 
 def _get_imports():
     """Circular import önlemek için lazy import."""
-    from app.core.database import get_session
     from app.core.config_models import (
-        SystemConfig, ModelConfig, APIConfig,
-        ThemeConfig, PersonaConfig, ImageGenConfig, UITextConfig,
-        ConfigValueType, ConfigCategory, PersonaModeType
+        APIConfig,
+        ConfigCategory,
+        ConfigValueType,
+        ImageGenConfig,
+        ModelConfig,
+        PersonaConfig,
+        PersonaModeType,
+        SystemConfig,
+        ThemeConfig,
+        UITextConfig,
     )
+    from app.core.database import get_session
     return {
         'get_session': get_session,
         'SystemConfig': SystemConfig,

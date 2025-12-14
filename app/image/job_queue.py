@@ -10,7 +10,7 @@ from uuid import uuid4
 from app.core.logger import get_logger
 from app.image.flux_stub import generate_image_via_forge
 from app.image.gpu_state import switch_to_flux, switch_to_gemma
-from app.websocket_sender import send_image_progress, ImageJobStatus
+from app.websocket_sender import ImageJobStatus, send_image_progress
 
 logger = get_logger(__name__)
 
@@ -174,9 +174,10 @@ class ImageJobQueue:
         Job'u iptal et - hem kuyruktan hem aktif üretimden.
         Returns: True if cancelled, False if not found.
         """
-        from app.core.config import settings
         import httpx
-        
+
+        from app.core.config import settings
+
         # 1️⃣ KUYRUKTAN KALDIR
         temp_jobs = []
         found_job = None

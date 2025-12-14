@@ -27,7 +27,7 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass
-from typing import List, Optional, Callable, Any
+from typing import Any, Callable, List, Optional
 
 # Modül logger'ı
 logger = logging.getLogger(__name__)
@@ -106,9 +106,9 @@ def _resolve_user_id(username: str) -> int:
 def _get_memory_service():
     """MemoryService lazy import."""
     try:
-        from app.services.memory_service import MemoryService, MemoryRecord
+        from app.services.memory_service import MemoryRecord, MemoryService
     except ImportError:
-        from app.services.memory_service import MemoryService, MemoryRecord
+        from app.services.memory_service import MemoryRecord, MemoryService
     return MemoryService, MemoryRecord
 
 

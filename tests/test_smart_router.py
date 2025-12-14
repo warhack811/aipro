@@ -11,7 +11,7 @@ project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
 from dataclasses import dataclass
-from typing import Dict, Any, Optional
+from typing import Any, Dict, Optional
 
 
 @dataclass
@@ -31,7 +31,7 @@ class MockUser:
 
 def run_tests():
     """Tum test senaryolarini calistirir."""
-    from app.chat.smart_router import SmartRouter, RoutingTarget, ToolIntent
+    from app.chat.smart_router import RoutingTarget, SmartRouter, ToolIntent
     
     router = SmartRouter()
     results = []

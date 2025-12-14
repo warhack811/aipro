@@ -1,12 +1,17 @@
 from __future__ import annotations
-from typing import Optional, Dict, Any, List, AsyncGenerator
-import httpx, json
-from app.ai.prompts.identity import get_ai_identity, enforce_model_identity
-from app.core.logger import get_logger
-from app.config import get_settings
-from app.core.gpu_manager import GPUManager # YENİ IMPORT
-from app.services.response_processor import full_post_process  # YENİ: Response Enhancement
+
+import json
 import re
+from typing import Any, AsyncGenerator, Dict, List, Optional
+
+import httpx
+
+from app.ai.prompts.identity import enforce_model_identity, get_ai_identity
+from app.config import get_settings
+from app.core.gpu_manager import GPUManager  # YENİ IMPORT
+from app.core.logger import get_logger
+from app.services.response_processor import full_post_process  # YENİ: Response Enhancement
+
 logger = get_logger(__name__)
 settings = get_settings()
 _THINK_BLOCK_RE = re.compile(r"(?is)<\s*think(?:ing)?\s*>.*?<\s*/\s*think(?:ing)?\s*>")

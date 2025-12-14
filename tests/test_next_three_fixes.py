@@ -8,9 +8,10 @@ Tests for:
 - HATA #6: Context Truncation (Importance-based)
 """
 
-import pytest
 import asyncio
-from typing import List, Dict
+from typing import Dict, List
+
+import pytest
 
 # HATA #4: Memory Duplicate Detection Tests
 # ==========================================
@@ -67,7 +68,7 @@ class TestMemoryDuplicateDetection:
     def test_duplicate_false_positive_prevention(self):
         """False positive önleme testi - Kritik!"""
         from app.services.memory_duplicate_detector import detector
-        
+
         # Yüksek semantic ama farklı entity'ler
         text1 = "Kedimi çok seviyorum"
         text2 = "Köpeğimi çok seviyorum"
@@ -90,7 +91,7 @@ class TestMemoryDuplicateDetection:
     def test_duplicate_true_positive(self):
         """True positive testi."""
         from app.services.memory_duplicate_detector import detector
-        
+
         # Çok benzer metinler (exact match'e yakın)
         text1 = "İsmim Ahmet ve yazılım mühendisiyim"
         text2 = "İsmim Ahmet ve yazılım mühendisiyim"
@@ -112,7 +113,7 @@ class TestMemoryDuplicateDetection:
     def test_importance_based_thresholds(self):
         """Importance bazlı threshold testi."""
         from app.services.memory_duplicate_detector import detector
-        
+
         # Yüksek importance = strict threshold
         sem_threshold_high, text_threshold_high = detector.get_thresholds_for_importance(0.9)
         
@@ -272,7 +273,7 @@ class TestContextTruncationManager:
     def test_truncate_messages_by_importance(self):
         """Importance-based message truncation testi."""
         from app.services.context_truncation_manager import context_manager
-        
+
         # Daha uzun mesajlar ile test
         long_content = "A" * 200  # Her biri ~50 token
         messages = [
@@ -338,10 +339,10 @@ class TestIntegration:
     async def test_memory_service_with_hybrid_detection(self):
         """Memory service + hybrid detection entegrasyonu."""
         from app.services.memory_service import MemoryService
-        
+
         # Not: Gerçek ChromaDB kullanmıyor, mock gerekebilir
         # Bu test gerçek DB ile çalıştırılmalı
-        
+
         # Test placeholder
         assert True, "Integration test - ChromaDB ile test edilmeli"
     

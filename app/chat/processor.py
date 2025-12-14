@@ -31,11 +31,11 @@ Kullanım:
 from __future__ import annotations
 
 import asyncio
-import re
 import logging
-from html import escape as html_escape
+import re
 from datetime import datetime
-from typing import Optional, Dict, Any, Tuple, Union, AsyncGenerator, List
+from html import escape as html_escape
+from typing import Any, AsyncGenerator, Dict, List, Optional, Tuple, Union
 
 # Modül logger'ı
 logger = logging.getLogger(__name__)
@@ -68,27 +68,27 @@ CONTEXT_TRUNCATED_NOTICE = (
 
 def _get_imports():
     """Import döngüsünü önlemek için lazy import."""
-    from app.config import get_settings
-    from app.core.logger import get_logger
-    from app.core.feature_flags import feature_enabled
-    from app.core.exceptions import FeatureDisabledError
-    from app.core.models import User
-    from app.chat.decider import run_decider_async, decide_memory_storage_async
-    from app.chat.answerer import generate_answer, generate_answer_stream
-    from app.chat.search import handle_internet_action
-    from app.chat.smart_router import route_message, RoutingTarget, ToolIntent
-    from app.services.semantic_classifier import analyze_message_semantics
-    from app.services.user_context import build_user_context
-    from app.services.model_router import choose_model_for_request
-    from app.services.summary_service import should_update_summary, generate_and_save_summary
-    from app.services.query_enhancer import enhance_query_for_search
-    from app.memory.store import search_memories, add_memory, delete_memory
-    from app.memory.conversation import load_messages, append_message
-    from app.memory.rag import search_documents
-    from app.ai.prompts.identity import get_ai_identity
     from app.ai.ollama.gemma_handler import run_local_chat, run_local_chat_stream
+    from app.ai.prompts.identity import get_ai_identity
+    from app.chat.answerer import generate_answer, generate_answer_stream
+    from app.chat.decider import decide_memory_storage_async, run_decider_async
+    from app.chat.search import handle_internet_action
+    from app.chat.smart_router import RoutingTarget, ToolIntent, route_message
+    from app.config import get_settings
+    from app.core.exceptions import FeatureDisabledError
+    from app.core.feature_flags import feature_enabled
+    from app.core.logger import get_logger
+    from app.core.models import User
     from app.image.image_manager import request_image_generation
     from app.image.job_queue import job_queue
+    from app.memory.conversation import append_message, load_messages
+    from app.memory.rag import search_documents
+    from app.memory.store import add_memory, delete_memory, search_memories
+    from app.services.model_router import choose_model_for_request
+    from app.services.query_enhancer import enhance_query_for_search
+    from app.services.semantic_classifier import analyze_message_semantics
+    from app.services.summary_service import generate_and_save_summary, should_update_summary
+    from app.services.user_context import build_user_context
     
     return (
         get_settings, get_logger, feature_enabled, FeatureDisabledError, User,
@@ -377,11 +377,10 @@ async def build_image_prompt(user_message: str, style_profile: Optional[Dict[str
     ) = _get_imports()
     
     # Decider import'u
-    from app.chat.decider import call_groq_api_safe_async
-    
     # Forbidden token guard import'u
     from app.ai.prompts.image_guard import sanitize_image_prompt
-    
+    from app.chat.decider import call_groq_api_safe_async
+
     # DEBUG LOG - Ünlem kontrolü için
     logger.warning(f"[DEBUG_EXCLAIM] Gelen mesaj: '{user_message}' | starts with !: {user_message.strip().startswith('!')}")
     
@@ -566,7 +565,7 @@ async def process_chat_message(
     # Frontend job_id ve message_id'yi almalı
     if action == "IMAGE":
         from uuid import uuid4
-        
+
         # 1. Prompt'u SYNC hazırla
         prompt = await build_image_prompt(message)
         
@@ -660,8 +659,8 @@ async def process_chat_message(
     # STREAMING
     if stream:
         async def groq_stream_wrapper():
-            from app.services.streaming_memory_manager import streaming_memory_manager
             from app.chat.streaming_buffer import StreamingBuffer
+            from app.services.streaming_memory_manager import streaming_memory_manager
             
             buffer = StreamingBuffer(max_chunks=1000)  # ~100KB max
             

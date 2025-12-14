@@ -2,11 +2,12 @@ from __future__ import annotations
 
 import json
 import re
-from typing import List, Optional, Literal
+from typing import List, Literal, Optional
+
 from pydantic import BaseModel, Field
 
-from app.config import get_settings
 from app.chat.decider import call_groq_api_safe_async
+from app.config import get_settings
 
 settings = get_settings()
 

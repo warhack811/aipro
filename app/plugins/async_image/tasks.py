@@ -10,6 +10,7 @@ logger = logging.getLogger(__name__)
 # Celery app
 try:
     from celery import Celery
+
     from app.config import get_settings
     
     settings = get_settings()
@@ -48,14 +49,15 @@ if celery_app:
             logger.info(f"[CELERY_TASK] Image generation started: {username} - {prompt[:50]}")
             
             # Mevcut image manager'ın flux_stub'ını kullan
-            from app.image.flux_stub import generate_image_via_forge
-            from app.image.gpu_state import switch_to_flux, switch_to_gemma
-            from app.memory.conversation import append_message
-            from app.image.job_queue import ImageJob
-            from html import escape as html_escape
             import asyncio
             import uuid
-            
+            from html import escape as html_escape
+
+            from app.image.flux_stub import generate_image_via_forge
+            from app.image.gpu_state import switch_to_flux, switch_to_gemma
+            from app.image.job_queue import ImageJob
+            from app.memory.conversation import append_message
+
             # GPU'yu Flux moduna geçir
             switch_to_flux()
             
@@ -105,8 +107,9 @@ if celery_app:
                 
                 # WebSocket bildirimi
                 try:
-                    from app.websocket_sender import send_to_user
                     import asyncio
+
+                    from app.websocket_sender import send_to_user
                     
                     loop = asyncio.new_event_loop()
                     asyncio.set_event_loop(loop)

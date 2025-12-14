@@ -24,13 +24,6 @@ Mimari:
 """
 
 import logging
-from typing import Generator, Optional, TYPE_CHECKING
-from contextlib import contextmanager
-from pathlib import Path
-
-# SQLModel ve SQLAlchemy imports
-from sqlmodel import SQLModel, Session, create_engine
-from sqlalchemy import event, Engine
 
 # ----------------------------------------------------------------------------- 
 # ChromaDB TELEMETRY KAPATMA (import ÖNCESİ)
@@ -39,6 +32,15 @@ from sqlalchemy import event, Engine
 # "capture() takes 1 positional argument but 3 were given" hatalarını önlemek
 # için telemetry'yi import öncesi kapatıyoruz.
 import os
+from contextlib import contextmanager
+from pathlib import Path
+from typing import TYPE_CHECKING, Generator, Optional
+
+from sqlalchemy import Engine, event
+
+# SQLModel ve SQLAlchemy imports
+from sqlmodel import Session, SQLModel, create_engine
+
 os.environ.setdefault("ANONYMIZED_TELEMETRY", "False")
 os.environ.setdefault("CHROMA_TELEMETRY_IMPLEMENTATION", "none")
 
@@ -198,15 +200,30 @@ def create_db_and_tables() -> None:
     logger.warning("[DB] ⚠️  CREATE ALL kullanılıyor - Production'da migration kullanın!")
     # Tüm modelleri import et (tablo tanınması için)
     # Ana modeller
-    from app.core.models import (  # noqa: F401
-        User, UserPreference, ModelPreset, Conversation, Message,
-        ConversationSummary, AnswerCache, UsageCounter, Session,
-        Invite, Feedback, AIIdentityConfig, ConversationSummarySettings
-    )
     # Dinamik config modelleri
     from app.core.config_models import (  # noqa: F401
-        SystemConfig, ModelConfig, APIConfig, ThemeConfig,
-        PersonaConfig, ImageGenConfig, UITextConfig
+        APIConfig,
+        ImageGenConfig,
+        ModelConfig,
+        PersonaConfig,
+        SystemConfig,
+        ThemeConfig,
+        UITextConfig,
+    )
+    from app.core.models import (  # noqa: F401
+        AIIdentityConfig,
+        AnswerCache,
+        Conversation,
+        ConversationSummary,
+        ConversationSummarySettings,
+        Feedback,
+        Invite,
+        Message,
+        ModelPreset,
+        Session,
+        UsageCounter,
+        User,
+        UserPreference,
     )
     
     engine = get_engine()
@@ -227,10 +244,11 @@ def init_database_with_defaults() -> None:
     # 1. Alembic migration'ları uygula
     migration_success = False
     try:
-        from alembic.config import Config
-        from alembic import command
         import os
-        
+
+        from alembic import command
+        from alembic.config import Config
+
         # alembic.ini var mı kontrol et
         alembic_ini = "alembic.ini"
         if os.path.exists(alembic_ini):

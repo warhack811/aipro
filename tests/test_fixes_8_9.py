@@ -3,11 +3,13 @@ Tests for HATA #8 (Safe Callback) and HATA #9 (DB Connection Pool)
 ====================================================================
 """
 
-import pytest
 import asyncio
-from unittest.mock import Mock, AsyncMock
-from app.image.safe_callback import SafeCallbackExecutor, safe_executor
+from unittest.mock import AsyncMock, Mock
+
+import pytest
+
 from app.core.database import get_engine, get_session
+from app.image.safe_callback import SafeCallbackExecutor, safe_executor
 
 
 class TestSafeCallbackExecutor:
@@ -166,8 +168,9 @@ class TestDatabaseConnectionPool:
     
     def test_session_rollback_on_error(self):
         """Error durumunda session rollback ediliyor mu?"""
-        from app.core.models import User
         from sqlalchemy import text
+
+        from app.core.models import User
         
         try:
             with get_session() as session:

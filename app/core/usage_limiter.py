@@ -25,11 +25,11 @@ Limitler:
 from __future__ import annotations
 
 import logging
-from datetime import datetime, timedelta, date
+from datetime import date, datetime, timedelta
 from typing import Optional
 
 from fastapi import HTTPException, status
-from sqlmodel import select, func
+from sqlmodel import func, select
 
 # Modül logger'ı
 logger = logging.getLogger(__name__)
@@ -84,11 +84,11 @@ class UsageLimiter:
         """
         try:
             from app.core.database import get_session
-            from app.core.models import UsageCounter, Message, Conversation
+            from app.core.models import Conversation, Message, UsageCounter
         except ImportError:
             # Eski import yolu (geçiş dönemi)
             from app.core.database import get_session
-            from app.core.models import UsageCounter, Message, Conversation
+            from app.core.models import Conversation, Message, UsageCounter
         return get_session, UsageCounter, Message, Conversation
 
     @staticmethod

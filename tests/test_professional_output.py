@@ -7,9 +7,9 @@ Professional Output Tests
 Shaper, formatter ve output contract davranışlarını test eder.
 """
 
-import pytest
-from typing import Dict, Any
+from typing import Any, Dict
 
+import pytest
 
 # =============================================================================
 # TEST FIXTURES

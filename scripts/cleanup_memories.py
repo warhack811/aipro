@@ -12,15 +12,14 @@ Kullanım:
     python scripts/cleanup_memories.py --clean    # Temizle
 """
 
-import sys
 import re
+import sys
 from pathlib import Path
 
 # Proje root'unu ekle
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from app.services.memory_service import MemoryService
-
 
 # Genel bilgi pattern'leri - bunları içeren hafızalar şüpheli
 GENERAL_KNOWLEDGE_PATTERNS = [

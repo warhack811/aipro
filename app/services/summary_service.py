@@ -1,11 +1,13 @@
 import logging
 from datetime import datetime
 from typing import Optional
-from sqlmodel import select, func, asc
+
+from sqlmodel import asc, func, select
+
+from app.chat.decider import call_groq_api_safe_async
 from app.core.database import get_session
 from app.core.models import ConversationSummary, Message
 from app.core.summary_config import get_summary_settings
-from app.chat.decider import call_groq_api_safe_async
 
 logger = logging.getLogger(__name__)
 

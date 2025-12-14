@@ -11,11 +11,11 @@ Bu test dosyası 3 kritik düzeltmeyi test eder:
     pytest tests/test_critical_fixes.py -v
 """
 
-import pytest
 import asyncio
-from unittest.mock import Mock, patch, AsyncMock
 from datetime import datetime, timedelta
+from unittest.mock import AsyncMock, Mock, patch
 
+import pytest
 
 # =============================================================================
 # TEST #1: ChromaDB WHERE Filter
@@ -28,7 +28,7 @@ class TestChromaDBWhereFilter:
     async def test_rag_search_uses_where_filter(self):
         """RAG search WHERE filter kullanıyor mu?"""
         from app.memory.rag import search_documents
-        
+
         # Mock collection
         with patch('app.memory.rag._get_rag_collection') as mock_get_col:
             mock_collection = Mock()
@@ -110,7 +110,7 @@ class TestForgeCircuitBreaker:
     
     def test_circuit_starts_closed(self):
         """Circuit başlangıçta CLOSED olmalı"""
-        from app.image.circuit_breaker import ForgeCircuitBreaker, CircuitState
+        from app.image.circuit_breaker import CircuitState, ForgeCircuitBreaker
         
         cb = ForgeCircuitBreaker()
         assert cb.state == CircuitState.CLOSED
@@ -119,7 +119,7 @@ class TestForgeCircuitBreaker:
     
     def test_circuit_opens_after_threshold(self):
         """Threshold aşılınca OPEN olmalı"""
-        from app.image.circuit_breaker import ForgeCircuitBreaker, CircuitState
+        from app.image.circuit_breaker import CircuitState, ForgeCircuitBreaker
         
         cb = ForgeCircuitBreaker(failure_threshold=3)
         
@@ -136,7 +136,7 @@ class TestForgeCircuitBreaker:
     
     def test_circuit_half_open_after_timeout(self):
         """Timeout sonrası HALF_OPEN olmalı"""
-        from app.image.circuit_breaker import ForgeCircuitBreaker, CircuitState
+        from app.image.circuit_breaker import CircuitState, ForgeCircuitBreaker
         
         cb = ForgeCircuitBreaker(failure_threshold=2, timeout_seconds=1)
         
@@ -157,7 +157,7 @@ class TestForgeCircuitBreaker:
     
     def test_circuit_closes_after_success_in_half_open(self):
         """HALF_OPEN'da başarı -> CLOSED"""
-        from app.image.circuit_breaker import ForgeCircuitBreaker, CircuitState
+        from app.image.circuit_breaker import CircuitState, ForgeCircuitBreaker
         
         cb = ForgeCircuitBreaker(failure_threshold=2, timeout_seconds=0)
         
@@ -178,9 +178,9 @@ class TestForgeCircuitBreaker:
     @pytest.mark.asyncio
     async def test_flux_stub_uses_circuit_breaker(self):
         """flux_stub circuit breaker kullanıyor mu?"""
-        from app.image.flux_stub import generate_image_via_forge, PLACEHOLDER_IMAGES
-        from app.image.circuit_breaker import forge_circuit_breaker, CircuitState
-        
+        from app.image.circuit_breaker import CircuitState, forge_circuit_breaker
+        from app.image.flux_stub import PLACEHOLDER_IMAGES, generate_image_via_forge
+
         # Circuit'i OPEN yap
         forge_circuit_breaker.state = CircuitState.OPEN
         forge_circuit_breaker.last_failure_time = datetime.now()
@@ -233,7 +233,7 @@ class TestAlembicMigration:
     def test_database_init_tries_alembic_first(self):
         """init_database_with_defaults önce Alembic'i deniyor mu?"""
         from app.core.database import init_database_with_defaults
-        
+
         # Alembic modüllerini mock'la (lokal import edildiği için)
         with patch('alembic.command.upgrade') as mock_upgrade:
             with patch('alembic.config.Config') as mock_config:
@@ -253,8 +253,9 @@ class TestAlembicMigration:
     
     def test_create_db_has_deprecation_warning(self):
         """create_db_and_tables deprecation uyarısı veriyor mu?"""
-        from app.core.database import create_db_and_tables
         import logging
+
+        from app.core.database import create_db_and_tables
         
         with patch('app.core.database.logger') as mock_logger:
             try:

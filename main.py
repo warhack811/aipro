@@ -14,13 +14,12 @@ Uygulama artık app.main modülünden çalışır.
 # YENİ YAPIYI KULLAN
 # =============================================================================
 
-# app.main'den app nesnesini doğrudan import et
-from app.main import app
-
 # Opsiyonel: Diğer export'lar
+# app.main'den app nesnesini doğrudan import et
 from app.main import (
-    settings,
+    app,
     logger,
+    settings,
 )
 
 # WebSocket bağlantıları için

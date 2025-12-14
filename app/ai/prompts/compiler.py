@@ -28,7 +28,7 @@ Kullanim:
 """
 
 import logging
-from typing import Optional, Dict, Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Dict, Optional
 
 if TYPE_CHECKING:
     from app.core.models import User

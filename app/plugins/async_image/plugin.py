@@ -2,8 +2,9 @@
 Async Image Plugin - Ana Sınıf
 """
 
-from typing import Optional, Any, Callable
 import logging
+from typing import Any, Callable, Optional
+
 from app.plugins import BasePlugin
 
 logger = logging.getLogger(__name__)

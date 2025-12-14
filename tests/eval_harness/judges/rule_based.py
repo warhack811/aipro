@@ -1,5 +1,6 @@
 import re
-from typing import Dict, Any, Optional
+from typing import Any, Dict, Optional
+
 from eval_harness.metrics import EvalMetrics
 
 

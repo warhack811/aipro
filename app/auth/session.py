@@ -27,8 +27,8 @@ Güvenlik:
 
 from __future__ import annotations
 
-import secrets
 import logging
+import secrets
 from datetime import datetime, timedelta
 from typing import Optional
 
@@ -53,16 +53,16 @@ SESSION_DEFAULT_TTL_MINUTES = 60 * 24  # 24 saat
 def _get_imports():
     """Import döngüsünü önlemek için lazy import."""
     try:
-        from app.core.database import get_session
-        from app.core.models import Session, User
-        from app.auth.user_manager import get_user_by_id
-        from app.auth.dependencies import SESSION_COOKIE_NAME
         from app.auth import remember as remember_mgr
-    except ImportError:
+        from app.auth.dependencies import SESSION_COOKIE_NAME
+        from app.auth.user_manager import get_user_by_id
         from app.core.database import get_session
         from app.core.models import Session, User
-        from app.auth.user_manager import get_user_by_id
+    except ImportError:
         from app.auth.dependencies import SESSION_COOKIE_NAME
+        from app.auth.user_manager import get_user_by_id
+        from app.core.database import get_session
+        from app.core.models import Session, User
         from auth import remember as remember_mgr
     
     return get_session, Session, User, get_user_by_id, SESSION_COOKIE_NAME, remember_mgr

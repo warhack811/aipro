@@ -29,8 +29,8 @@ Kullanim:
 import logging
 import re
 from dataclasses import dataclass, field
-from typing import Optional, List, Dict, Any, TYPE_CHECKING
 from enum import Enum
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 if TYPE_CHECKING:
     from app.core.models import User

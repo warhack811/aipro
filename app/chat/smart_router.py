@@ -32,11 +32,11 @@ Kullanım:
     print(decision.reason)  # "tool_intent_image"
 """
 
-import re
 import logging
+import re
 from dataclasses import dataclass, field
-from typing import Optional, List, Dict, Any, TYPE_CHECKING
 from enum import Enum
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 if TYPE_CHECKING:
     from app.core.models import User
@@ -174,13 +174,13 @@ class SmartRouter:
     def _get_permission_helpers(self):
         """Permission helper'ları lazy import."""
         from app.auth.permissions import (
-            user_can_use_local,
-            user_can_use_internet,
-            user_can_use_image,
-            get_censorship_level,
             can_auto_route_to_local,
             can_generate_nsfw_image,
+            get_censorship_level,
             is_censorship_strict,
+            user_can_use_image,
+            user_can_use_internet,
+            user_can_use_local,
         )
         return {
             'user_can_use_local': user_can_use_local,

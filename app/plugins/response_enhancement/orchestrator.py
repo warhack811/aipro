@@ -5,7 +5,7 @@ Response Orchestrator - İşlem Koordinatörü
 Tüm enhancement modüllerini doğru sırayla çalıştırır.
 """
 import logging
-from typing import Dict, Any, Optional
+from typing import Any, Dict, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -99,7 +99,7 @@ class ResponseOrchestrator:
     def _basic_cleanup(self, text: str) -> str:
         """Temel temizlik işlemleri"""
         import re
-        
+
         # Thinking bloklarını kaldır
         text = re.sub(r'<thinking>.*?</thinking>', '', text, flags=re.DOTALL | re.IGNORECASE)
         text = re.sub(r'', '', text, flags=re.DOTALL | re.IGNORECASE)
@@ -124,7 +124,7 @@ class ResponseOrchestrator:
     def _fix_code_blocks(self, text: str) -> str:
         """Kod bloğu düzeltmeleri"""
         import re
-        
+
         # [CODE_BLOCK_{}] placeholder'larını temizle (model bazen bunu kullanıyor)
         placeholder_patterns = [
             r'\[CODE_BLOCK_\{?\}?\]',  # [CODE_BLOCK_{}] veya [CODE_BLOCK_{}]
@@ -190,7 +190,7 @@ class ResponseOrchestrator:
     def _apply_markdown_formatting(self, text: str) -> str:
         """Markdown formatlaması uygula"""
         import re
-        
+
         # Başlıkları formatla
         lines = text.split('\n')
         formatted = []
@@ -229,7 +229,7 @@ class ResponseOrchestrator:
     def _final_cleanup(self, text: str) -> str:
         """Son düzeltmeler"""
         import re
-        
+
         # Çoklu boş satırları azalt
         text = re.sub(r'\n{4,}', '\n\n\n', text)
         

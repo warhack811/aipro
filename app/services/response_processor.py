@@ -4,9 +4,9 @@ Plugin sistemi ile çalışır - app/plugins/response_enhancement
 """
 from __future__ import annotations
 
-import re
 import logging
-from typing import Optional, Dict, Any
+import re
+from typing import Any, Dict, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -81,7 +81,7 @@ def full_post_process(
         return ""
     
     from app.plugins import get_plugin
-    
+
     # Temel temizlik
     text = clean_thinking_blocks(text)
     text = post_process_response(text)

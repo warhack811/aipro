@@ -27,9 +27,9 @@ Kullanım:
 
 from __future__ import annotations
 
-import re
 import logging
-from typing import Any, Dict, Optional, List, AsyncGenerator, cast
+import re
+from typing import Any, AsyncGenerator, Dict, List, Optional, cast
 
 # Modül logger'ı
 logger = logging.getLogger(__name__)
@@ -110,9 +110,9 @@ kod_buraya
 
 def _get_imports():
     """Import döngüsünü önlemek için lazy import."""
-    from app.config import get_settings
-    from app.ai.prompts.identity import get_ai_identity, enforce_model_identity
+    from app.ai.prompts.identity import enforce_model_identity, get_ai_identity
     from app.chat.decider import call_groq_api_async, call_groq_api_stream_async
+    from app.config import get_settings
     from app.services.response_processor import full_post_process
     
     return get_settings, get_ai_identity, enforce_model_identity, call_groq_api_async, call_groq_api_stream_async, full_post_process

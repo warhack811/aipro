@@ -10,8 +10,8 @@ import os
 import sys
 from logging.config import fileConfig
 
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
+from sqlalchemy import engine_from_config, pool
+
 from alembic import context
 
 # Proje kök dizinini Python path'e ekle
@@ -19,11 +19,16 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Yapılandırma
 from app.config import get_settings
-from app.core.models import SQLModel
 from app.core.config_models import (
-    SystemConfig, ModelConfig, APIConfig, ThemeConfig, 
-    PersonaConfig, ImageGenConfig, UITextConfig
+    APIConfig,
+    ImageGenConfig,
+    ModelConfig,
+    PersonaConfig,
+    SystemConfig,
+    ThemeConfig,
+    UITextConfig,
 )
+from app.core.models import SQLModel
 
 # Alembic Config
 config = context.config

@@ -35,12 +35,12 @@ Thread Safety:
 
 import json
 import logging
-from typing import Any, Dict, List, Optional, TypeVar, Union
 from datetime import datetime, timedelta
-from threading import Lock
 from functools import lru_cache
+from threading import Lock
+from typing import Any, Dict, List, Optional, TypeVar, Union
 
-from sqlmodel import select, Session
+from sqlmodel import Session, select
 
 # Modül logger'ı
 logger = logging.getLogger(__name__)
@@ -181,9 +181,14 @@ class DynamicConfigService:
     def _get_models(self):
         """Config models lazy import."""
         from app.core.config_models import (
-            SystemConfig, ModelConfig, APIConfig, 
-            ThemeConfig, PersonaConfig, ImageGenConfig, UITextConfig,
-            ConfigValueType
+            APIConfig,
+            ConfigValueType,
+            ImageGenConfig,
+            ModelConfig,
+            PersonaConfig,
+            SystemConfig,
+            ThemeConfig,
+            UITextConfig,
         )
         return {
             'SystemConfig': SystemConfig,

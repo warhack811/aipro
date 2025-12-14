@@ -1,5 +1,6 @@
-from fastapi import APIRouter
 import time
+
+from fastapi import APIRouter
 
 from app.config import get_settings
 from app.core.feature_flags import feature_enabled

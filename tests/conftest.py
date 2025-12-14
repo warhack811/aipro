@@ -5,8 +5,8 @@ Mami AI - Pytest Yapılandırması
 Test fixture'ları ve ortak yapılandırma.
 """
 
-import sys
 import os
+import sys
 from pathlib import Path
 
 import pytest
@@ -34,6 +34,7 @@ def test_client():
             assert response.status_code == 200
     """
     from fastapi.testclient import TestClient
+
     from main import app
     
     with TestClient(app) as client:

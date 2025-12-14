@@ -15,9 +15,10 @@ Calistirma:
     pytest tests/test_image_router.py -v
 """
 
-import pytest
-import sys
 import os
+import sys
+
+import pytest
 
 # Proje rootunu path'e ekle
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -73,7 +74,7 @@ class TestCheckpointSelection:
     
     def test_safe_content_uses_standard_checkpoint(self, user_with_nsfw_permission):
         """Guvenli icerik standard checkpoint kullanmali."""
-        from app.image.routing import decide_image_job, FluxVariant, CHECKPOINTS
+        from app.image.routing import CHECKPOINTS, FluxVariant, decide_image_job
         
         spec = decide_image_job("a cute cat", user_with_nsfw_permission)
         
@@ -85,7 +86,7 @@ class TestCheckpointSelection:
     
     def test_nsfw_content_with_permission_uses_uncensored(self, user_with_nsfw_permission):
         """NSFW icerik + izin var -> uncensored checkpoint."""
-        from app.image.routing import decide_image_job, FluxVariant, CHECKPOINTS
+        from app.image.routing import CHECKPOINTS, FluxVariant, decide_image_job
         
         spec = decide_image_job("nude woman", user_with_nsfw_permission)
         
@@ -110,7 +111,7 @@ class TestCheckpointSelection:
     
     def test_admin_can_generate_nsfw(self, admin_user):
         """Admin kullanici NSFW uretebilir."""
-        from app.image.routing import decide_image_job, FluxVariant
+        from app.image.routing import FluxVariant, decide_image_job
         
         spec = decide_image_job("nude woman", admin_user)
         

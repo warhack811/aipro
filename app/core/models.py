@@ -27,13 +27,12 @@ Kullanım:
     Conversation 1--1 ConversationSummary
 """
 
-from typing import Optional, List, Dict, Any
-from datetime import datetime, date
+from datetime import date, datetime
+from typing import Any, Dict, List, Optional
 from uuid import uuid4
 
-from sqlmodel import SQLModel, Field, Relationship
-from sqlalchemy import Column, JSON, Text
-
+from sqlalchemy import JSON, Column, Text
+from sqlmodel import Field, Relationship, SQLModel
 
 # =============================================================================
 # KULLANICI MODELLERİ

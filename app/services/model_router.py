@@ -21,7 +21,7 @@ Eski Kullanım (hala çalışır):
 from __future__ import annotations
 
 import logging
-from typing import Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
     from app.core.models import User
@@ -51,8 +51,8 @@ def choose_model_for_request(
         str: "groq" veya "bela"
     """
     try:
-        from app.chat.smart_router import route_message, RoutingTarget
-        
+        from app.chat.smart_router import RoutingTarget, route_message
+
         # Semantic'i dict'e çevir
         semantic_dict = None
         if semantic:

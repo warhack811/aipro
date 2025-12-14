@@ -2,14 +2,15 @@ from __future__ import annotations
 
 import asyncio
 from dataclasses import dataclass
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 
 import httpx
 
-from app.core.logger import get_logger
 from app.config import get_settings
-from app.search.providers.serper import serper_search_async, SerperResult  # Google
-from app.search.providers.bing import bing_search_async, BingResult  # Bing
+from app.core.logger import get_logger
+from app.search.providers.bing import BingResult, bing_search_async  # Bing
+from app.search.providers.serper import SerperResult, serper_search_async  # Google
+
 # DuckDuckGo entegrasyonu eklenirse buraya import edilir.
 
 logger = get_logger(__name__)

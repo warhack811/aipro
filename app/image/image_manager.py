@@ -1,22 +1,21 @@
 from __future__ import annotations
 
 import asyncio
-from typing import Callable, Dict, Any, Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Callable, Dict, Optional
 
 if TYPE_CHECKING:
     from app.core.models import User
 
-from app.websocket_sender import send_progress
-
-from app.image.job_queue import job_queue, ImageJob
+from app.core.logger import get_logger
 from app.image.flux_stub import generate_image_via_forge
 from app.image.gpu_state import switch_to_flux, switch_to_gemma
+from app.image.job_queue import ImageJob, job_queue
 from app.image.pending_state import (
     list_pending_jobs_for_user,
     register_pending_job,
     remove_pending_job,
 )
-from app.core.logger import get_logger
+from app.websocket_sender import send_progress
 
 logger = get_logger(__name__)
 
@@ -78,10 +77,11 @@ def request_image_generation(
     Returns:
         job_id: Aynı job_id (başarılı ise) veya None (hata ise)
     """
+    from html import escape as html_escape
+
     from app.image.routing import decide_image_job
     from app.memory.conversation import update_message
-    from html import escape as html_escape
-    
+
     # ImageRouter ile routing karari al
     try:
         spec = decide_image_job(prompt, user)
@@ -100,7 +100,7 @@ def request_image_generation(
         
     except Exception as e:
         logger.error(f"[IMAGE_MANAGER] Routing hatasi: {e}")
-        from app.image.routing import FluxVariant, CHECKPOINTS
+        from app.image.routing import CHECKPOINTS, FluxVariant
         spec = None
         checkpoint_name = CHECKPOINTS[FluxVariant.STANDARD]
     

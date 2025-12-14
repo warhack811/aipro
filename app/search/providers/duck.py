@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from typing import List
 
 import requests
+
 from app.core.logger import get_logger
 
 logger = get_logger(__name__)

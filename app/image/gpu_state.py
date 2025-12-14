@@ -1,9 +1,13 @@
 from __future__ import annotations
-import requests
-from enum import Enum
-from app.core.logger import get_logger
-from app.config import get_settings
+
 import time
+from enum import Enum
+
+import requests
+
+from app.config import get_settings
+from app.core.logger import get_logger
+
 logger = get_logger(__name__)
 settings = get_settings()
 

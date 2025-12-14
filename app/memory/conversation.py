@@ -24,9 +24,9 @@ from __future__ import annotations
 
 import logging
 from datetime import datetime
-from typing import List, Optional, Callable, Dict, Any
+from typing import Any, Callable, Dict, List, Optional
 
-from sqlmodel import select, col
+from sqlmodel import col, select
 
 # Modül logger'ı
 logger = logging.getLogger(__name__)

@@ -12,6 +12,7 @@ import subprocess
 import sys
 from pathlib import Path
 
+
 def run_command(cmd: list, description: str):
     """Komutu çalıştır ve sonucu göster"""
     print(f"\n{'='*60}")

@@ -1,36 +1,36 @@
 import json
-from fastapi import APIRouter, Request, HTTPException, UploadFile, File, Form, Depends, status, Query
+from pathlib import Path
+from typing import Any, AsyncGenerator, Dict, List, Optional, Tuple, cast
+
+from fastapi import APIRouter, Depends, File, Form, HTTPException, Query, Request, UploadFile, status
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
-from typing import Optional, List, Any, Dict, AsyncGenerator, Tuple, cast
-from pathlib import Path
+
+from app.auth.dependencies import get_current_active_user
+from app.chat.decider import decide_memory_storage_async
+from app.chat.processor import process_chat_message
+from app.core.database import get_session
+from app.core.feedback_store import add_feedback
+from app.core.logger import get_logger
+from app.core.models import Conversation, Message, User
 
 # Çekirdek Servisler
 from app.core.usage_limiter import limiter
-from app.core.models import User, Message, Conversation
-from app.core.database import get_session
-from app.auth.dependencies import get_current_active_user
 
 # AI/İşleme Servisleri
-from app.image.gpu_state import get_state, ModelState
+from app.image.gpu_state import ModelState, get_state
 from app.image.job_queue import job_queue
 from app.image.pending_state import list_pending_jobs_for_user
-from app.chat.processor import process_chat_message
-from app.chat.decider import decide_memory_storage_async
-from app.core.logger import get_logger
-from app.services import user_preferences
+from app.memory.conversation import append_message as conv_append
+from app.memory.conversation import create_conversation as conv_create
+from app.memory.conversation import delete_conversation as conv_delete
+from app.memory.conversation import list_conversations as conv_list
+from app.memory.conversation import load_messages as conv_load_messages
 
 # Store/Veri Servisleri
 from app.memory.rag import add_document
-from app.memory.store import list_memories, add_memory, delete_memory, update_memory
-from app.core.feedback_store import add_feedback
-from app.memory.conversation import (
-    list_conversations as conv_list,
-    load_messages as conv_load_messages,
-    create_conversation as conv_create,
-    append_message as conv_append,
-    delete_conversation as conv_delete,
-)
+from app.memory.store import add_memory, delete_memory, list_memories, update_memory
+from app.services import user_preferences
 
 logger = get_logger(__name__)
 router = APIRouter(tags=["user"])
@@ -486,8 +486,8 @@ async def cancel_job_endpoint(job_id: str, user: User = Depends(get_current_acti
     
     if success:
         # Mesajı da güncelle
-        from app.memory.conversation import update_message
         from app.image.pending_state import get_job_status
+        from app.memory.conversation import update_message
         
         job = get_job_status(job_id)
         if job:
@@ -589,7 +589,7 @@ async def submit_feedback(body: FeedbackIn, user: User = Depends(get_current_act
 
 @router.get("/images", response_model=List[UserImageOut])
 async def list_user_images(limit: int = 50, user: User = Depends(get_current_active_user)):
-    from sqlmodel import select, col
+    from sqlmodel import col, select
     with get_session() as session:
         stmt = (
             select(Message)
@@ -682,8 +682,8 @@ async def list_personas(user: User = Depends(get_current_active_user)):
     Returns:
         PersonaListOut: Persona listesi ve aktif persona
     """
-    from app.core.dynamic_config import config_service
     from app.auth.permissions import user_can_use_local
+    from app.core.dynamic_config import config_service
     
     all_personas = config_service.get_all_personas()
     can_use_local = user_can_use_local(user)
@@ -757,9 +757,10 @@ async def select_persona(body: PersonaSelectIn, user: User = Depends(get_current
     Returns:
         PersonaSelectOut: Seçim sonucu
     """
-    from app.core.dynamic_config import config_service
-    from app.auth.permissions import user_can_use_local
     from sqlmodel import select
+
+    from app.auth.permissions import user_can_use_local
+    from app.core.dynamic_config import config_service
     
     persona_name = body.persona.lower().strip()
     

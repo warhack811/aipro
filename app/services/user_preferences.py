@@ -7,6 +7,7 @@ from typing import Any, Dict, List, Optional, cast
 
 from sqlalchemy import desc
 from sqlmodel import select
+
 from app.core.database import get_session
 from app.core.models import UserPreference
 

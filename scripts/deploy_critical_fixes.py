@@ -14,13 +14,14 @@ Veya adım adım:
     python scripts/deploy_critical_fixes.py --step 3  # Sadece Alembic
 """
 
-import sys
-import subprocess
 import shutil
+import subprocess
+import sys
 import time
-from pathlib import Path
 from datetime import datetime
-from typing import Tuple, List
+from pathlib import Path
+from typing import List, Tuple
+
 
 # Renkli çıktı için ANSI kodları
 class Colors:

@@ -1,9 +1,11 @@
-import schedule
-import time
 import threading
-from app.memory.store import cleanup_old_memories
+import time
+
+import schedule
+
 from app.auth.user_manager import list_users
 from app.core.logger import get_logger
+from app.memory.store import cleanup_old_memories
 
 logger = get_logger(__name__)
 

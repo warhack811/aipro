@@ -5,9 +5,9 @@ Smart Answer Shaper - Akıllı Cevap Yapılandırıcı
 Model cevaplarını kullanıcı niyetine göre yapılandırır.
 Mevcut answer_shaper.py'den çok daha gelişmiş.
 """
-import re
 import logging
-from typing import Tuple, List, Dict, Any, Optional
+import re
+from typing import Any, Dict, List, Optional, Tuple
 
 logger = logging.getLogger(__name__)
 

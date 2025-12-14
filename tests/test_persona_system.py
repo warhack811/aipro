@@ -14,9 +14,10 @@ Calistirma:
     pytest tests/test_persona_system.py -v
 """
 
-import pytest
-import sys
 import os
+import sys
+
+import pytest
 
 # Proje rootunu path'e ekle
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -65,7 +66,7 @@ class TestImageGuard:
     def test_validate_prompt_minimal(self):
         """validate_prompt_minimal fonksiyonu dogru calismalı."""
         from app.ai.prompts.image_guard import validate_prompt_minimal
-        
+
         # Temiz prompt
         assert validate_prompt_minimal("A cute cat sitting on a windowsill") is True
         
@@ -166,7 +167,7 @@ class TestSmartRouterPersona:
     
     def test_romantic_persona_with_image_request(self, mock_user_with_local):
         """romantic persona + 'kedi resmi çiz' → Target=image, Tool=image."""
-        from app.chat.smart_router import SmartRouter, RoutingTarget, ToolIntent
+        from app.chat.smart_router import RoutingTarget, SmartRouter, ToolIntent
         
         router = SmartRouter()
         
@@ -181,7 +182,7 @@ class TestSmartRouterPersona:
     
     def test_romantic_persona_with_web_request(self, mock_user_with_local):
         """romantic persona + 'hava bugün nasıl' → Target=internet, Tool=internet."""
-        from app.chat.smart_router import SmartRouter, RoutingTarget, ToolIntent
+        from app.chat.smart_router import RoutingTarget, SmartRouter, ToolIntent
         
         router = SmartRouter()
         
@@ -213,7 +214,7 @@ class TestSmartRouterPersona:
     
     def test_tool_priority_over_persona(self, mock_user_with_local):
         """Tool intent persona gereksinimlerinden oncelikli olmali."""
-        from app.chat.smart_router import SmartRouter, RoutingTarget, ToolIntent
+        from app.chat.smart_router import RoutingTarget, SmartRouter, ToolIntent
         
         router = SmartRouter()
         
@@ -230,7 +231,7 @@ class TestSmartRouterPersona:
     
     def test_admin_always_has_access(self, mock_admin):
         """Admin kullanici tum ozelliklere erisebilmeli."""
-        from app.auth.permissions import user_can_use_local, can_generate_nsfw_image
+        from app.auth.permissions import can_generate_nsfw_image, user_can_use_local
         
         assert user_can_use_local(mock_admin) is True
         assert can_generate_nsfw_image(mock_admin) is True
@@ -275,7 +276,7 @@ class TestPersonaSelection:
     def test_requires_uncensored_with_local_permission(self, mock_user_with_local):
         """requires_uncensored persona: local izni var → izin verilmeli."""
         from app.auth.permissions import user_can_use_local
-        
+
         # Kullanici local kullanabilir (bela_unlocked=True)
         assert user_can_use_local(mock_user_with_local) is True
         
@@ -285,7 +286,7 @@ class TestPersonaSelection:
     def test_requires_uncensored_without_local_permission(self, mock_user_without_local):
         """requires_uncensored persona: local izni yok → reddedilmeli."""
         from app.auth.permissions import user_can_use_local
-        
+
         # Kullanici local kullanamaz (bela_unlocked=False)
         assert user_can_use_local(mock_user_without_local) is False
         
@@ -317,7 +318,7 @@ class TestPromptCompiler:
     def test_build_system_prompt_with_toggles(self):
         """Toggle context'leri prompt'a eklenmeli."""
         from app.ai.prompts.compiler import build_system_prompt
-        
+
         # Web enabled
         prompt_web_on = build_system_prompt(
             user=None,
@@ -369,10 +370,10 @@ class TestPermissionHelpers:
     def test_admin_bypasses_all_restrictions(self, admin_user):
         """Admin tum kisitlamalari gecmeli."""
         from app.auth.permissions import (
-            user_can_use_local,
-            user_can_use_internet,
-            user_can_use_image,
             can_generate_nsfw_image,
+            user_can_use_image,
+            user_can_use_internet,
+            user_can_use_local,
         )
         
         assert user_can_use_local(admin_user) is True
@@ -383,9 +384,9 @@ class TestPermissionHelpers:
     def test_regular_user_respects_permissions(self, regular_user):
         """Normal kullanici izinlere bagli olmali."""
         from app.auth.permissions import (
-            user_can_use_local,
-            user_can_use_internet,
             user_can_use_image,
+            user_can_use_internet,
+            user_can_use_local,
         )
         
         assert user_can_use_local(regular_user) is False
@@ -406,7 +407,7 @@ class TestImagePromptPrefix:
         # Bu test için mock gerekiyor çünkü async fonksiyon
         # Basit unit test olarak sanitize_image_prompt'u test edelim
         from app.ai.prompts.image_guard import sanitize_image_prompt
-        
+
         # "!a cat" -> "a cat" (forbidden token yok, değişmemeli)
         raw_input = "a cat"
         result = sanitize_image_prompt(raw_input, raw_input)
@@ -415,7 +416,7 @@ class TestImagePromptPrefix:
     def test_single_bang_with_forbidden_token(self):
         """!prefix + forbidden token: guard temizlemeli."""
         from app.ai.prompts.image_guard import sanitize_image_prompt
-        
+
         # "!a cat 8k masterpiece" -> guard açık, forbidden tokenlar temizlenmeli
         raw_input = "a cat 8k masterpiece"
         user_original = raw_input  # ! ile girildiğinde user_original = prompt
@@ -430,7 +431,7 @@ class TestImagePromptPrefix:
     def test_double_bang_bypasses_guard(self):
         """!!prefix: guard KAPALI - anime gibi tokenlar kalmalı."""
         from app.ai.prompts.image_guard import sanitize_image_prompt, validate_prompt_minimal
-        
+
         # "!!anime cat" -> guard kapalı olduğunda "anime" kalmalı
         # Bu durumda sanitize_image_prompt çağrılmaz, direkt prompt kullanılır
         # validate_prompt_minimal ile kontrol edelim
@@ -474,7 +475,7 @@ class TestImagePromptPrefix:
     def test_empty_after_prefix(self):
         """Prefix sonrası boş string durumu."""
         from app.ai.prompts.image_guard import sanitize_image_prompt
-        
+
         # "!" tek başına
         msg = "!"
         prompt = msg[1:].strip() or msg[1:]

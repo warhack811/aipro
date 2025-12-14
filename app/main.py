@@ -19,8 +19,8 @@ veya eski yol (hala çalışır):
     - Otomatik veritabanı başlatma
 """
 
-import sys
 import os
+import sys
 from pathlib import Path
 
 # Proje kök dizinini Python path'e ekle
@@ -28,28 +28,27 @@ project_root = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(project_root))
 
 from fastapi import FastAPI, Request, WebSocket
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
-from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 
-# Yapılandırma
-from app.config import get_settings
-
-# Core modüller
-from app.core.logger import get_logger
-from app.core.database import init_database_with_defaults
-from app.core.exceptions import MamiException
-
-# Auth
-from app.auth.user_manager import ensure_default_admin
 from app.auth.invite_manager import ensure_initial_invite
 from app.auth.session import get_username_from_request
 
 # Resolvers
-from app.auth.user_manager import get_user_by_username
-from app.memory.store import set_user_resolver as set_memory_user_resolver
+# Auth
+from app.auth.user_manager import ensure_default_admin, get_user_by_username
+
+# Yapılandırma
+from app.config import get_settings
+from app.core.database import init_database_with_defaults
+from app.core.exceptions import MamiException
+
+# Core modüller
+from app.core.logger import get_logger
 from app.memory.conversation import set_user_resolver as set_conv_user_resolver
+from app.memory.store import set_user_resolver as set_memory_user_resolver
 
 # =============================================================================
 # YAPILANDIRMA
@@ -165,6 +164,7 @@ async def on_startup():
     # 5. Dynamic config cache'i ısıt (opsiyonel, performans için)
     try:
         from app.core.dynamic_config import config_service
+
         # Kritik config'leri preload et
         config_service.get_category("system")
         config_service.get_category("features")
@@ -283,11 +283,14 @@ async def new_ui(request: Request, path: str = ""):
 # WEBSOCKET
 # =============================================================================
 
-# WebSocket bağlantıları - websocket_sender.py ile aynı isim olmalı!
-from app.websocket_sender import connected
+from http.cookies import SimpleCookie
+
 from app.auth.dependencies import SESSION_COOKIE_NAME
 from app.auth.session import get_user_from_session_token
-from http.cookies import SimpleCookie
+
+# WebSocket bağlantıları - websocket_sender.py ile aynı isim olmalı!
+from app.websocket_sender import connected
+
 
 @app.websocket("/ws")
 async def websocket_endpoint(ws: WebSocket):
@@ -336,7 +339,7 @@ async def websocket_endpoint(ws: WebSocket):
 # API ROUTE'LARI
 # =============================================================================
 
-from app.api import public_routes, user_routes, admin_routes, system_routes, auth_routes
+from app.api import admin_routes, auth_routes, public_routes, system_routes, user_routes
 
 # API v1 (Yeni standart yol)
 app.include_router(auth_routes.router, prefix="/api/v1/auth", tags=["v1-auth"])

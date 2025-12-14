@@ -1,26 +1,27 @@
 from __future__ import annotations
 
 from dataclasses import asdict
-from pathlib import Path
-from typing import List, Optional, Dict, Any
 from datetime import datetime
-from fastapi import APIRouter, Request, HTTPException, Query, Depends
-from pydantic import BaseModel, Field, ConfigDict
+from pathlib import Path
+from typing import Any, Dict, List, Optional
+
+from fastapi import APIRouter, Depends, HTTPException, Query, Request
+from pydantic import BaseModel, ConfigDict, Field
+from sqlmodel import select
+
+from app.ai.prompts.identity import get_ai_identity, update_ai_identity
+from app.auth import invite_manager, user_manager
+from app.auth.dependencies import get_current_admin_user  # Admin Yetkisi ve BYPASS buradan gelir
 
 # Core Servisler
 from app.auth.session import get_username_from_request
-from app.core.summary_config import get_summary_settings, update_summary_settings
-from app.core.models import ConversationSummarySettings
-from app.ai.prompts.identity import get_ai_identity, update_ai_identity
-from app.core.models import AIIdentityConfig, Message, Conversation, User
 from app.core.database import get_session
 from app.core.feedback_store import list_all_feedback
 from app.core.logger import get_logger
-from app.auth import user_manager, invite_manager
-from app.auth.dependencies import get_current_admin_user # Admin Yetkisi ve BYPASS buradan gelir
+from app.core.models import AIIdentityConfig, Conversation, ConversationSummarySettings, Message, User
+from app.core.summary_config import get_summary_settings, update_summary_settings
 from app.image.gpu_state import get_state as get_gpu_state
 from app.image.image_manager import get_image_queue_stats
-from sqlmodel import select 
 
 logger = get_logger(__name__)
 

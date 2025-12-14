@@ -23,8 +23,9 @@ Dependency Zinciri:
 
 from __future__ import annotations
 
-from fastapi import Request, HTTPException, status, Depends
-from typing import Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
+
+from fastapi import Depends, HTTPException, Request, status
 
 if TYPE_CHECKING:
     from app.core.models import User
@@ -48,18 +49,18 @@ def _get_imports():
     Bu fonksiyon ilk çağrıda gerekli modülleri import eder.
     """
     try:
-        from app.core.logger import get_logger
-        from app.core.models import User
-        from app.config import get_settings
         from app.auth import session as session_service
         from app.auth.user_manager import get_user_by_username
-    except ImportError:
-        # Eski import yolu (geçiş dönemi)
+        from app.config import get_settings
         from app.core.logger import get_logger
         from app.core.models import User
-        from app.config import get_settings
-        from auth import session as session_service
+    except ImportError:
+        # Eski import yolu (geçiş dönemi)
         from app.auth.user_manager import get_user_by_username
+        from app.config import get_settings
+        from app.core.logger import get_logger
+        from app.core.models import User
+        from auth import session as session_service
     
     return get_logger, User, get_settings, session_service, get_user_by_username
 

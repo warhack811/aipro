@@ -31,7 +31,7 @@ from __future__ import annotations
 import json
 import logging
 import traceback
-from typing import Dict, Any, Optional
+from typing import Any, Dict, Optional
 
 # Modül logger'ı
 logger = logging.getLogger(__name__)
@@ -53,12 +53,12 @@ Sen uzman bir asistansın. Arama sonuçlarını kullanarak kullanıcıya yanıt 
 
 def _get_imports():
     """Import döngüsünü önlemek için lazy import."""
-    from app.search.manager import search_queries_async
     from app.chat.answerer import generate_answer
+    from app.search.manager import search_queries_async
     from app.search.structured_parser import (
-        parse_weather_result,
         parse_exchange_rate_result,
         parse_sports_fixture_result,
+        parse_weather_result,
     )
     
     return (

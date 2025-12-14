@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Dict, Any, List, Optional
+from typing import Any, Dict, List, Optional
 
 _pending_jobs: Dict[str, Dict[str, Any]] = {}
 
