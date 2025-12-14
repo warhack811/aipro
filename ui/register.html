@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mami AI - Üye Ol</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            padding-top: max(20px, env(safe-area-inset-top, 0px));
+            padding-bottom: max(20px, env(safe-area-inset-bottom, 0px));
+        }
+
+        .register-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo h1 {
+            font-size: 36px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .logo p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .info-text {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        .register-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .register-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102,126,234,0.3);
+        }
+
+        .register-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 25px 0;
+            position: relative;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e0e0e0;
+        }
+
+        .divider span {
+            background: white;
+            padding: 0 15px;
+            color: #999;
+            font-size: 14px;
+            position: relative;
+        }
+
+        .login-link {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .login-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            background: #fee;
+            color: #c33;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .success-message {
+            background: #efe;
+            color: #3c3;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+
+        @media (max-width: 480px) {
+            .register-container {
+                padding: 30px 20px;
+            }
+
+            .logo h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="logo">
+            <h1>💜 Mami AI</h1>
+            <p>Yeni Hesap Oluştur</p>
+        </div>
+
+        <div class="error-message" id="errorMessage"></div>
+        <div class="success-message" id="successMessage"></div>
+
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="inviteCode">Davet Kodu</label>
+                <input type="text" id="inviteCode" name="inviteCode" required autocomplete="off">
+                <div class="info-text">Sisteme katılmak için davet koduna ihtiyacınız var</div>
+            </div>
+
+            <div class="form-group">
+                <label for="username">Kullanıcı Adı</label>
+                <input type="text" id="username" name="username" required autocomplete="username" minlength="3" maxlength="32">
+                <div class="info-text">3-32 karakter arası</div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Şifre</label>
+                <input type="password" id="password" name="password" required autocomplete="new-password" minlength="5">
+                <div class="info-text">En az 5 karakter</div>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Şifre Tekrar</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" required autocomplete="new-password">
+            </div>
+
+            <button type="submit" class="register-btn" id="registerBtn">Üye Ol</button>
+        </form>
+
+        <div class="divider">
+            <span>veya</span>
+        </div>
+
+        <div class="login-link">
+            Zaten hesabınız var mı? <a href="/ui/login.html">Giriş Yap</a>
+        </div>
+    </div>
+
+    <script>
+        const registerForm = document.getElementById('registerForm');
+        const registerBtn = document.getElementById('registerBtn');
+        const errorMessage = document.getElementById('errorMessage');
+        const successMessage = document.getElementById('successMessage');
+
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const inviteCode = document.getElementById('inviteCode').value.trim();
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            // Validation
+            if (!inviteCode || !username || !password || !confirmPassword) {
+                showError('Lütfen tüm alanları doldurun.');
+                return;
+            }
+
+            if (username.length < 3 || username.length > 32) {
+                showError('Kullanıcı adı 3-32 karakter arası olmalıdır.');
+                return;
+            }
+
+            if (password.length < 5) {
+                showError('Şifre en az 5 karakter olmalıdır.');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showError('Şifreler eşleşmiyor.');
+                return;
+            }
+
+            registerBtn.disabled = true;
+            registerBtn.textContent = 'Kayıt yapılıyor...';
+            hideMessages();
+
+            try {
+                const response = await fetch('/api/v1/public/register_with_invite', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        invite_code: inviteCode,
+                        username: username,
+                        password: password
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showSuccess('Kayıt başarılı! Giriş sayfasına yönlendiriliyorsunuz...');
+                    setTimeout(() => {
+                        window.location.href = '/ui/login.html';
+                    }, 2000);
+                } else {
+                    showError(data.detail || 'Kayıt başarısız. Lütfen bilgilerinizi kontrol edin.');
+                    registerBtn.disabled = false;
+                    registerBtn.textContent = 'Üye Ol';
+                }
+            } catch (error) {
+                console.error('Register error:', error);
+                showError('Bir hata oluştu. Lütfen tekrar deneyin.');
+                registerBtn.disabled = false;
+                registerBtn.textContent = 'Üye Ol';
+            }
+        });
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+            successMessage.style.display = 'none';
+        }
+
+        function showSuccess(message) {
+            successMessage.textContent = message;
+            successMessage.style.display = 'block';
+            errorMessage.style.display = 'none';
+        }
+
+        function hideMessages() {
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+# =============================================================================
+# Mami AI - Docker Ignore
+# =============================================================================
+# Docker build context'inden hariç tutulacak dosyalar.
+
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+*.egg
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+# Sanal ortamlar
+venv/
+.venv/
+env/
+.env.local
+.env.*.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Data (ayrı volume olarak bağlanacak)
+data/
+logs/
+
+# Test ve geliştirme
+tests/
+*.test.py
+test_*.py
+htmlcov/
+.coverage
+
+# Dokümantasyon
+docs/
+*.md
+!README.md
+
+# Geçici dosyalar
+*.log
+*.tmp
+*.bak
+
+# OS dosyaları
+.DS_Store
+Thumbs.db
+

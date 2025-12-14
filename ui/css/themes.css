@@ -1,0 +1,179 @@
+/* ============================================
+   THEMES.CSS - All Theme Definitions
+   Modernized with WCAG AA contrast & theme-aware colors
+   ============================================ */
+
+[data-theme="dark"] {
+    --bg: #0f172a;
+    --bg-surface: #1e293b;
+    --bg-input: #334155;
+    --primary: #6366f1;
+    --primary-hover: #818cf8;
+    --text: #f1f5f9;
+    --text-muted: #cbd5e1;
+    --border: #334155;
+    --msg-user: #6366f1;
+    --msg-bot: #1e293b;
+
+    /* Model colors - theme-aware */
+    --model-fikri: #fbbf24;
+    --model-web: #60a5fa;
+    --model-chat: #a78bfa;
+    --model-image: #f472b6;
+}
+
+[data-theme="light"] {
+    --bg: #f8fafc;
+    --bg-surface: #ffffff;
+    --bg-input: #f1f5f9;
+    --primary: #4f46e5;
+    --primary-hover: #6366f1;
+    --text: #0f172a;
+    --text-muted: #475569;
+    --border: #e2e8f0;
+    --msg-user: #4f46e5;
+    --msg-bot: #ffffff;
+
+    /* Model colors - theme-aware */
+    --model-fikri: #f59e0b;
+    --model-web: #2563eb;
+    --model-chat: #7c3aed;
+    --model-image: #ec4899;
+}
+
+[data-theme="cosmic"] {
+    --bg: #0d0a1a;
+    --bg-surface: #1a0f2e;
+    --bg-input: #2d1b3d;
+    --primary: #c77dff;
+    --primary-hover: #d8a5ff;
+    --text: #f5f3ff;
+    --text-muted: #d4c4e8;
+    --border: #3d2a4d;
+    --msg-user: #c77dff;
+    --msg-bot: #1a0f2e;
+
+    /* Model colors - theme-aware */
+    --model-fikri: #fbbf24;
+    --model-web: #818cf8;
+    --model-chat: #a78bfa;
+    --model-image: #f472b6;
+}
+
+[data-theme="ocean"] {
+    --bg: #001a2e;
+    --bg-surface: #002d4a;
+    --bg-input: #003d5c;
+    --primary: #06b6d4;
+    --primary-hover: #22d3ee;
+    --text: #e0f2fe;
+    --text-muted: #bae6fd;
+    --border: #004d6e;
+    --msg-user: #06b6d4;
+    --msg-bot: #002d4a;
+
+    /* Model colors - theme-aware */
+    --model-fikri: #fbbf24;
+    --model-web: #3b82f6;
+    --model-chat: #60a5fa;
+    --model-image: #22d3ee;
+}
+
+[data-theme="sunset"] {
+    --bg: #1a0f0f;
+    --bg-surface: #2d1a1a;
+    --bg-input: #3d2525;
+    --primary: #f87171;
+    --primary-hover: #fb923c;
+    --text: #fef2f2;
+    --text-muted: #fecaca;
+    --border: #4a2a2a;
+    --msg-user: #f87171;
+    --msg-bot: #2d1a1a;
+
+    /* Model colors - theme-aware */
+    --model-fikri: #fb923c;
+    --model-web: #f87171;
+    --model-chat: #f97316;
+    --model-image: #ef4444;
+}
+
+/* Ocean Deep - Modern dark theme with deep blue tones */
+[data-theme="ocean-deep"] {
+    --bg: #0a0f1e;
+    --bg-surface: #1a1f2e;
+    --bg-input: #1e293b;
+    --primary: #6366f1;
+    --primary-hover: #818cf8;
+    --text: #f1f5f9;
+    --text-muted: #cbd5e1;
+    --border: #334155;
+    --msg-user: #6366f1;
+    --msg-bot: #1a1f2e;
+
+    /* Model colors - theme-aware */
+    --model-fikri: #fbbf24;
+    --model-web: #60a5fa;
+    --model-chat: #a78bfa;
+    --model-image: #f472b6;
+}
+
+/* Neon Night - Vibrant neon colors on pure black */
+[data-theme="neon-night"] {
+    --bg: #000000;
+    --bg-surface: #0a0a0a;
+    --bg-input: #1a1a1a;
+    --primary: #00ff9f;
+    --primary-hover: #00ffcc;
+    --text: #ffffff;
+    --text-muted: #b3b3b3;
+    --border: #333333;
+    --msg-user: #00ff9f;
+    --msg-bot: #0a0a0a;
+
+    /* Model colors - theme-aware */
+    --model-fikri: #ffd700;
+    --model-web: #00f0ff;
+    --model-chat: #00ff9f;
+    --model-image: #ff006e;
+}
+
+/* Minimal Light - Clean, minimal light theme */
+[data-theme="minimal-light"] {
+    --bg: #ffffff;
+    --bg-surface: #f8fafc;
+    --bg-input: #f1f5f9;
+    --primary: #6366f1;
+    --primary-hover: #818cf8;
+    --text: #0f172a;
+    --text-muted: #475569;
+    --border: #e2e8f0;
+    --msg-user: #6366f1;
+    --msg-bot: #f8fafc;
+
+    /* Model colors - theme-aware */
+    --model-fikri: #f59e0b;
+    --model-web: #2563eb;
+    --model-chat: #7c3aed;
+    --model-image: #ec4899;
+}
+
+/* Forest Zen - Calming green nature theme */
+[data-theme="forest-zen"] {
+    --bg: #0f1a14;
+    --bg-surface: #1a2820;
+    --bg-input: #1e2f27;
+    --primary: #10b981;
+    --primary-hover: #34d399;
+    --text: #ecfdf5;
+    --text-muted: #a7f3d0;
+    --border: #2d4038;
+    --msg-user: #10b981;
+    --msg-bot: #1a2820;
+
+    /* Model colors - theme-aware */
+    --model-fikri: #fbbf24;
+    --model-web: #60a5fa;
+    --model-chat: #34d399;
+    --model-image: #22c55e;
+}

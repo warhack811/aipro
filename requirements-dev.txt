@@ -1,0 +1,38 @@
+# =============================================================================
+# Mami AI - Geliştirme Bağımlılıkları
+# =============================================================================
+# Sadece geliştirme ortamı için gereken paketler.
+#
+# Kurulum:
+#   pip install -r requirements-dev.txt
+# =============================================================================
+
+# Test
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+pytest-cov>=4.1.0
+httpx>=0.24.0  # Test client için
+
+# Linting & Formatting
+ruff==0.6.9
+black==24.8.0
+isort==5.13.2
+pre-commit==4.5.0
+
+# Type Checking
+mypy>=1.5.0
+
+# Güvenlik
+bandit>=1.7.0
+
+# Dokümantasyon
+mkdocs>=1.5.0
+mkdocs-material>=9.0.0
+
+# Debug
+ipython>=8.14.0
+rich>=13.5.0
+
+# Profiling (opsiyonel)
+# line-profiler>=4.0.0
+# memory-profiler>=0.60.0

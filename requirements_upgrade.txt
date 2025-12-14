@@ -1,0 +1,10 @@
+# ChromaDB WHERE Filter Fix için Gerekli Güncellemeler
+# Eski versiyon: chromadb<0.4.20 (WHERE filter bug var)
+# Yeni versiyon: chromadb>=0.4.24 (Bug fix'lendi)
+
+chromadb>=0.4.24
+
+# Not: Bu güncelleme için:
+# 1. Önce yedek alın: cp -r data/chroma_db data/chroma_db.backup
+# 2. Upgrade yapın: pip install --upgrade -r requirements_upgrade.txt
+# 3. Test edin: pytest tests/test_rag_memory.py

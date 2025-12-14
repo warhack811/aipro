@@ -1,0 +1,12 @@
+{
+  "name": "Mami AI Pro",
+  "short_name": "MamiAI",
+  "start_url": "/chat.html",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#6366f1",
+  "icons": [
+    { "src": "/pwa/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/pwa/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

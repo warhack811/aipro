@@ -1,0 +1,140 @@
+{
+  "suite_name": "suite_v1_bootstrap",
+  "models": [
+    {"id": "groq", "force_local": false},
+    {"id": "local", "force_local": true}
+  ],
+  "cases": [
+    {
+      "id": "no_think_leak_1",
+      "conversation_id": "eval_no_think_1",
+      "turns": [
+        {"message": "naber gece"}
+      ],
+      "expect": {
+        "must_not_contain": ["<think>", "</think>"]
+      }
+    },
+    {
+      "id": "no_hallucination_confidence_1",
+      "conversation_id": "eval_hallu_1",
+      "turns": [
+        {"message": "Bugün Mars yüzeyindeki hava kaç derece? Kaynak ver."}
+      ],
+      "expect": {
+        "must_contain": ["Kaynak"],
+        "must_not_contain": ["kesin", "eminim"]
+      }
+    },
+    {
+      "id": "followup_question_when_missing_info",
+      "conversation_id": "eval_followup_1",
+      "turns": [
+        {"message": "Bana en iyi laptopu öner."}
+      ],
+      "expect": {
+        "must_contain": ["bütçe"],
+        "must_not_contain": ["<think>"]
+      }
+    },
+    {
+      "id": "context_adherence_simple",
+      "conversation_id": "eval_ctx_1",
+      "turns": [
+        {"message": "Benim adım Muhammet. Bunu unutma."},
+        {"message": "Adım neydi?"}
+      ],
+      "expect": {
+        "flags": {"memory_expected": true, "memory_marker": "Muhammet"},
+        "must_not_contain": ["<think>"]
+      }
+    },
+    {
+      "id": "turkish_sen_hitap",
+      "conversation_id": "eval_tr_1",
+      "turns": [
+        {"message": "Bundan sonra bana 'sen' diye hitap et."},
+        {"message": "Beni nasıl tanımlarsın?"}
+      ],
+      "expect": {
+        "must_contain": ["sen"],
+        "must_not_contain": ["siz", "<think>"]
+      }
+    },
+    {
+      "id": "avoid_robot_phrases",
+      "conversation_id": "eval_robot_1",
+      "turns": [
+        {"message": "Kısaca söyle: Node.js nedir?"}
+      ],
+      "expect": {
+        "must_not_contain": ["Yapay zeka olarak", "<think>"]
+      }
+    },
+    {
+      "id": "multi_turn_consistency",
+      "conversation_id": "eval_multi_1",
+      "turns": [
+        {"message": "Bir proje için PostgreSQL kullanacağım."},
+        {"message": "Ben hangi veritabanını kullanacağımı söylemiştim?"}
+      ],
+      "expect": {
+        "must_contain": ["PostgreSQL"],
+        "must_not_contain": ["<think>"]
+      }
+    },
+    {
+      "id": "ask_clarify_not_guess",
+      "conversation_id": "eval_clarify_1",
+      "turns": [
+        {"message": "API yavaş. Ne yapayım?"}
+      ],
+      "expect": {
+        "must_contain": ["örnek", "log"],
+        "must_not_contain": ["kesin sebep", "<think>"]
+      }
+    },
+    {
+      "id": "format_code_block_when_code",
+      "conversation_id": "eval_code_1",
+      "turns": [
+        {"message": "Python'da dosya okuma örneği ver"}
+      ],
+      "expect": {
+        "must_contain": ["```"],
+        "must_not_contain": ["<think>"]
+      }
+    },
+    {
+      "id": "short_answer_preference",
+      "conversation_id": "eval_short_1",
+      "turns": [
+        {"message": "Kısa cevap istiyorum. Redis nedir?"}
+      ],
+      "expect": {
+        "must_not_contain": ["<think>"]
+      }
+    },
+    {
+      "id": "long_answer_request",
+      "conversation_id": "eval_admin_long_1",
+      "turns": [
+        {"message": "Detaylı anlat: JWT nasıl çalışır?"}
+      ],
+      "expect": {
+        "must_not_contain": ["<think>"]
+      }
+    },
+    {
+      "id": "no_space_regression_marker",
+      "conversation_id": "eval_admin_space_1",
+      "turns": [
+        {"message": "Merhaba Muhammet gibi iki kelime arasında boşluk bırak."}
+      ],
+      "expect": {
+        "must_contain": ["Merhaba", "Muhammet"],
+        "must_not_contain": ["MerhabaMuhammet", "<think>"]
+      }
+    }
+  ]
+}

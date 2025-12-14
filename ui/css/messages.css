@@ -1,0 +1,524 @@
+/* ============================================
+   MESSAGES.CSS - Chat Area & Message Bubbles
+   Extracted from chat.css lines 774-1380
+   ============================================ */
+
+/* Chat Area Container - WhatsApp Style Full Width */
+.chat-area {
+    max-width: 100%;
+    margin: 0;
+    padding: 24px 16px;
+    width: 100%;
+}
+
+/* WhatsApp-style Chat Area */
+#chatArea.chat-area {
+    min-height: 0 !important;
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 1rem 16px !important;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex !important;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+    padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px)) !important;
+    padding-bottom: calc(80px + constant(safe-area-inset-bottom)) !important;
+}
+
+/* Message Container */
+.message {
+    display: flex;
+    margin-bottom: 24px;
+    padding: 0;
+    animation: messageIn 0.25s ease-out;
+    align-items: flex-start;
+    gap: 12px;
+    width: 100%;
+}
+
+@keyframes messageIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* User - RIGHT (WhatsApp style) */
+.message.user {
+    justify-content: flex-end;
+    flex-direction: row-reverse;
+    padding-right: 8px;
+}
+
+/* Bot - LEFT (WhatsApp style) */
+.message.bot {
+    justify-content: flex-start;
+    padding-left: 8px;
+}
+
+/* Avatar Styles - Using msg-avatar div only, no ::before */
+.msg-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+
+.message.bot .msg-avatar {
+    background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+.message.user .msg-avatar {
+    background: linear-gradient(135deg, var(--msg-user), var(--primary-hover));
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--msg-user) 30%, transparent);
+}
+
+/* Message Bubbles */
+.msg-bubble {
+    position: relative;
+    padding: 16px 20px;
+    border-radius: 16px;
+    font-size: 15px;
+    line-height: 1.65;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* User Message - Theme-aware gradient */
+.message.user .msg-bubble {
+    background: linear-gradient(135deg, var(--msg-user) 0%, var(--primary-hover) 100%);
+    color: #ffffff;
+    max-width: 75%;
+    box-shadow: 0 2px 12px color-mix(in srgb, var(--msg-user) 25%, transparent);
+    margin-left: auto;
+}
+
+/* Bot Message - Card Style */
+.message.bot .msg-bubble {
+    background: var(--bg-surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    max-width: 85%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    margin-right: auto;
+    font-family: var(--font-main);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Paragraphs */
+.message.bot .msg-bubble p {
+    margin: 0 0 14px 0;
+    line-height: 1.7;
+    font-size: 15px;
+    color: var(--text);
+}
+
+.message.bot .msg-bubble p:last-child {
+    margin-bottom: 0;
+}
+
+/* Headings - Clear Hierarchy */
+.message.bot .msg-bubble h1,
+.message.bot .msg-bubble h2,
+.message.bot .msg-bubble h3,
+.message.bot .msg-bubble h4,
+.message.bot .msg-bubble h5,
+.message.bot .msg-bubble h6 {
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--text);
+    margin-top: 24px;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+}
+
+.message.bot .msg-bubble>h1:first-child,
+.message.bot .msg-bubble>h2:first-child,
+.message.bot .msg-bubble>h3:first-child,
+.message.bot .msg-bubble>h4:first-child {
+    margin-top: 0;
+}
+
+.message.bot .msg-bubble h1 {
+    font-size: 1.5em;
+}
+
+.message.bot .msg-bubble h2 {
+    font-size: 1.3em;
+}
+
+.message.bot .msg-bubble h3 {
+    font-size: 1.15em;
+}
+
+.message.bot .msg-bubble h4 {
+    font-size: 1em;
+    font-weight: 600;
+}
+
+.message.bot .msg-bubble h5 {
+    font-size: 0.95em;
+    font-weight: 600;
+}
+
+.message.bot .msg-bubble h6 {
+    font-size: 0.9em;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+/* Lists - Proper Indentation */
+.message.bot .msg-bubble ul,
+.message.bot .msg-bubble ol {
+    margin: 14px 0;
+    padding-left: 1.75em;
+}
+
+.message.bot .msg-bubble li {
+    margin: 8px 0;
+    line-height: 1.65;
+    padding-left: 0.25em;
+}
+
+.message.bot .msg-bubble li::marker {
+    color: var(--primary);
+    font-weight: 500;
+}
+
+.message.bot .msg-bubble ul ul,
+.message.bot .msg-bubble ol ol,
+.message.bot .msg-bubble ul ol,
+.message.bot .msg-bubble ol ul {
+    margin: 6px 0;
+}
+
+/* Strong, Em, Links */
+.message.bot .msg-bubble strong {
+    font-weight: 600;
+    color: var(--text);
+}
+
+.message.bot .msg-bubble em {
+    font-style: italic;
+}
+
+.message.bot .msg-bubble a {
+    color: var(--primary);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.15s ease;
+}
+
+.message.bot .msg-bubble a:hover {
+    border-bottom-color: var(--primary);
+}
+
+/* Tables - GitHub Style */
+.msg-bubble table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+}
+
+.msg-bubble thead {
+    background: rgba(99, 102, 241, 0.08);
+}
+
+.msg-bubble th {
+    padding: 12px 14px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: var(--primary);
+    border-bottom: 2px solid var(--border);
+}
+
+.msg-bubble td {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+}
+
+.msg-bubble tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.msg-bubble tbody tr:nth-child(even) {
+    background: rgba(99, 102, 241, 0.03);
+}
+
+.msg-bubble tbody tr:hover {
+    background: rgba(99, 102, 241, 0.06);
+}
+
+/* Blockquotes */
+.msg-bubble blockquote {
+    margin: 16px 0;
+    padding: 14px 18px;
+    border-left: 4px solid var(--primary);
+    background: rgba(99, 102, 241, 0.06);
+    border-radius: 0 8px 8px 0;
+    font-style: italic;
+    color: var(--text-muted);
+}
+
+.msg-bubble blockquote p {
+    margin: 0 !important;
+}
+
+.msg-bubble blockquote code {
+    font-style: normal;
+}
+
+/* GitHub-style Alerts */
+.markdown-alert {
+    padding: 12px 16px;
+    margin: 16px 0;
+    border-left: 4px solid;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.03);
+    font-size: 0.95rem;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.markdown-alert-title {
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+}
+
+.alert-note {
+    border-color: #0969da;
+    background: rgba(9, 105, 218, 0.08);
+}
+
+.alert-note .markdown-alert-title {
+    color: #0969da;
+}
+
+.alert-tip {
+    border-color: #1a7f37;
+    background: rgba(26, 127, 55, 0.08);
+}
+
+.alert-tip .markdown-alert-title {
+    color: #1a7f37;
+}
+
+.alert-important {
+    border-color: #8250df;
+    background: rgba(130, 80, 223, 0.08);
+}
+
+.alert-important .markdown-alert-title {
+    color: #8250df;
+}
+
+.alert-warning {
+    border-color: #9a6700;
+    background: rgba(154, 103, 0, 0.08);
+}
+
+.alert-warning .markdown-alert-title {
+    color: #9a6700;
+}
+
+.alert-caution {
+    border-color: #d1242f;
+    background: rgba(209, 36, 47, 0.08);
+}
+
+.alert-caution .markdown-alert-title {
+    color: #d1242f;
+}
+
+/* Horizontal Rule */
+.msg-bubble hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 20px 0;
+    opacity: 0.5;
+}
+
+/* Message Time & Tags */
+.msg-time {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 8px;
+    opacity: 0.7;
+    text-align: right;
+    padding-top: 4px;
+}
+
+.msg-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 14px;
+    font-size: 11.5px;
+    font-weight: 700;
+    background: var(--tag-bg, rgba(99, 102, 241, 0.12));
+    color: var(--tag-color, var(--primary));
+    margin-bottom: 10px;
+    border: 1px solid var(--tag-color, var(--primary));
+    opacity: 0.95;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+    position: relative;
+    cursor: help;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.msg-tag:hover {
+    opacity: 1;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.msg-tag .tag-icon {
+    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+}
+
+.msg-tag .tag-label {
+    font-size: 11px;
+    letter-spacing: 0.5px;
+}
+
+/* Tooltip for model badges */
+.msg-tag::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) scale(0.9);
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.2s ease;
+    z-index: 1000;
+    letter-spacing: 0;
+    text-transform: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.msg-tag::before {
+    content: '';
+    position: absolute;
+    bottom: calc(100% + 2px);
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: rgba(0, 0, 0, 0.9);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.2s ease;
+    z-index: 1000;
+}
+
+.msg-tag:hover::after,
+.msg-tag:hover::before {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+}
+
+/* Disable default browser tooltip when custom tooltip is shown */
+.msg-tag[data-tooltip] {
+    cursor: help;
+}
+
+.msg-tag[data-tooltip]:hover {
+    pointer-events: auto;
+}
+
+/* Lists additional */
+.msg-bubble ul,
+.msg-bubble ol {
+    margin: 12px 0;
+    padding-left: 24px;
+}
+
+.msg-bubble li {
+    margin-bottom: 6px;
+}
+
+.msg-bubble li::marker {
+    color: var(--primary);
+}
+
+.msg-bubble strong {
+    color: var(--primary-hover);
+    font-weight: 700;
+}
+
+/* Generated Image in Chat */
+.image-message {
+    max-width: 300px;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.image-message:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.image-message img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 12px;
+}
+
+.image-error {
+    padding: 20px;
+    text-align: center;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px dashed rgba(239, 68, 68, 0.3);
+    border-radius: 12px;
+    color: var(--text-muted);
+}

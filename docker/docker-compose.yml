@@ -1,0 +1,85 @@
+# =============================================================================
+# Mami AI - Docker Compose
+# =============================================================================
+# Geliştirme ve production ortamları için container yapılandırması.
+#
+# Geliştirme:
+#   docker-compose up
+#
+# Production:
+#   docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+# =============================================================================
+
+version: "3.8"
+
+services:
+  # ---------------------------------------------------------------------------
+  # Ana Uygulama
+  # ---------------------------------------------------------------------------
+  mami-ai:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mami-ai
+    restart: unless-stopped
+    
+    ports:
+      - "8000:8000"
+    
+    env_file:
+      - .env
+    
+    environment:
+      - PYTHONPATH=/app
+    
+    volumes:
+      # Kalıcı veri dizinleri
+      - ./data:/app/data
+      - ./logs:/app/logs
+      
+      # Geliştirme için kaynak kod (opsiyonel, yorum satırından çıkarın)
+      # - .:/app
+    
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    
+    networks:
+      - mami-network
+
+  # ---------------------------------------------------------------------------
+  # Ollama (Yerel LLM - Opsiyonel)
+  # ---------------------------------------------------------------------------
+  # ollama:
+  #   image: ollama/ollama:latest
+  #   container_name: mami-ollama
+  #   restart: unless-stopped
+  #   
+  #   ports:
+  #     - "11434:11434"
+  #   
+  #   volumes:
+  #     - ollama-data:/root/.ollama
+  #   
+  #   # GPU desteği (NVIDIA)
+  #   # deploy:
+  #   #   resources:
+  #   #     reservations:
+  #   #       devices:
+  #   #         - driver: nvidia
+  #   #           count: 1
+  #   #           capabilities: [gpu]
+  #   
+  #   networks:
+  #     - mami-network
+
+networks:
+  mami-network:
+    driver: bridge
+
+volumes:
+  ollama-data:
+

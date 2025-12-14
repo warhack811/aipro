@@ -1,0 +1,100 @@
+# =============================================================================
+# Mami AI - Python Proje Yapılandırması
+# =============================================================================
+# Ruff, Black, isort, pytest ve mypy ayarları.
+# =============================================================================
+
+[project]
+name = "mami-ai"
+version = "4.2.0"
+description = "Mami AI - Gelişmiş AI Asistan"
+requires-python = ">=3.10"
+
+[tool.ruff]
+# Genel ayarlar
+line-length = 120
+target-version = "py311"
+exclude = [
+    ".git",
+    "__pycache__",
+    "venv",
+    ".venv",
+    "data",
+    "alembic/versions",
+]
+
+[tool.ruff.lint]
+# Aktif kurallar
+select = [
+    "E",      # pycodestyle errors
+    "W",      # pycodestyle warnings
+    "F",      # Pyflakes
+    "I",      # isort
+    "B",      # flake8-bugbear
+    "C4",     # flake8-comprehensions
+    "UP",     # pyupgrade
+]
+ignore = [
+    "E501",   # Satır uzunluğu (Black halleder)
+    "B008",   # Dependency injection için
+    "B904",   # raise ... from None
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["app", "core", "api", "auth", "router", "services"]
+
+[tool.black]
+line-length = 120
+target-version = ["py311"]
+exclude = '''
+/(
+    \.git
+  | __pycache__
+  | venv
+  | \.venv
+  | data
+  | alembic/versions
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 120
+known_first_party = ["app", "core", "api", "auth", "router", "services"]
+skip = ["venv", ".venv", "data"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+addopts = "-v --tb=short"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_ignores = true
+ignore_missing_imports = true
+exclude = [
+    "venv",
+    "data",
+    "alembic",
+]
+
+[tool.coverage.run]
+source = ["app"]
+omit = [
+    "tests/*",
+    "alembic/*",
+    "*/migrations/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise NotImplementedError",
+    "if TYPE_CHECKING:",
+]
+

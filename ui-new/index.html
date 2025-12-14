@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
+    
+    <!-- Basic SEO -->
+    <title>Mami AI - Akıllı AI Asistan</title>
+    <meta name="description" content="RAG, Vektör Bellek ve Görsel Üretim özellikleriyle donatılmış akıllı AI asistanınız" />
+    <meta name="keywords" content="AI, yapay zeka, asistan, RAG, görsel üretim, chatbot" />
+    <meta name="author" content="Mami AI" />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/pwa/icon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/pwa/icon-16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/pwa/apple-touch-icon.png" />
+    
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#7c3aed" />
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Mami AI" />
+    
+    <!-- Open Graph / Social -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Mami AI - Akıllı AI Asistan" />
+    <meta property="og:description" content="RAG, Vektör Bellek ve Görsel Üretim özellikleriyle donatılmış akıllı AI asistanınız" />
+    <meta property="og:image" content="/pwa/og-image.png" />
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Mami AI - Akıllı AI Asistan" />
+    <meta name="twitter:description" content="RAG, Vektör Bellek ve Görsel Üretim özellikleriyle donatılmış akıllı AI asistanınız" />
+    
+    <!-- Fonts (preload) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    
+    <!-- Splash screens for iOS -->
+    <link rel="apple-touch-startup-image" href="/pwa/splash-640x1136.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" />
+    <link rel="apple-touch-startup-image" href="/pwa/splash-750x1334.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" />
+    <link rel="apple-touch-startup-image" href="/pwa/splash-1242x2208.png" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3)" />
+    
+    <!-- Service Worker Registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then(reg => console.log('[PWA] Service Worker registered:', reg.scope))
+            .catch(err => console.error('[PWA] SW registration failed:', err));
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

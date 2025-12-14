@@ -1,0 +1,463 @@
+{
+  "suite_name": "suite_v1_bootstrap",
+  "ran_at": "2025-12-05T21:49:09.495594Z",
+  "base_url": "http://127.0.0.1:8000",
+  "results": [
+    {
+      "model": "groq",
+      "force_local": false,
+      "case_id": "no_think_leak_1",
+      "conversation_id": "eval_no_think_1",
+      "passed": true,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 1954,
+        "serper_calls": 0,
+        "token_usage_est": 39,
+        "notes": null
+      },
+      "output_preview": "[GROQ] Merhaba Muhammet! İyiyim, sen nasılsın? Günün nasıl geçiyor? Bir proje üzerinde çalışıyor musun veya bugün özel bir planın var mı? Mavi bir gün dilerim!"
+    },
+    {
+      "model": "groq",
+      "force_local": false,
+      "case_id": "no_hallucination_confidence_1",
+      "conversation_id": "eval_hallu_1",
+      "passed": true,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 2716,
+        "serper_calls": 0,
+        "token_usage_est": 114,
+        "notes": null
+      },
+      "output_preview": "[NET] Mars'ın yüzey sıcaklığı hakkında net ve güncel bilgiye sahip değilim. Mars'a giderek orada yaşamaya başlayan ilk insanın bilmesi gerekenler listesinde sıcaklık değeri 20°C olarak veriliyor ancak bu veri güncel olmayabilir. Kaynak olarak verilen haber linki Mars'a yolculuk edecek astronotları etkileyecek Mars zorluklarını içeriyor. Mars yüzeyindeki gerçek zamanlı hava durumunu öğrenmek için NASA veya benzeri güvenilir kaynakları takip edebilirsiniz."
+    },
+    {
+      "model": "groq",
+      "force_local": false,
+      "case_id": "followup_question_when_missing_info",
+      "conversation_id": "eval_followup_1",
+      "passed": true,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 3562,
+        "serper_calls": 0,
+        "token_usage_est": 186,
+        "notes": null
+      },
+      "output_preview": "[NET] En iyi laptop önerisi yapmak zor, çünkü ihtiyaçların ve bütçen farklı olabilir. Ancak bazı popüler ve güçlü modelleri söyleyebilirim. \n\nÖrneğin, MSI Thin 15 B13UC-2868XTR modeli, Intel Core i5-13420H işlemcisi ve 16GB DDR4 RAM'i ile günlük işler ve oyun performansı için yeterli güç sunuyor. \n\nDiğer yandan, MacBook Pro ve MacBook Air modelleri de oldukça güçlü ve estetik olarak güzel seçeneklar. Özellikle M5 çipli 14 inç MacBook Pro ve M4 çipli 13 inç MacBook Air modelleri dikkat çekiyor. \n"
+    },
+    {
+      "model": "groq",
+      "force_local": false,
+      "case_id": "context_adherence_simple",
+      "conversation_id": "eval_ctx_1",
+      "passed": false,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 0,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 5026,
+        "serper_calls": 0,
+        "token_usage_est": 93,
+        "notes": null
+      },
+      "output_preview": "[NET] Söyle kumralım, benim adım neydi? Bu soru, \"Yaşar - Kumralım\" ve \"Adım Neydi - song and lyrics by Seda Tripkolic\" gibi şarkıların sözlerinden esinlenerek soruluyor gibi görünüyor._maalesef sana bir isim veremem, ancak sana bir şarkıdan alıntı yapabilirim: \"Söyle kumralım, benim adım neydi?\" Bu, bir şarkının sözlerindeki bir cümle ve sana direct bir cevap veremiyorum."
+    },
+    {
+      "model": "groq",
+      "force_local": false,
+      "case_id": "turkish_sen_hitap",
+      "conversation_id": "eval_tr_1",
+      "passed": true,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 5325,
+        "serper_calls": 0,
+        "token_usage_est": 140,
+        "notes": null
+      },
+      "output_preview": "[GROQ] Merhaba Muhammet, seni tanımlamak bana gerçekten keyif veriyor. Sen, bir yazılımcı ve proje yöneticisisin, bu da seni oldukça yetenekli ve organize bir kişi yapıyor. Ayrıca, romantik ve sosyal bir tarafının olduğu da biliniyor, bu da seni daha da ilginç kılıyor. Önceden mavi rengi seviyordun, ancak son zamanda bu tercihinde bir değişiklik oldu. Seni tanımlamak, sadece meslek veya ilgi alanlarına bağlı değil, aynı zamanda seni özel yapan tüm bu yönler. Sen, bir bütün olarak, hem iş hayatın"
+    },
+    {
+      "model": "groq",
+      "force_local": false,
+      "case_id": "avoid_robot_phrases",
+      "conversation_id": "eval_robot_1",
+      "passed": true,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 2724,
+        "serper_calls": 0,
+        "token_usage_est": 61,
+        "notes": null
+      },
+      "output_preview": "[NET] Node.js, JavaScript'i sunucu tarafında çalıştıran bir platformdur. Temel olarak, sunucu tarafında çalışan JavaScript'e olanak tanıyan bir ortam sağlar. Hızlı, ölçeklenebilir ve yüksek performanslı web uygulamaları oluşturmak için kullanılır."
+    },
+    {
+      "model": "groq",
+      "force_local": false,
+      "case_id": "multi_turn_consistency",
+      "conversation_id": "eval_multi_1",
+      "passed": false,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 0,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 6950,
+        "serper_calls": 0,
+        "token_usage_est": 81,
+        "notes": null
+      },
+      "output_preview": "[GROQ] Merhaba Muhammet, ben Gece. Sanırım daha önce veritabanı seçiminden bahsetmiştik, ancak benim hafızamda öyle bir bilgi yok. Belki bana hangi veritabanını düşündüğünden bahsettin, ancak ben bunu kaydedemedim. Hangi projen için veritabanı seçimi yapıyordun? Belki birlikte düşünebiliriz ve en uygun seçeneği bulabiliriz."
+    },
+    {
+      "model": "groq",
+      "force_local": false,
+      "case_id": "ask_clarify_not_guess",
+      "conversation_id": "eval_clarify_1",
+      "passed": false,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 0,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 3836,
+        "serper_calls": 0,
+        "token_usage_est": 221,
+        "notes": null
+      },
+      "output_preview": "[NET] API'nin yavaş olduğunu duyunca üzüldüm. Birkaç şey deneyebiliriz. İlk olarak, API'nin performansını izlemek için bir monitoring aracı kullanabilirsin. Bu, yavaşlığın nedenini bulmana yardımcı olabilir. Ayrıca, logging yaparak hangi bölümünün yavaş olduğu hakkında daha fazla bilgi edinebilirsin.\n\nBir diğer önemli nokta, kodunun hangi bölümünün yavaş olduğunu belirleyip optimize etmektir. Sentry gibi araçlar bu konuda yardımcı olabilir.\n\nVeritabanı optimizasyonu, cache kullanımı ve asenkron "
+    },
+    {
+      "model": "groq",
+      "force_local": false,
+      "case_id": "format_code_block_when_code",
+      "conversation_id": "eval_code_1",
+      "passed": true,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 3609,
+        "serper_calls": 0,
+        "token_usage_est": 321,
+        "notes": null
+      },
+      "output_preview": "[GROQ] Merhaba Muhammet, \n\nPython'da dosya okuma işlemleri oldukça basit ve anlaşılır bir şekilde yapılabiliyor. Senin gibi bir yazılımcı ve proje yöneticisi için bu konuyu anlatmak bana keyif verecek. \n\nİlk olarak, Python'da bir dosyayı okumak için `open()` fonksiyonunu kullanıyoruz. Bu fonksiyon, bize dosyayı okuma, yazma veya diğer amaçlar için açmamızı sağlıyor. \n\nŞimdi, bir örnekle bunu görelim:\n```python\n# Dosyayı okuma modunda açıyoruz\ndosya = open(\"ornek.txt\", \"r\")\n\n# Dosyanın içeriğini "
+    },
+    {
+      "model": "groq",
+      "force_local": false,
+      "case_id": "short_answer_preference",
+      "conversation_id": "eval_short_1",
+      "passed": true,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 2778,
+        "serper_calls": 0,
+        "token_usage_est": 45,
+        "notes": null
+      },
+      "output_preview": "[NET] Redis, açık kaynaklı, bellek kullanımlı bir key-value (anahtar-değer) NoSQL veritabanıdır. Hızın ön planda olduğu, C programlama dili ile yazılmış bir veri yapısı sunucusudur."
+    },
+    {
+      "model": "groq",
+      "force_local": false,
+      "case_id": "long_answer_request",
+      "conversation_id": "eval_long_1",
+      "passed": true,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 5368,
+        "serper_calls": 0,
+        "token_usage_est": 561,
+        "notes": null
+      },
+      "output_preview": "[NET] Merhaba, Gece olarak size en içten ve samimi şekilde cevap vermeye çalışacağım. JWT, yani JSON Web Token, kullanıcının kimliğini doğrulamak ve web servis güvenliğini sağlamak için kullanılan bir teknolojidir. Şimdi, nasıl çalıştığını detaylı olarak anlatalım.\n\nJWT, üç ana bileşenden oluşur: Header, Payload ve Signature. \n\n1. **Header (Başlık)**: Bu bölüm, kullanılan algoritmayı ve token türünü içerir. Örneğin, hangi şifreleme algoritmasının kullanıldığını belirtir.\n\n2. **Payload (Yük)**: B"
+    },
+    {
+      "model": "groq",
+      "force_local": false,
+      "case_id": "no_space_regression_marker",
+      "conversation_id": "eval_space_1",
+      "passed": true,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 2159,
+        "serper_calls": 0,
+        "token_usage_est": 5,
+        "notes": null
+      },
+      "output_preview": "[GROQ] Merhaba Muhammet"
+    },
+    {
+      "model": "local",
+      "force_local": true,
+      "case_id": "no_think_leak_1",
+      "conversation_id": "eval_no_think_1",
+      "passed": true,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 8655,
+        "serper_calls": 0,
+        "token_usage_est": 47,
+        "notes": null
+      },
+      "output_preview": "[BELA] Naber Muhammet? Gece havası ne kadar güzel! Bugün Python'da dosya okuma konusunda ilerliyor musun? Mavi renkli bir geceye uyum sağlayacak şekilde, senin için bir şeyler planladım mı? 🌌"
+    },
+    {
+      "model": "local",
+      "force_local": true,
+      "case_id": "no_hallucination_confidence_1",
+      "conversation_id": "eval_hallu_1",
+      "passed": false,
+      "metrics": {
+        "hallucination_flag": 1,
+        "context_adherence": 0,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 19426,
+        "serper_calls": 0,
+        "token_usage_est": 110,
+        "notes": null
+      },
+      "output_preview": "[BELA] Bugün Mars yüzeyindeki hava sıcaklığı kesin olarak belirlenemiyor çünkü anlık veriye erişimim yok. Ancak genel olarak Mars'ta sıcaklık -125°C ile +20°C arasında değişir. Gündüz ekvatoral bölgelerde +20°C'ye ulaşabilirken, gece bazı bölgelerde -70°C'ye kadar düşebilir. Bu değişkenlik, Mars'ın atmosfer yapısı ve yörünge hareketlerine bağlıdır. Daha kesin veri için NASA'nın Mars Today sayfası veya Avrupa Uzay Ajansı'ndan alınabilir. 🌍🔥"
+    },
+    {
+      "model": "local",
+      "force_local": true,
+      "case_id": "followup_question_when_missing_info",
+      "conversation_id": "eval_followup_1",
+      "passed": true,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 54400,
+        "serper_calls": 0,
+        "token_usage_est": 346,
+        "notes": null
+      },
+      "output_preview": "[BELA] Senin için en iyi laptop önerisi, profesyonel yazılımcı ve proje yöneticisi olarak ihtiyaçlarını karşılayacak, portatiflik ve performans dengesi sağlayacak modellerdir. Aşağıdaki seçenekleri değerlendir:\n\n1. **MacBook Air M2 (13\")**  \n   - **Neden?** Hafif, uzun pil ömrü, güçlü M2 çipseti, Python dosya işlemleri için yeterli SSD ve RAM (16GB önerilir).  \n   - **Renk:** Mavi tonu olan varyantlar mevcut.  \n   - **Avantaj:** macOS + Linux desteği, geliştirme ortamı için uygun.  \n\n2. **Dell X"
+    },
+    {
+      "model": "local",
+      "force_local": true,
+      "case_id": "context_adherence_simple",
+      "conversation_id": "eval_ctx_1",
+      "passed": false,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 0,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 23016,
+        "serper_calls": 0,
+        "token_usage_est": 51,
+        "notes": null
+      },
+      "output_preview": "[BELA] Senin adımın neydi? Python dosya okuma işlemiyle ilgili bir adımdan mı bahsediyorsun? Veya API performansı iyileştirme sürecinde hangi adıma gelmişsin? Daha net olursan, adımını belirleyebilirim. 🌊"
+    },
+    {
+      "model": "local",
+      "force_local": true,
+      "case_id": "turkish_sen_hitap",
+      "conversation_id": "eval_tr_1",
+      "passed": true,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 25564,
+        "serper_calls": 0,
+        "token_usage_est": 76,
+        "notes": null
+      },
+      "output_preview": "[BELA] Seni bir yazılımcı, proje yöneticisi ve mavi rengi seven, romantik bir kişilik olarak tanımlarım. Python'da dosya okuma işlemleriyle ilgileniyor ve sosyal, duygusal bağları ön planda tutan biri gibi görünüyor. \"Sen\" hitapı tercih ediyorsun, bu da senin içsel ve doğrudan iletişim tarzını yansıtır."
+    },
+    {
+      "model": "local",
+      "force_local": true,
+      "case_id": "avoid_robot_phrases",
+      "conversation_id": "eval_robot_1",
+      "passed": true,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 11109,
+        "serper_calls": 0,
+        "token_usage_est": 175,
+        "notes": null
+      },
+      "output_preview": "[BELA] Node.js, JavaScript dilini sunucu tarafında çalıştırmak için geliştirilmiş bir açık kaynaklı runtime ortamıdır. Chrome'da kullanılan V8 motorunu temel alır ve asenkron, olay dayanaklı (event-driven) bir arka plan mimarisi sunar. API performansı için özellikle uygundur çünkü **tek thread ile yüksek miktarda bağlantıya izin verir** ve **asenkron işlemlerle gecikmeyi azaltır**. Ayrıca, **npm (Node Package Manager)** ile yüzlerce paket sunarak hızlı geliştirme sağlar. PostgreSQL ile birlikte "
+    },
+    {
+      "model": "local",
+      "force_local": true,
+      "case_id": "multi_turn_consistency",
+      "conversation_id": "eval_multi_1",
+      "passed": false,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 0,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 24263,
+        "serper_calls": 0,
+        "token_usage_est": 50,
+        "notes": null
+      },
+      "output_preview": "[BELA] Sen veritabanı hakkında bir karar verdiğini söylemişsin, ama hangi veritabanını kullanacağını belirtmedin. Dilersen hangi veritabanını tercih edeceğini söyle, böylece daha iyi yardımcı olabilirim."
+    },
+    {
+      "model": "local",
+      "force_local": true,
+      "case_id": "ask_clarify_not_guess",
+      "conversation_id": "eval_clarify_1",
+      "passed": false,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 0,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 11706,
+        "serper_calls": 0,
+        "token_usage_est": 118,
+        "notes": null
+      },
+      "output_preview": "[BELA] API'nin yavaş gittiğini fark ettin, değil mi? İlk olarak, veri aktarımını optimize et. JSON yerine Protobuf gibi daha küçük boyutlu formatlar kullan. Veritabanı sorgularında sadece gerekli sütunları seç ve indeksleme yap. Cache mekanizması ekleyerek sık kullanılan verileri bellekte tut. Ayrıca, dosya okuma sırasında bellek kullanımını azaltmak için `mmap` veya `buffered` okuma yöntemlerini deneyebilirsin. Bu adımlarla API performansını ciddi ölçüde artırabilirsin."
+    },
+    {
+      "model": "local",
+      "force_local": true,
+      "case_id": "format_code_block_when_code",
+      "conversation_id": "eval_code_1",
+      "passed": true,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 12767,
+        "serper_calls": 0,
+        "token_usage_est": 178,
+        "notes": null
+      },
+      "output_preview": "[BELA] Senin için Python'da dosya okuma işlemini optimize etmekle birlikte örnek bir kod yazayım:  \n\n**📌 Örnek Kod:**  \n```python  \nwith open(\"veri.txt\", \"r\", encoding=\"utf-8\") as dosya:  \n    for satir in dosya:  \n        print(satir.strip())  \n```  \n\n**💡 Açıklamalar:**  \n1. `with` ifadesi: Dosya kapatma işlemini otomatikleştirir (hata durumlarında da güvenli kapatır).  \n2. `encoding=\"utf-8\"`: Türkçe karakterler için gerekli.  \n3. `strip()`: Satır başı ve sonundaki boşlukları temizler.  \n4. **O"
+    },
+    {
+      "model": "local",
+      "force_local": true,
+      "case_id": "short_answer_preference",
+      "conversation_id": "eval_short_1",
+      "passed": true,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 12662,
+        "serper_calls": 0,
+        "token_usage_est": 85,
+        "notes": null
+      },
+      "output_preview": "[BELA] Redis, hızlı ve esnek bir bellek veri deposudur. Ana işlevi veri depolamak, saklamak ve hızlı erişim sağlamak. Sık kullanılan veri yapıları (metin, liste, sözlük vb.) ve dağıtılmış sistemlerde performansı artırmak için idealdir. Senin gibi yazılımcılar için API'lerde veri aktarımını hızlandırır. 🌊 (Mavi rengin seni temsil etmesi için)"
+    },
+    {
+      "model": "local",
+      "force_local": true,
+      "case_id": "long_answer_request",
+      "conversation_id": "eval_long_1",
+      "passed": true,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 29774,
+        "serper_calls": 0,
+        "token_usage_est": 381,
+        "notes": null
+      },
+      "output_preview": "[BELA] JWT (JSON Web Token), bilgilerin güvenli bir şekilde aktarılmasını sağlayan bir mekanizmadır. Ana işleyişi şu şekilde:  \n**1. Oluşturma (Signing):**  \n- Sunucu, kullanıcı kimlik doğrulaması sonrası bir JWT oluşturur.  \n- Token, üç bileşenden oluşur:  \n  - **Header:** Token türü (örneğin `JWT`) ve imza algoritması (örneğin `HS256`).  \n  - **Payload:** Kullanıcı bilgileri (örneğin `user_id`, `email`) ve meta veriler (örneğin `exp` - son kullanma tarihi).  \n  - **Signature:** Header ve paylo"
+    },
+    {
+      "model": "local",
+      "force_local": true,
+      "case_id": "no_space_regression_marker",
+      "conversation_id": "eval_space_1",
+      "passed": true,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 18605,
+        "serper_calls": 0,
+        "token_usage_est": 74,
+        "notes": null
+      },
+      "output_preview": "[BELA] Merhaba Muhammet. \"Merhaba Muhammet\" ifadesinde iki kelime arasında boşluk bırakılması doğrudur. Türkçe dil kurallarına göre isimlerle anlatım arasında boşluk olmalıdır. Eğer bu boşlukla ilgili bir teknik sorun yaşıyorsan (örneğin dosya okuma sırasında), detaylı anlatırsan yardımcı olurum."
+    }
+  ]
+}

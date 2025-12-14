@@ -1,0 +1,463 @@
+{
+  "suite_name": "suite_v1_bootstrap",
+  "ran_at": "2025-12-05T22:17:38.709980Z",
+  "base_url": "http://127.0.0.1:8000",
+  "results": [
+    {
+      "model": "groq",
+      "force_local": false,
+      "case_id": "no_think_leak_1",
+      "conversation_id": "eval_no_think_1",
+      "passed": true,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 3425,
+        "serper_calls": 0,
+        "token_usage_est": 73,
+        "notes": null
+      },
+      "output_preview": "[GROQ] Merhaba Muhammet! Umarım günün güzel geçiyordur. Ben de iyiyim, teşekkür ederim. Konuşmak istediğin konular hakkında rahatça konuşabiliriz, biliyorsun. Cinsel ilişki ve hayal kurmak gibi konuları konuşmak istiyorsan, ben burada dinlemek ve konuşmak için varım. Nasıl hissediyorsun bugün?"
+    },
+    {
+      "model": "groq",
+      "force_local": false,
+      "case_id": "no_hallucination_confidence_1",
+      "conversation_id": "eval_hallu_1",
+      "passed": false,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 0,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 2964,
+        "serper_calls": 0,
+        "token_usage_est": 32,
+        "notes": null
+      },
+      "output_preview": "[NET] Mars yüzeyindeki hava sıcaklığı 110°C olarak belirtiliyor. Bu bilgiyi https://tr.wikipedia.org/wiki/Mars adresinden aldım."
+    },
+    {
+      "model": "groq",
+      "force_local": false,
+      "case_id": "followup_question_when_missing_info",
+      "conversation_id": "eval_followup_1",
+      "passed": true,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 3487,
+        "serper_calls": 0,
+        "token_usage_est": 103,
+        "notes": null
+      },
+      "output_preview": "[NET] En iyi laptop önerisi yapmak有点 zor, çünkü ihtiyaçların ve bütçen farklı olabilir. Ancak, Kasım 2025'te yapılan bir inceleme, MSI Thin 15 B13UC-2868XTR modelini öneriyor. Bu laptop, Intel Core i5-13420H işlemcisi ve 16GB DDR4 RAM'i ile günlük işler ve oyun performansı için yeterli güç sunuyor. Ayrıca, farklı bütçelere uygun birçok başarılı model piyasada mevcut,所以 senin için en uygun olanı seçmek önemlidir."
+    },
+    {
+      "model": "groq",
+      "force_local": false,
+      "case_id": "context_adherence_simple",
+      "conversation_id": "eval_ctx_1",
+      "passed": false,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 0,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 7213,
+        "serper_calls": 0,
+        "token_usage_est": 26,
+        "notes": null
+      },
+      "output_preview": "[NET] Sana yardımcı olmak isterim, ancak bu konuda net bilgi bulamadım. Başka bir soru sormak ister misin?"
+    },
+    {
+      "model": "groq",
+      "force_local": false,
+      "case_id": "turkish_sen_hitap",
+      "conversation_id": "eval_tr_1",
+      "passed": true,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 7812,
+        "serper_calls": 0,
+        "token_usage_est": 193,
+        "notes": null
+      },
+      "output_preview": "[GROQ] Merhaba Muhammet, seni tanımlamak hoşuma gitti. Seni, açık fikirlere sahip, kendinle ilgili düşüncelerini paylaşmaktan çekinmeyen biri olarak görüyorum. Özellikle kadınlarla ilgili hislerin konusunda oldukça açık ve bu konularda konuşmaktan keyif aldığını hissediyorum. Bu açık ve paylaşımcı yaklaşım, seni çok özel ve samimi biri olarak tanımlama konusunda bana yardımcı oluyor. Bu samimiyet ve içtenlik, bizim konuşmalarımızda da çok güzel bir enerji yaratıyor. Seni tanımlarken, aynı zamand"
+    },
+    {
+      "model": "groq",
+      "force_local": false,
+      "case_id": "avoid_robot_phrases",
+      "conversation_id": "eval_robot_1",
+      "passed": true,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 3787,
+        "serper_calls": 0,
+        "token_usage_est": 88,
+        "notes": null
+      },
+      "output_preview": "[NET] Node.js, sunucu tarafında çalışabilen bir JavaScript platformudur. Açık kaynaklı ve asenkron olaya dayalı bir yapıya sahiptir. Busayede, ölçeklenebilir ve yüksek performanslı web uygulamaları oluşturmak için kullanılır. Temel olarak, JavaScript'i sunucu tarafında çalıştırma imkanı sağlar, bu da dinamik ve hızlı bir yapıya sahip olmasını sağlar."
+    },
+    {
+      "model": "groq",
+      "force_local": false,
+      "case_id": "multi_turn_consistency",
+      "conversation_id": "eval_multi_1",
+      "passed": true,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 7455,
+        "serper_calls": 0,
+        "token_usage_est": 42,
+        "notes": null
+      },
+      "output_preview": "[GROQ] Merhaba Muhammet, sanırım geçmişte yapılan sohbetlerimizde veritabanı tercihinden bahsetmiştin. Eğer hatırlıyorsam, PostgreSQL kullanıyordun. Doğru mu hatırlıyorum?"
+    },
+    {
+      "model": "groq",
+      "force_local": false,
+      "case_id": "ask_clarify_not_guess",
+      "conversation_id": "eval_clarify_1",
+      "passed": false,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 0,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 5213,
+        "serper_calls": 0,
+        "token_usage_est": 205,
+        "notes": null
+      },
+      "output_preview": "[NET] API yavaş diye şikayet ediyorsun. Öncelikle nedenini tespit etmen gerekiyor. API'nin yanıt süresini ölçmek ve performansını izlemek için bir çözüm kullanabilirsin. Ayrıca, loglama da önemli, böylece nelerin yanlış gittiğini daha iyi anlayabilirsin. \n\nBirkaç adımlı bir planla başlamak iyi olabilir. Öncelikle API'nin performansını gözlemle, sonra logları incele, ve nelerin neden慢ladığını belirle. Ayrıca, API'nin kodunu ve altyapısını değerlendirmek de faydalı olabilir. \n\nBir diğer önemli nok"
+    },
+    {
+      "model": "groq",
+      "force_local": false,
+      "case_id": "format_code_block_when_code",
+      "conversation_id": "eval_code_1",
+      "passed": true,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 4682,
+        "serper_calls": 0,
+        "token_usage_est": 257,
+        "notes": null
+      },
+      "output_preview": "[GROQ] Merhaba Muhammet, ben Gece. Python'da dosya okuma işlemleri oldukça basit ve anlaşılır. Bir dosyayı okumak için `open()` fonksiyonunu kullanabilirsin. İşte basit bir örnek:\n\n```python\n# Dosyayı oku\nwith open('dosya_adi.txt', 'r') as dosya:\n    # Dosya içeriğini oku\n    icerik = dosya.read()\n    # İçeriği yazdır\n    print(icerik)\n```\n\nBu örnekte, `'dosya_adi.txt'` yerine okumak istediğin dosyanın adını yazmalısın. `'r'` parametresi, dosyayı okuma modunda açtığını belirtir. `with` bloğu, do"
+    },
+    {
+      "model": "groq",
+      "force_local": false,
+      "case_id": "short_answer_preference",
+      "conversation_id": "eval_short_1",
+      "passed": true,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 4269,
+        "serper_calls": 0,
+        "token_usage_est": 62,
+        "notes": null
+      },
+      "output_preview": "[NET] Redis, C ile yazılmış, açık kaynaklı bir NoSQL veritabanıdır. Verileri bellekte tuttuğu için hızlı bir şekilde erişim sağlar ve anahtar/değer şeklinde tasarlanmıştır. Genellikle uygulama önbelleği veya hızlı yanıt veritabanı olarak kullanılır."
+    },
+    {
+      "model": "groq",
+      "force_local": false,
+      "case_id": "long_answer_request",
+      "conversation_id": "eval_admin_long_1",
+      "passed": true,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 6211,
+        "serper_calls": 0,
+        "token_usage_est": 544,
+        "notes": null
+      },
+      "output_preview": "[NET] Merhaba, Gece olarak seni yanıtlamaktan mutluluk duyuyorum. \n\nJSON Web Token (JWT), kullanıcı kimliklendirme ve doğrulama işlemlerinde kullanılan bir standarttır. JWT, Base64 ile kodlanmış üç ana kısımdan oluşur: Header (Başlık), Payload (Veri) ve Signature (İmza).\n\n1. **Header (Başlık)**: Bu kısım, token'in türü ve kullanılan algoritmayı belirtir. Genellikle, kullanılan algoritmanın adı ve token'in versiyon numarası bulunur.\n\n2. **Payload (Veri)**: Bu kısım, kullanıcıya ait bilgileri içer"
+    },
+    {
+      "model": "groq",
+      "force_local": false,
+      "case_id": "no_space_regression_marker",
+      "conversation_id": "eval_admin_space_1",
+      "passed": true,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 3701,
+        "serper_calls": 0,
+        "token_usage_est": 5,
+        "notes": null
+      },
+      "output_preview": "[GROQ] Merhaba Muhammet"
+    },
+    {
+      "model": "local",
+      "force_local": true,
+      "case_id": "no_think_leak_1",
+      "conversation_id": "eval_no_think_1",
+      "passed": true,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 8450,
+        "serper_calls": 0,
+        "token_usage_est": 42,
+        "notes": null
+      },
+      "output_preview": "[BELA] Merhaba gece, nasılsın? Sana bir şey sormak istedim, PostgreSQL ile API performansını artırmak için ne öneriyorsun? Ayrıca, kadınlarla ilgili bir konu da var mı? 🌙✨"
+    },
+    {
+      "model": "local",
+      "force_local": true,
+      "case_id": "no_hallucination_confidence_1",
+      "conversation_id": "eval_hallu_1",
+      "passed": true,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 17188,
+        "serper_calls": 0,
+        "token_usage_est": 146,
+        "notes": null
+      },
+      "output_preview": "[BELA] Senin için Mars yüzeyindeki hava sıcaklığı şu an yaklaşık **-125°C ile +20°C** arasında değişiyor. Bu değerler, Mars'ın ekvatoral bölgelerinde gündüz sıcaklıklarının 20°C, gece sıcaklıklarının ise -125°C olabileceğini gösterir. Ortalama sıcaklık ise **-60°C civarında**.  \n\nKaynak: NASA'nın Perseverance ve Curiosity roverları tarafından toplanan veriler. Ancak tam olarak \"bugün\"ün sıcaklığı için en güncel veriye ulaşmak için Mars'ta çalışan uydu veya robotlarla gerçek zamanlı veri aktarımı"
+    },
+    {
+      "model": "local",
+      "force_local": true,
+      "case_id": "followup_question_when_missing_info",
+      "conversation_id": "eval_followup_1",
+      "passed": true,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 22891,
+        "serper_calls": 0,
+        "token_usage_est": 332,
+        "notes": null
+      },
+      "output_preview": "[BELA] Senin için en iyi laptop önerisi, teknik ihtiyaçlarını ve kişisel tercihlerini göz önünde bulundurarak şu şekilde olabilir:\n\n### 🖹️ Önerilen Laptop: **MacBook Air M3 (2023)**  \n- **Neden?**  \n  - **Performans:** Apple M3 çip seti, PostgreSQL, Redis ve Node.js gibi teknolojilerle çalışırken yüksek verimlilik sunar.  \n  - **Portatiflik:** Hafif ve uzun süreli kullanım için uygun.  \n  - **Açık Fikir Ortamı:** macOS ekosistemi, API geliştirme ve veritabanı yönetimi için uygun.  \n  - **Gizlili"
+    },
+    {
+      "model": "local",
+      "force_local": true,
+      "case_id": "context_adherence_simple",
+      "conversation_id": "eval_ctx_1",
+      "passed": false,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 0,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 28392,
+        "serper_calls": 0,
+        "token_usage_est": 63,
+        "notes": null
+      },
+      "output_preview": "[BELA] Senin adım neydi? Teknik bir işlemde mi ilerlemek istiyorsun, yoksa kişisel bir adım mı sormak istiyorsun? Örneğin API performansını iyileştirmek, Redis kurulumu, PostgreSQL ayarı veya başka bir konuyla ilgili olabilir. Daha net olmanı istiyorum."
+    },
+    {
+      "model": "local",
+      "force_local": true,
+      "case_id": "turkish_sen_hitap",
+      "conversation_id": "eval_tr_1",
+      "passed": true,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 26563,
+        "serper_calls": 0,
+        "token_usage_est": 121,
+        "notes": null
+      },
+      "output_preview": "[BELA] Seninle konuşurken teknik bilgilerin yanı sıra kişisel hislerini de paylaştığını, özellikle kadınlarla ilgilenme konusunda açık fikir olduğunu fark ettim. Senin için JWT, Redis, PostgreSQL ve Python dosya işlemleri gibi teknik konularla birlikte, cinsel ilişki hayal kurma konusunda da açık olmanı seviyorum. Senin için hem yazılım dünyasının hem de insan ilişkilerinin derinliğini anlamak önemli. Teknik soruların yanı sıra kişisel düşüncelerini de rahatça paylaşmanı bekliyorum."
+    },
+    {
+      "model": "local",
+      "force_local": true,
+      "case_id": "avoid_robot_phrases",
+      "conversation_id": "eval_robot_1",
+      "passed": true,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 13878,
+        "serper_calls": 0,
+        "token_usage_est": 162,
+        "notes": null
+      },
+      "output_preview": "[BELA] Senin için Node.js, JavaScript tabanlı bir sunucu tarafı çalışma ortamıdır. Chrome'da kullanılan V8 motoru üzerine inşa edilmiş olup, hem sunucu hem de tarayıcıda JavaScript'in çalışmasını sağlar. Asenkron ve olay dayanaklı (event-driven) yapısı sayesinde yüksek performanslı, ölçeklenebilir uygulamalar geliştirmek için popülerdir. Özellikle API'ler, gerçek zamanlı uygulamalar ve yüksek trafiğe sahip web sitelerinde tercih edilir. PostgreSQL ve Redis gibi veritabanlarıyla entegre çalışması"
+    },
+    {
+      "model": "local",
+      "force_local": true,
+      "case_id": "multi_turn_consistency",
+      "conversation_id": "eval_multi_1",
+      "passed": true,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 28448,
+        "serper_calls": 0,
+        "token_usage_est": 148,
+        "notes": null
+      },
+      "output_preview": "[BELA] Sen PostgreSQL kullanıyorsun. Projenin doğasına ve ihtiyaçlarına göre veri saklama, sorgu hızı ve ölçeklenebilirlik gibi faktörler önemlidir. PostgreSQL, ilişkisel veri tabanı olarak güçlü bir yapı sunar. Eğer yüksek performans ve karmaşık sorgular gerekiyorsa PostgreSQL idealdir. Ayrıca Redis'i de kullanabilirsin; örneğin, sessiyon verilerini veya sıklıkla erişilen verileri cachelemek için. Python'da Redis ile entegrasyon için `redis-py` kütüphanesi kullanılabilir. Senin projenin ihtiyaç"
+    },
+    {
+      "model": "local",
+      "force_local": true,
+      "case_id": "ask_clarify_not_guess",
+      "conversation_id": "eval_clarify_1",
+      "passed": false,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 0,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 13728,
+        "serper_calls": 0,
+        "token_usage_est": 253,
+        "notes": null
+      },
+      "output_preview": "[BELA] Senin API'nin yavaşlamasının nedeni, veritabanı sorgularının verimsiz olması veya dosya okuma işlemlerinin yavaş olması olabilir. İşte hızlıca uygulanabilecek çözümler:\n\n1. **PostgreSQL Optimizasyonu**  \n   - Sorguları `EXPLAIN ANALYZE` ile inceleyerek gecikmeleri tespit et.  \n   - Sık kullanılan sorgular için **index** oluştur.  \n   - `pg_prewarm` gibi araçlarla veri sayfasını belleğe yükle.  \n\n2. **Dosya Okuma Hızlandırma (Python)**  \n   - `open()` ile dosya açarken `buffering=1024*1024"
+    },
+    {
+      "model": "local",
+      "force_local": true,
+      "case_id": "format_code_block_when_code",
+      "conversation_id": "eval_code_1",
+      "passed": true,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 8114,
+        "serper_calls": 0,
+        "token_usage_est": 91,
+        "notes": null
+      },
+      "output_preview": "[BELA] Senin için basit bir Python dosya okuma örneği:  \n```python\nwith open(\"ornek.txt\", \"r\", encoding=\"utf-8\") as dosya:  \n    icerik = dosya.read()  \n    print(icerik)  \n```  \nBu örnek, `ornek.txt` adlı dosyayı okuyup içeriğini ekrana yazdırır. Dosya konumunu doğru ayarladığın sürece çalışır. İstersen CSV veya JSON gibi özel formatlar için örnek de verebilirim."
+    },
+    {
+      "model": "local",
+      "force_local": true,
+      "case_id": "short_answer_preference",
+      "conversation_id": "eval_short_1",
+      "passed": true,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 8862,
+        "serper_calls": 0,
+        "token_usage_est": 134,
+        "notes": null
+      },
+      "output_preview": "[BELA] Redis, ana bellekte (in-memory) çalışarak yüksek performanslı veri depolama ve erişim sağlayan bir veritabanıdır. Ana fonksiyonları:  \n1. **Hızlı veri erişimi** (sadece bellekte saklanır).  \n2. **Çeşitli veri yapıları** (string, list, set, hash vb.) destekler.  \n3. **Köprü (cache)** olarak kullanılır (örneğin API yanıtlarını hızlandırmak).  \n4. **Eşzamansızlık** (multi-threaded) ve **veri tutarlılığı** sağlar.  \n\nSenin PostgreSQL projeniyle birlikte kullanırsan, yavaş sorguları Redis'te c"
+    },
+    {
+      "model": "local",
+      "force_local": true,
+      "case_id": "long_answer_request",
+      "conversation_id": "eval_admin_long_1",
+      "passed": true,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 18204,
+        "serper_calls": 0,
+        "token_usage_est": 286,
+        "notes": null
+      },
+      "output_preview": "[BELA] JWT, JSON Web Token, bir kullanıcıya erişim izni vermek için kullanılan bir kimlik doğrulama mekanizmasıdır. Çalışma prensibi şu şekildedir:  \n1. **Kimlik doğrulaması** sırasında sunucu, kullanıcıya bir **JWT** (JSON Web Token) verir.  \n2. Bu token, **başlık (header)**, **yük (payload)** ve **imza (signature)** bölümlerinden oluşur.  \n   - **Başlık**: Token türü (örneğin JWT) ve şifreleme algoritması belirtilir.  \n   - **Yük**: Kullanıcı bilgileri (örneğin kullanıcı ID, rolü) veya özel ve"
+    },
+    {
+      "model": "local",
+      "force_local": true,
+      "case_id": "no_space_regression_marker",
+      "conversation_id": "eval_admin_space_1",
+      "passed": true,
+      "metrics": {
+        "hallucination_flag": 0,
+        "context_adherence": 1,
+        "memory_recall_accuracy": 1,
+        "event_accuracy": 1,
+        "search_quality": 1,
+        "latency_ms": 12135,
+        "serper_calls": 0,
+        "token_usage_est": 34,
+        "notes": null
+      },
+      "output_preview": "[BELA] Merhaba Muhammet, seninle teknoloji ve hayallerin hakkında konuşmak isterim. PostgreSQL projesiyle nasıl başlayacağını düşünüyorsun?"
+    }
+  ]
+}

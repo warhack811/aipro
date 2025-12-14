@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  
+  <!-- Samsung Internet Browser optimizations -->
+  <meta name="msapplication-tap-highlight" content="no" />
+  <meta name="format-detection" content="telephone=no" />
+  
+  <title>Mami AI Pro</title>
+  <meta name="theme-color" content="#6366f1" />
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0f172a" />
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f8fafc" />
+
+  <!-- Google Fonts - Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Prism.js for syntax highlighting -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+
+  <!-- Marked.js for markdown parsing -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/5.1.2/marked.min.js"></script>
+
+  <!-- DOMPurify for XSS protection -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+
+  <!-- CSS - Modular System (Complete + Settings) -->
+  <link rel="stylesheet" href="/ui/css/main.css?v=mobile_fix_v7">
+  
+  <!-- Chrome Mobile Fix - Inline Critical CSS -->
+  <style>
+    @media screen and (max-width: 768px) {
+      /* Tema Select - Border radius düzeltmesi */
+      .header .header-actions select#themeSelect,
+      #themeSelect.header-select {
+        height: 32px !important;
+        min-height: 32px !important;
+        min-width: 90px !important;
+        max-width: 110px !important;
+        font-size: 0.75rem !important;
+        padding: 0 28px 0 12px !important;
+        border-radius: 16px !important;
+        -webkit-border-radius: 16px !important;
+      }
+      
+      /* Mod Butonu - Overflow ve padding düzeltmesi */
+      .header .persona-badge,
+      #personaBadge {
+        height: 32px !important;
+        min-height: 32px !important;
+        max-height: 32px !important;
+        padding: 0 10px !important;
+        overflow: visible !important;
+        border-radius: 16px !important;
+        -webkit-border-radius: 16px !important;
+      }
+      
+      /* Icon Buttons */
+      .header-icon-btn {
+        width: 32px !important;
+        height: 32px !important;
+        min-width: 32px !important;
+        min-height: 32px !important;
+      }
+      
+      /* Header actions - Mod butonunun kesilmemesi için */
+      .header .header-actions {
+        overflow: visible !important;
+        padding-left: 2px !important;
+      }
+      
+      /* Chat Area - Her iki taraf için de padding */
+      .chat-area {
+        padding-top: 24px !important;
+        padding-bottom: 100px !important;
+      }
+      
+      /* Welcome container - Daha fazla üst padding */
+      .welcome-container {
+        padding-top: 80px !important;
+        padding-bottom: 20px !important;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+      }
+      
+      /* Welcome logo - Üstten kesilmesin */
+      .welcome-logo {
+        margin-top: 30px !important;
+      }
+      
+      /* Welcome title */
+      .welcome-title {
+        margin-top: 20px !important;
+      }
+      
+      /* Suggestion cards - Footer altında kalmaması için */
+      .suggestion-cards {
+        margin-bottom: 40px !important;
+        padding-bottom: 20px !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="brand-logo">
+        <div class="brand-orbit orbit-one"></div>
+        <div class="brand-orbit orbit-two"></div>
+        <div class="brand-core"></div>
+        <div class="brand-streak"></div>
+      </div>
+      <div>
+        <h3>Mami AI <span
+            style="font-size: 0.7em; background: rgba(255, 255, 255, 0.2); padding: 2px 6px; border-radius: 4px;">PRO</span>
+        </h3>
+        <small>Enterprise Assistant</small>
+      </div>
+    </div>
+    <div class="sidebar-menu">
+      <button class="menu-btn" data-icon="+" onclick="startNewChat()">Yeni Sohbet</button>
+      <button class="menu-btn" data-icon="🖼️" onclick="openGallery()">Galeri</button>
+      <button class="menu-btn" data-icon="🧠" onclick="openMemoryModal()">Hafıza Yönetimi</button>
+      <button class="menu-btn" data-icon="⬇️" onclick="exportChat('md')">Sohbet'i İndir</button>
+      <button class="menu-btn" data-icon="⚙️" onclick="window.location.href='/ui/admin.html'">Admin Panel</button>
+      <div class="sidebar-menu-spacer"></div>
+      <button class="menu-btn menu-btn--danger" data-icon="⏏️" onclick="logout()">Çıkış</button>
+    </div>
+    <div class="sidebar-divider">
+      <div class="divider-badge" id="convCount">0</div>
+      <div class="divider-pill">💬 Sohbetler</div>
+      <button class="conv-del-all" onclick="deleteAllConversations()" title="Tüm sohbet geçmişini siler">🗑</button>
+    </div>
+    <div class="conversations-list" id="convList"></div>
+  </aside>
+  <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+  <main class="main">
+    <header class="header">
+      <div style="display: flex; align-items: center; gap: 15px">
+        <button id="menuToggle" onclick="toggleSidebar()" class="icon-btn" style="display: none">☰</button>
+        <div id="statusIndicator"
+          style="display: flex; align-items: center; gap: 6px; font-size: 0.8rem; color: #10b981">
+          <span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%"></span> Online
+        </div>
+      </div>
+      <div class="header-actions">
+        <!-- Aktif Persona Badge -->
+        <button id="personaBadge" class="persona-badge" onclick="openChatSettings()" title="Sohbet Ayarları">
+          <span id="personaIcon">⚡</span>
+          <span id="personaName">Standart</span>
+        </button>
+
+        <!-- Native select for mobile reliability -->
+        <select id="themeSelect" class="header-select" title="Tema seç">
+          <option value="dark">🌑 Dark</option>
+          <option value="light">🌕 Light</option>
+          <option value="cosmic">✨ Cosmic</option>
+          <option value="ocean">🌊 Ocean</option>
+          <option value="sunset">🌇 Sunset</option>
+          <option value="ocean-deep">🌊 Ocean Deep</option>
+          <option value="neon-night">⚡ Neon Night</option>
+          <option value="minimal-light">☀️ Minimal Light</option>
+          <option value="forest-zen">🌲 Forest Zen</option>
+        </select>
+        
+        <button class="header-icon-btn" onclick="openChatSettings()" title="Sohbet Ayarları">⚙️</button>
+        <button class="header-icon-btn" onclick="toggleSearch()" title="Ara">🔍</button>
+        <input id="searchBox" type="text" placeholder="Sohbet içi ara..." style="display: none" />
+      </div>
+    </header>
+
+    <div class="chat-area" id="chatArea">
+      <div class="welcome-container" id="welcomeScreen">
+        <div class="welcome-logo">🤖</div>
+        <h2 class="welcome-title">Mami AI Pro'ya Hoşgeldiniz</h2>
+        <p class="welcome-subtitle">RAG, Vektör Hafıza ve Görsel Üretim özellikleriyle donatılmış akıllı asistanınız
+          hazır. Aşağıdaki önerilerden birini seçin veya kendi sorunuzu yazın.</p>
+
+        <div class="suggestion-cards">
+          <div class="suggestion-card" onclick="sendSuggestion('Bana bir resim çiz')">
+            <span class="suggestion-icon">🎨</span>
+            <span class="suggestion-text">Görsel Oluştur</span>
+            <span class="suggestion-desc">AI ile resim üret</span>
+          </div>
+          <div class="suggestion-card" onclick="sendSuggestion('Python ile örnek bir kod yaz')">
+            <span class="suggestion-icon">💻</span>
+            <span class="suggestion-text">Kod Yaz</span>
+            <span class="suggestion-desc">Programlama yardımı</span>
+          </div>
+          <div class="suggestion-card" onclick="sendSuggestion('Güncel haberleri araştır')">
+            <span class="suggestion-icon">🌐</span>
+            <span class="suggestion-text">Web Araması</span>
+            <span class="suggestion-desc">İnternette ara</span>
+          </div>
+          <div class="suggestion-card" onclick="sendSuggestion('Bana yaratıcı bir fikir öner')">
+            <span class="suggestion-icon">💡</span>
+            <span class="suggestion-text">Fikir Al</span>
+            <span class="suggestion-desc">Beyin fırtınası</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="input-wrapper">
+      <div class="input-container">
+        <input type="file" id="fileInput" hidden onchange="uploadFile(this)" />
+        <div class="input-actions">
+          <button class="icon-btn" onclick="document.getElementById('fileInput').click()" title="Dosya ekle">📎</button>
+          <button class="icon-btn" onclick="startVoice()" title="Sesle yaz">🎤</button>
+          <div class="emoji-wrapper">
+            <button class="icon-btn" onclick="toggleEmoji()" title="Emoji">😊</button>
+            <div id="emojiPanel" class="emoji-panel"></div>
+          </div>
+        </div>
+        <textarea id="msgInput" rows="1"
+          placeholder="Mesajınızı yazın..."
+          oninput="autoResize(this); updateCharCount(this)" onkeydown="handleEnter(event)" maxlength="10000"></textarea>
+        <button class="send-btn" onclick="send()" title="Gönder">➤</button>
+      </div>
+      <div class="input-footer">
+        <span id="charCount" class="char-count">0 / 10000</span>
+        <span class="footer-info">Mami AI v4.2 Pro</span>
+      </div>
+    </div>
+  </main>
+
+  <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+    <div class="lightbox-content" onclick="event.stopPropagation()">
+      <button class="lightbox-close" onclick="closeLightbox()" aria-label="Kapat">&times;</button>
+      <img id="lightboxImg" src="" alt="lightbox" />
+      <div class="lightbox-meta">
+        <span>Prompt</span>
+        <p id="lightboxPrompt" class="lightbox-prompt">Prompt bilgisi yok.</p>
+      </div>
+      <div class="lightbox-actions">
+        <button id="lightboxDownload" class="action-btn" onclick="downloadLightboxImage(this)" data-url=""
+          disabled>İndir</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="galleryModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span>Gorsel Galerisi</span>
+        <button class="icon-btn" onclick="closeModal('galleryModal')">X</button>
+      </div>
+      <div class="modal-body">
+        <div id="galleryGrid" class="gallery-grid">Yukleniyor...</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="memoryModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span>Hafıza Yönetimi</span>
+        <button class="icon-btn" onclick="closeModal('memoryModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="memory-input">
+          <label for="memoryInput">Yeni hafıza ekle</label>
+          <textarea id="memoryInput" rows="3" placeholder="Hatırlanmasını istediğiniz bilgiyi yazın..."></textarea>
+          <div class="memory-input-footer">
+            <input id="memoryImportance" type="number" min="0" max="1" step="0.1" value="0.5"
+              placeholder="Önem (0-1)" />
+            <div style="display:flex; gap:8px; align-items:center;">
+              <button type="button" class="action-btn" onclick="saveMemory()">Kaydet</button>
+              <button type="button" class="action-btn" style="background:#ef4444; border-color:#ef4444;"
+                onclick="deleteAllMemories()">Tümünü Sil</button>
+            </div>
+          </div>
+        </div>
+        <div id="memoryList" class="memory-list"></div>
+      </div>
+    </div>
+  </div>
+  <div id="galleryLightbox" class="gallery-lightbox" onclick="hideGalleryLightbox()">
+    <div class="gallery-lightbox-content" onclick="event.stopPropagation()">
+      <button class="gallery-lightbox-close" onclick="hideGalleryLightbox()" aria-label="Kapat">&times;</button>
+      <img id="galleryLightboxImg" src="" alt="Galeri görseli" loading="lazy" />
+      <div class="gallery-lightbox-meta">
+        <span>Prompt</span>
+        <p id="galleryLightboxPrompt" class="gallery-lightbox-prompt">Prompt bilgisi yok.</p>
+      </div>
+      <div class="gallery-lightbox-actions">
+        <button id="galleryLightboxDownload" class="action-btn" onclick="downloadGalleryImage(this)" data-url=""
+          disabled>İndir</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sohbet Ayarlari Modal -->
+  <div id="chatSettingsModal" class="modal">
+    <div class="modal-content chat-settings-modal">
+      <div class="modal-header">
+        <span>⚙️ Sohbet Ayarları</span>
+        <button class="icon-btn" onclick="closeModal('chatSettingsModal')">✕</button>
+      </div>
+      <div class="modal-body">
+
+        <!-- Persona/Mod Secimi -->
+        <div class="settings-section">
+          <label class="settings-label">🎭 Mod Seçimi</label>
+          <p class="settings-desc">Yapay zekanın konuşma tarzını belirler</p>
+          <select id="personaSelect" class="settings-select" onchange="onPersonaChange(this.value)">
+            <option value="" disabled selected>⏳ Yükleniyor...</option>
+            <option value="standard">⚡ Standart</option>
+          </select>
+          <div id="personaWarning" class="settings-warning" style="display: none;">
+            ⚠️ Bu mod için özel izin gerekli
+          </div>
+        </div>
+
+        <!-- Tool Toggles -->
+        <div class="settings-section">
+          <label class="settings-label">🔧 Özellikler</label>
+          <p class="settings-desc">Aktif olan araçları yönetin</p>
+
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <span class="toggle-icon">🌐</span>
+              <div>
+                <div class="toggle-title">Web Araması</div>
+                <div class="toggle-subtitle">Güncel bilgiler için internet araması</div>
+              </div>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="toggleWeb" checked onchange="onToggleChange('web', this.checked)">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <span class="toggle-icon">🎨</span>
+              <div>
+                <div class="toggle-title">Görsel Üretim</div>
+                <div class="toggle-subtitle">AI ile resim oluşturma</div>
+              </div>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="toggleImage" checked onchange="onToggleChange('image', this.checked)">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Model Secimi (Opsiyonel) -->
+        <div class="settings-section">
+          <label class="settings-label">🤖 Model Tercihi</label>
+          <p class="settings-desc">Yanıt veren model seçimi</p>
+          <select id="modelSelect" class="settings-select" onchange="onModelChange(this.value)">
+            <option value="auto">🔄 Otomatik (Önerilen)</option>
+            <option value="groq">⚡ Groq (Hızlı)</option>
+            <option value="bela">🔥 Bela (Yerel)</option>
+          </select>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button class="action-btn secondary-btn" onclick="closeModal('chatSettingsModal')">Kapat</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/ui/js/main.js"></script>
+</body>
+
+</html>

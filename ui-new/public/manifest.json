@@ -1,0 +1,128 @@
+{
+    "name": "Mami AI",
+    "short_name": "MamiAI",
+    "description": "Akıllı AI Asistan - RAG, Vektör Bellek ve Görsel Üretim",
+    "start_url": "/new-ui/",
+    "display": "standalone",
+    "orientation": "portrait",
+    "background_color": "#0a0a0a",
+    "theme_color": "#7c3aed",
+    "scope": "/new-ui/",
+    "id": "mami-ai-pwa",
+    "icons": [
+        {
+            "src": "/pwa/icon-72.png",
+            "sizes": "72x72",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/pwa/icon-96.png",
+            "sizes": "96x96",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/pwa/icon-128.png",
+            "sizes": "128x128",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/pwa/icon-144.png",
+            "sizes": "144x144",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/pwa/icon-152.png",
+            "sizes": "152x152",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/pwa/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/pwa/icon-384.png",
+            "sizes": "384x384",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/pwa/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "/pwa/screenshot-wide.png",
+            "sizes": "1280x720",
+            "type": "image/png",
+            "form_factor": "wide",
+            "label": "Mami AI Desktop"
+        },
+        {
+            "src": "/pwa/screenshot-mobile.png",
+            "sizes": "375x812",
+            "type": "image/png",
+            "form_factor": "narrow",
+            "label": "Mami AI Mobile"
+        }
+    ],
+    "categories": [
+        "productivity",
+        "utilities"
+    ],
+    "prefer_related_applications": false,
+    "related_applications": [],
+    "shortcuts": [
+        {
+            "name": "Yeni Sohbet",
+            "short_name": "Yeni",
+            "description": "Yeni bir sohbet başlat",
+            "url": "/new-ui/?action=new-chat",
+            "icons": [
+                {
+                    "src": "/pwa/shortcut-chat.png",
+                    "sizes": "96x96"
+                }
+            ]
+        },
+        {
+            "name": "Görsel Galerisi",
+            "short_name": "Galeri",
+            "description": "Oluşturulan görselleri görüntüle",
+            "url": "/new-ui/?action=gallery",
+            "icons": [
+                {
+                    "src": "/pwa/shortcut-gallery.png",
+                    "sizes": "96x96"
+                }
+            ]
+        }
+    ],
+    "share_target": {
+        "action": "/new-ui/share",
+        "method": "POST",
+        "enctype": "multipart/form-data",
+        "params": {
+            "title": "title",
+            "text": "text",
+            "url": "url",
+            "files": [
+                {
+                    "name": "images",
+                    "accept": [
+                        "image/*"
+                    ]
+                }
+            ]
+        }
+    }
+}

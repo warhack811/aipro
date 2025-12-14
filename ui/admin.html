@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Yönetim Paneli</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        html,body{height:100%;font-family:'Inter',sans-serif}
+        :root{
+            --bg: #050816;
+            --bg-soft:#0b1020;
+            --bg-softer:#111827;
+            --accent:#6366f1;
+            --accent-soft:rgba(99,102,241,0.15);
+            --accent-soft-2:rgba(129,140,248,0.16);
+            --card:#020617;
+            --border:#1f2937;
+            --text:#e5e7eb;
+            --text-soft:#9ca3af;
+            --danger:#ef4444;
+            --danger-soft:rgba(248,113,113,0.18);
+            --success:#22c55e;
+            --success-soft:rgba(34,197,94,0.15);
+            --warning:#eab308;
+            --warning-soft:rgba(234,179,8,0.15);
+        }
+        body{
+            background:radial-gradient(circle at top,#1d2233 0, #020617 45%, #000 100%);
+            color:var(--text);
+        }
+        .app{display:flex;height:100vh;overflow:hidden;}
+        .sidebar{width:240px;background:radial-gradient(circle at top left,#111827, #020617);border-right:1px solid var(--border);padding:16px 14px;display:flex;flex-direction:column;gap:16px;}
+        .brand{display:flex;align-items:center;gap:10px;padding:6px 8px;}
+        .brand-logo{width:32px;height:32px;border-radius:12px;background:conic-gradient(from 180deg,#6366f1,#ec4899,#22c55e,#6366f1);display:flex;align-items:center;justify-content:center;font-size:16px;}
+        .brand-text-title{font-weight:600;font-size:15px;}
+        .brand-text-sub{font-size:11px;color:var(--text-soft);}
+        .nav{margin-top:10px;display:flex;flex-direction:column;gap:4px;}
+        .nav-btn{border:none;background:transparent;color:var(--text-soft);padding:8px 10px;border-radius:999px;display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;}
+        .nav-btn span.icon{font-size:14px;}
+        .nav-btn.active{background:var(--accent-soft);color:var(--text);}
+        .nav-btn:hover{background:rgba(148,163,184,0.14);}
+        .sidebar-footer{margin-top:auto;font-size:11px;color:var(--text-soft);border-top:1px dashed var(--border);padding-top:10px;}
+        .admin-name{font-size:12px;margin-bottom:4px;}
+        .health-pill{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:999px;border:1px solid rgba(34,197,94,0.32);background:var(--success-soft);font-size:10px;color:var(--success);}
+        .main{flex:1;display:flex;flex-direction:column;padding:14px 18px;gap:12px;overflow:hidden;}
+        .main-header{display:flex;justify-content:space-between;align-items:center;}
+        .main-title{font-size:17px;font-weight:600;}
+        .main-subtitle{font-size:12px;color:var(--text-soft);}
+        .chip-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
+        .chip{border-radius:999px;border:1px solid var(--border);font-size:11px;padding:3px 8px;color:var(--text-soft);}
+        .content{flex:1;display:flex;flex-direction:column;gap:10px;overflow:auto;}
+        .cards-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;}
+        .card{background:radial-gradient(circle at top,var(--bg-soft) 0,var(--card) 45%,#020617 100%);border-radius:16px;border:1px solid var(--border);padding:12px;}
+        .card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+        .card-title{font-size:13px;font-weight:500;}
+        .card-sub{font-size:11px;color:var(--text-soft);}
+        .stat-value{font-size:20px;font-weight:600;}
+        .stat-label{font-size:11px;color:var(--text-soft);}
+        .pill{padding:3px 7px;border-radius:999px;font-size:10px;}
+        .pill-green{background:var(--success-soft);color:var(--success);}
+        .pill-red{background:var(--danger-soft);color:var(--danger);}
+        .pill-yellow{background:var(--warning-soft);color:var(--warning);}
+        .section{background:rgba(15,23,42,0.8);border-radius:16px;border:1px solid var(--border);padding:12px;margin-top:4px;}
+        .section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+        .section-title{font-size:13px;font-weight:500;}
+        .section-sub{font-size:11px;color:var(--text-soft);}
+        .table{width:100%;border-collapse:collapse;font-size:12px;margin-top:4px;}
+        .table th,.table td{border-bottom:1px solid #111827;padding:6px 4px;text-align:left;}
+        .table th{font-weight:500;color:var(--text-soft);}
+        .table tr:hover{background:rgba(15,23,42,0.9);}
+        .badge{border-radius:999px;padding:2px 6px;font-size:10px;}
+        .badge-admin{background:var(--accent-soft-2);color:var(--accent);}
+        .badge-user{background:rgba(148,163,184,0.16);color:var(--text-soft);}
+        .switch{position:relative;display:inline-block;width:34px;height:18px;}
+        .switch input{opacity:0;width:0;height:0;}
+        .slider{position:absolute;cursor:pointer;inset:0;background:#1f2937;border-radius:999px;transition:.2s;}
+        .slider:before{position:absolute;content:"";height:14px;width:14px;left:2px;top:2px;background:white;border-radius:50%;transition:.2s;}
+        input:checked + .slider{background:var(--accent);}
+        input:checked + .slider:before{transform:translateX(16px);}
+        .input, select, textarea{background:rgba(15,23,42,0.9);border-radius:10px;border:1px solid var(--border);padding:6px 8px;color:var(--text);font-size:12px;width:100%;}
+        .input:focus, select:focus, textarea:focus{outline:none;border-color:var(--accent);}
+        .btn{border:none;border-radius:999px;padding:6px 10px;font-size:12px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;}
+        .btn-primary{background:linear-gradient(135deg,#6366f1,#ec4899);color:white;}
+        .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text-soft);}
+        .btn-danger{background:var(--danger-soft);color:var(--danger);}
+        .logs{background:#020617;border-radius:10px;border:1px solid var(--border);padding:8px;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,"Liberation Mono","Courier New",monospace;font-size:11px;max-height:260px;overflow:auto;white-space:pre-wrap;}
+        .pill-feature{border-radius:999px;padding:3px 8px;font-size:11px;border:1px solid var(--border);display:inline-flex;align-items:center;gap:4px;}
+        .feature-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px dashed #111827;font-size:12px;}
+        .feature-row:last-child{border-bottom:none;}
+        .view{display:none;}
+        .view.active{display:block;}
+        @media(max-width:900px){.app{flex-direction:column;}.sidebar{width:100%;flex-direction:row;align-items:center;overflow-x:auto;}.nav{flex-direction:row;flex-wrap:wrap;}.sidebar-footer{display:none;}}
+    </style>
+</head>
+<body>
+<div class="app">
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-logo">M</div>
+            <div>
+                <div class="brand-text-title">Yönetim Paneli</div>
+                <div class="brand-text-sub">Sistem &amp; kullanıcı kontrolü</div>
+            </div>
+        </div>
+        <nav class="nav">
+            <button class="nav-btn active" data-view="overview"><span class="icon">📈</span><span>Genel Durum</span></button>
+            <button class="nav-btn" data-view="users"><span class="icon">👤</span><span>Kullanıcılar</span></button>
+            <button class="nav-btn" data-view="invites"><span class="icon">✉️</span><span>Davet Kodları</span></button>
+            <button class="nav-btn" data-view="features"><span class="icon">⚙️</span><span>Özellikler</span></button>
+            <button class="nav-btn" data-view="identity"><span class="icon">🤖</span><span>AI Kimlik</span></button> <button class="nav-btn" data-view="feedback"><span class="icon">🗳️</span><span>Geri Bildirimler</span></button>
+            <button class="nav-btn" data-view="logs"><span class="icon">📜</span><span>Loglar</span></button>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="admin-name" id="adminName">Admin: -</div>
+            <div class="health-pill" id="healthPill">
+                <span>●</span> <span>Durum bilinmiyor</span>
+            </div>
+        </div>
+    </aside>
+    <main class="main">
+        <header class="main-header">
+            <div>
+                <div class="main-title">Genel Durum</div>
+                <div class="main-subtitle">Sistem sağlığını, kullanıcıları ve davet kodlarını buradan yönet.</div>
+                <div class="chip-row">
+                    <span class="chip" id="envChip">Env: -</span>
+                    <span class="chip" id="gpuChip">GPU: -</span>
+                    <span class="chip" id="queueChip">Kuyruk: -</span>
+                </div>
+            </div>
+            <button class="btn btn-ghost" id="refreshAllBtn" type="button">
+                <span>🔄</span><span>Yenile</span>
+            </button>
+        </header>
+        <section class="content">
+
+            <div class="view active" id="view-overview">
+                <div class="cards-row" style="margin-bottom:8px;">
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">Kullanıcılar</div>
+                                <div class="card-sub">Toplam ve admin sayısı</div>
+                            </div>
+                            <span class="pill pill-green" id="usersPill">-</span>
+                        </div>
+                        <div class="stat-value" id="totalUsersValue">-</div>
+                        <div class="stat-label" id="adminsLabel">Admin: -</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">Davet Kodları</div>
+                                <div class="card-sub">Kullanılan / kullanılmayan</div>
+                            </div>
+                            <span class="pill pill-yellow" id="invitesPill">-</span>
+                        </div>
+                        <div class="stat-value" id="totalInvitesValue">-</div>
+                        <div class="stat-label" id="usedInvitesLabel">Kullanılan: -</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">Model &amp; Kuyruk</div>
+                                <div class="card-sub">GPU durumu ve görsel kuyruğu</div>
+                            </div>
+                            <span class="pill pill-green" id="modelPill">Model aktif</span>
+                        </div>
+                        <div class="stat-value" id="gpuStateValue">-</div>
+                        <div class="stat-label" id="queueStatsLabel">Kuyruk: -</div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <div>
+                            <div class="section-title">Önemli Özellikler</div>
+                            <div class="section-sub">Chat, internet, görsel ve Bela/Groq durumunu buradan görebilirsin.</div>
+                        </div>
+                    </div>
+                    <div id="featuresOverview"></div>
+                </div>
+            </div>
+
+            <div class="view" id="view-users">
+                <div class="section">
+                    <div class="section-header">
+                        <div>
+                            <div class="section-title">Kullanıcılar</div>
+                            <div class="section-sub">Rol, sansür seviyesi, günlük limitler ve yetkiler.</div>
+                        </div>
+                    </div>
+                    <div style="overflow:auto;">
+                        <table class="table" id="usersTable">
+                            <thead>
+                                <tr>
+                                    <th>Kullanıcı</th>
+                                    <th>Rol</th>
+                                    <th>Cens.</th>
+                                    <th>İnternet</th>
+                                    <th>Görsel</th>
+                                    <th>Bela</th>
+                                    <th>Ban</th>
+                                    <th>Net Limit</th>
+                                    <th>Görsel Limit</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="section" id="userEditSection" style="display:none;margin-top:8px;">
+                    <div class="section-header">
+                        <div>
+                            <div class="section-title" id="editUserTitle">Kullanıcı Düzenle</div>
+                            <div class="section-sub">Değişiklikleri kaydetmek için "Güncelle" butonunu kullan.</div>
+                        </div>
+                        <button class="btn btn-ghost" type="button" onclick="hideUserEdit()">Kapat</button>
+                    </div>
+                    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:8px;">
+                        <div>
+                            <label style="font-size:11px;color:var(--text-soft);">Rol</label>
+                            <select id="editRole" class="input">
+                                <option value="user">user</option>
+                                <option value="vip">vip</option>
+                                <option value="admin">admin</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="font-size:11px;color:var(--text-soft);">Sansür seviyesi (0-2)</label>
+                            <input id="editCensorship" type="number" min="0" max="2" class="input">
+                        </div>
+                        <div>
+                            <label style="font-size:11px;color:var(--text-soft);">Günlük internet limiti</label>
+                            <input id="editNetLimit" type="number" min="0" class="input">
+                        </div>
+                        <div>
+                            <label style="font-size:11px;color:var(--text-soft);">Günlük görsel limiti</label>
+                            <input id="editImageLimit" type="number" min="0" class="input">
+                        </div>
+                        <div style="display:flex; flex-direction:column; gap:4px; margin-top:12px;">
+                            <label style="font-size:11px;color:var(--text-soft);">İzinler</label>
+                            <label class="switch"><input id="editCanInternet" type="checkbox"><span class="slider"></span></label><span style="font-size:11px;">İnternet Kullanımı</span>
+                            <label class="switch"><input id="editCanImage" type="checkbox"><span class="slider"></span></label><span style="font-size:11px;">Görsel Üretimi</span>
+                            <label class="switch"><input id="editCanLocal" type="checkbox"><span class="slider"></span></label><span style="font-size:11px;">Bela / Yerel Model</span>
+                            <label class="switch"><input id="editIsBanned" type="checkbox"><span class="slider"></span></label><span style="font-size:11px;">Kullanıcı Yasaklandı</span>
+                        </div>
+                    </div>
+                    <div style="margin-top:8px; display:flex; gap:8px;">
+                        <button class="btn btn-primary" type="button" onclick="saveUserEdit()">Güncelle</button>
+                        <div id="editUserStatus" style="font-size:11px;color:var(--text-soft); align-self:center;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="view" id="view-invites">
+                <div class="section">
+                    <div class="section-header">
+                        <div>
+                            <div class="section-title">Davet Kodları</div>
+                            <div class="section-sub">Yeni davet kodu üret ve mevcut kodları yönet.</div>
+                        </div>
+                        <button class="btn btn-primary" type="button" onclick="createInvite()">
+                            <span>+</span><span>Yeni Davet</span>
+                        </button>
+                    </div>
+                    <div style="overflow:auto;">
+                        <table class="table" id="invitesTable">
+                            <thead>
+                                <tr>
+                                    <th>Kod</th>
+                                    <th>Oluşturan</th>
+                                    <th>Tarih</th>
+                                    <th>Durum</th>
+                                    <th>Kullanan</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="view" id="view-features">
+                <div class="section">
+                    <div class="section-header">
+                        <div>
+                            <div class="section-title">Feature Flag'ler</div>
+                            <div class="section-sub">Sistemin ana bileşenlerini tek tıkla aç / kapa.</div>
+                        </div>
+                    </div>
+                    <div id="featuresList"></div>
+                </div>
+            </div>
+
+            <div class="view" id="view-identity">
+                <div class="section">
+                    <div class="section-header">
+                        <div>
+                            <div class="section-title">AI Marka ve Kimlik Ayarları</div>
+                            <div class="section-sub">Modelin kendini nasıl tanıtacağını ve sağlayıcı isimlerini sansürleyip sansürlemeyeceğini ayarlayın.</div>
+                        </div>
+                    </div>
+                    
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:15px;">
+                        <div>
+                            <label style="font-size:11px; color:var(--text-soft);">Görünen İsim</label>
+                            <input id="identityDisplayName" type="text" class="input">
+                        </div>
+                        <div>
+                            <label style="font-size:11px; color:var(--text-soft);">Geliştirici Adı</label>
+                            <input id="identityDeveloperName" type="text" class="input">
+                        </div>
+                        <div style="grid-column: span 2;">
+                            <label style="font-size:11px; color:var(--text-soft);">Ürün/Sistem Ailesi</label>
+                            <input id="identityProductFamily" type="text" class="input">
+                        </div>
+                        <div style="grid-column: span 2;">
+                            <label style="font-size:11px; color:var(--text-soft);">Model Tanıtım Metni (Kısa)</label>
+                            <textarea id="identityShortIntro" class="input" style="min-height:80px;"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-row" style="padding-top:10px;">
+                        <div>Sağlayıcı Adını Sansürle (Groq, Gemma vb.)</div>
+                        <label class="switch">
+                            <input id="forbidProviderMention" type="checkbox"><span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div style="margin-top:20px; display:flex; gap:10px;">
+                        <button class="btn btn-primary" onclick="saveIdentitySettings()">Ayarları Kaydet</button>
+                        <div id="identityStatus" style="font-size:12px; color:var(--text-soft); align-self:center;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="view" id="view-feedback">
+                <div class="section">
+                    <div class="section-header">
+                        <div>
+                            <div class="section-title">Geri Bildirimler</div>
+                            <div class="section-sub">Kullanıcıların beğendiği ve beğenmediği cevaplar.</div>
+                        </div>
+                        <button class="btn btn-ghost" type="button" onclick="loadFeedback()">Yenile</button>
+                    </div>
+                    <div style="overflow:auto;">
+                        <table class="table" id="feedbackTable">
+                            <thead>
+                                <tr>
+                                    <th>Kullanıcı</th>
+                                    <th>Tür</th>
+                                    <th>Tarih</th>
+                                    <th>Mesaj</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="view" id="view-logs">
+                <div class="section">
+                    <div class="section-header">
+                        <div>
+                            <div class="section-title">Log Kayıtları</div>
+                            <div class="section-sub">Son 200 satırı görüntülersin. Hata takibi için kullan.</div>
+                        </div>
+                        <button class="btn btn-ghost" type="button" onclick="loadLogs()">Yenile</button>
+                    </div>
+                    <div class="logs" id="logsBox">Yükleniyor...</div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+</div>
+
+<script>
+    const ADMIN_BASE = "/api/v1/admin";
+    const SYSTEM_BASE = "/api/v1/system";
+
+    let state = {
+        users: [],
+        invites: [],
+        features: {},
+        selectedUser: null,
+        overview: null,
+        summary: null,
+        feedback: []
+    };
+    
+    // --- TEMEL YARDIMCI VE API FONKSİYONLARI ---
+
+    async function fetchJSON(url, opts = {}) {
+        const res = await fetch(url, {
+            credentials: "include",
+            headers: {"Content-Type": "application/json"},
+            ...opts
+        });
+        if (res.status === 401 || res.status === 403) {
+            window.location.href = '/ui/login.html'; // Yetki/Oturum hatası
+        }
+        if (!res.ok) {
+            const data = await res.json();
+            throw new Error(data.message || `İstek başarısız: ${res.status}`);
+        }
+        return res.json();
+    }
+    
+    function setView(name) {
+        document.querySelectorAll(".nav-btn").forEach(btn => {
+            btn.classList.toggle("active", btn.getAttribute("data-view") === name);
+        });
+        document.querySelectorAll(".view").forEach(view => {
+            view.classList.toggle("active", view.id === "view-" + name);
+        });
+        const headerTitle = document.querySelector(".main-title");
+        headerTitle.textContent = name.charAt(0).toUpperCase() + name.slice(1);
+    }
+    
+    // --- LOAD FONKSİYONLARI (View Bazlı) ---
+    
+    async function loadAdminInfo() {
+        try {
+            const me = await fetchJSON(ADMIN_BASE + "/me");
+            const el = document.getElementById("adminName");
+            if (el) el.textContent = `Admin: ${me.username} (${me.role || ""})`;
+        } catch (e) {
+             // Admin yüklenmezse (403/401) login'e yönlendirilir (fetchJSON içinde).
+        }
+    }
+
+    async function loadOverview() {
+        try {
+            const overview = await fetchJSON(SYSTEM_BASE + "/overview");
+            const summary = await fetchJSON(ADMIN_BASE + "/summary");
+            state.overview = overview;
+            state.summary = summary;
+            renderOverview();
+        } catch (e) { console.error("Overview yüklenemedi:", e); }
+    }
+    
+    async function loadUsers() {
+        try {
+            const users = await fetchJSON(ADMIN_BASE + "/users");
+            state.users = users;
+            renderUsers();
+            hideUserEdit();
+        } catch (e) { console.error("Kullanıcılar yüklenemedi:", e); }
+    }
+    
+    async function loadInvites() {
+        try {
+            const invites = await fetchJSON(ADMIN_BASE + "/invites");
+            state.invites = invites;
+            renderInvites();
+        } catch (e) { console.error("Davet kodları yüklenemedi:", e); }
+    }
+    
+    async function loadLogs() {
+        try {
+            const res = await fetchJSON(ADMIN_BASE + "/logs/tail?lines=200");
+            const box = document.getElementById("logsBox");
+            if (box) box.textContent = (res.lines || []).join("\n");
+        } catch (e) {
+            const box = document.getElementById("logsBox");
+            if (box) box.textContent = `❌ Loglar yüklenemedi: ${e.message}`;
+        }
+    }
+    
+    async function loadFeatures() {
+        try {
+            const res = await fetchJSON(SYSTEM_BASE + "/features");
+            state.features = res.features || {};
+            renderFeatures();
+        } catch (e) { console.error("Özellikler yüklenemedi:", e); }
+    }
+    
+    async function loadFeedback() {
+        try {
+            const res = await fetchJSON(ADMIN_BASE + "/feedback?limit_per_user=100");
+            state.feedback = res;
+            renderFeedback();
+        } catch (e) { console.error("Geri bildirimler yüklenemedi:", e); }
+    }
+
+    // YENİ EKLENEN LOAD FONKSİYONU
+    async function loadIdentitySettings() {
+        try {
+            const identity = await fetchJSON(ADMIN_BASE + "/ai-identity");
+            document.getElementById("identityDisplayName").value = identity.display_name;
+            document.getElementById("identityDeveloperName").value = identity.developer_name;
+            document.getElementById("identityProductFamily").value = identity.product_family;
+            document.getElementById("identityShortIntro").value = identity.short_intro;
+            document.getElementById("forbidProviderMention").checked = identity.forbid_provider_mention;
+            document.getElementById("identityStatus").textContent = "";
+        } catch (e) {
+            console.error("Kimlik ayarları yüklenemedi:", e);
+            document.getElementById("identityStatus").textContent = "❌ Yükleme hatası: " + e.message;
+        }
+    }
+
+    // --- RENDER FONKSİYONLARI ---
+
+    function renderOverview() {
+        const o = state.overview;
+        const s = state.summary;
+        if (!o || !s) return;
+
+        // Kalan kodlar, overview render mantığını içerir (Kullanıcı/Gpu/Feature durumu)
+        document.getElementById("envChip").textContent = "Env: " + (o.env || "-");
+        document.getElementById("gpuChip").textContent = "GPU: " + (o.gpu_state || "-");
+        document.getElementById("totalUsersValue").textContent = s.total_users;
+        document.getElementById("adminsLabel").textContent = "Admin: " + s.total_admins;
+        
+        document.getElementById("queueStatsLabel").textContent = `Kuyruk: bekleyen ${o.image_queue?.pending_jobs ?? 0} / toplam ${o.image_queue?.total_jobs ?? 0}`;
+
+        const anyDown = Object.values(o.features || {}).some(v => v === false);
+        const healthPill = document.getElementById("healthPill");
+        const modelPill = document.getElementById("modelPill");
+        
+        if (anyDown) {
+            modelPill.className = "pill pill-yellow";
+            healthPill.innerHTML = "<span>●</span><span>Kısmen aktif</span>";
+        } else {
+            modelPill.className = "pill pill-green";
+            healthPill.innerHTML = "<span>●</span><span>Sistem sağlıklı</span>";
+        }
+        
+        // Feature Listesi
+        const container = document.getElementById("featuresOverview");
+        const feat = o.features || {};
+        container.innerHTML = "";
+        Object.keys(feat).forEach(key => {
+            const enabled = !!feat[key];
+            const div = document.createElement("div");
+            div.className = "feature-row";
+            div.innerHTML = `
+                <div><span class="pill-feature">${key}</span></div>
+                <div><span class="pill ${enabled ? "pill-green" : "pill-red"}">${enabled ? "Açık" : "Kapalı"}</span></div>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    function renderUsers() {
+        const tbody = document.querySelector("#usersTable tbody");
+        if (!tbody) return;
+        tbody.innerHTML = "";
+        state.users.forEach(u => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td>${u.username}</td>
+                <td><span class="badge ${u.role === "admin" ? "badge-admin" : "badge-user"}">${u.role}</span></td>
+                <td>${u.censorship_level}</td>
+                <td>${u.can_use_internet ? "✅" : "❌"}</td>
+                <td>${u.can_use_image ? "✅" : "❌"}</td>
+                <td>${u.can_use_local_chat ? "✅" : "❌"}</td>
+                <td>${u.is_banned ? "🚫" : "-"}</td>
+                <td>${u.daily_internet_limit}</td>
+                <td>${u.daily_image_limit}</td>
+                <td><button class="btn btn-ghost" type="button" onclick="editUser('${u.username}')">Düzenle</button></td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    function renderInvites() {
+        const tbody = document.querySelector("#invitesTable tbody");
+        if (!tbody) return;
+        tbody.innerHTML = "";
+        state.invites.forEach(inv => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td>${inv.code}</td>
+                <td>${inv.created_by}</td>
+                <td>${inv.created_at}</td>
+                <td>${inv.used ? "Kullanıldı" : "Boş"}</td>
+                <td>${inv.used_by || "-"}</td>
+                <td>
+                    <button class="btn btn-danger" type="button" onclick="deleteInvite('${inv.code}')">Sil</button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    function renderFeatures() {
+        // Zaten loadFeatures içinde render ediliyor
+        const container = document.getElementById("featuresList");
+        if (!container) return;
+        container.innerHTML = "";
+        const feat = state.features;
+        Object.keys(feat).forEach(key => {
+            const enabled = !!feat[key];
+            const row = document.createElement("div");
+            row.className = "feature-row";
+            row.innerHTML = `
+                <div><span class="pill-feature">${key}</span></div>
+                <div style="display:flex; align-items:center; gap:6px;">
+                    <label class="switch">
+                        <input type="checkbox" ${enabled ? "checked" : ""} onchange="toggleFeature('${key}', this.checked)">
+                        <span class="slider"></span>
+                    </label>
+                    <span style="font-size:11px; color:var(--text-soft);">${enabled ? "Açık" : "Kapalı"}</span>
+                </div>
+            `;
+            container.appendChild(row);
+        });
+    }
+
+    function renderFeedback() {
+        const tbody = document.querySelector("#feedbackTable tbody");
+        if (!tbody) return;
+        tbody.innerHTML = "";
+        
+        if (!Array.isArray(state.feedback) || state.feedback.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="4" style="font-size:12px; color:var(--text-soft);">Henüz hiçbir geri bildirim yok.</td></tr>`;
+            return;
+        }
+
+        state.feedback.forEach(row => {
+            const tr = document.createElement("tr");
+            const isLike = row.feedback === "like";
+            tr.innerHTML = `
+                <td>${row.username}</td>
+                <td><span class="pill ${isLike ? "pill-green" : "pill-red"}">${isLike ? "Beğenildi" : "Beğenilmedi"}</span></td>
+                <td>${row.created_at}</td>
+                <td>${row.message.slice(0, 200)}${row.message.length > 200 ? "..." : ""}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    // --- AKSIYON FONKSİYONLARI ---
+
+    function editUser(username) {
+        const u = state.users.find(x => x.username === username);
+        if (!u) return;
+        state.selectedUser = u;
+        document.getElementById("userEditSection").style.display = "block";
+        document.getElementById("editUserTitle").textContent = "Kullanıcı Düzenle: " + u.username;
+        
+        document.getElementById("editRole").value = u.role;
+        document.getElementById("editCensorship").value = u.censorship_level;
+        document.getElementById("editNetLimit").value = u.daily_internet_limit;
+        document.getElementById("editImageLimit").value = u.daily_image_limit;
+        document.getElementById("editCanInternet").checked = u.can_use_internet;
+        document.getElementById("editCanImage").checked = u.can_use_image;
+        document.getElementById("editCanLocal").checked = u.can_use_local_chat;
+        document.getElementById("editIsBanned").checked = u.is_banned;
+        document.getElementById("editUserStatus").textContent = "";
+    }
+
+    async function saveUserEdit() {
+        if (!state.selectedUser) return;
+        const u = state.selectedUser;
+        const payload = {
+            role: document.getElementById("editRole").value,
+            censorship_level: Number(document.getElementById("editCensorship").value || 0),
+            daily_internet_limit: Number(document.getElementById("editNetLimit").value || 0),
+            daily_image_limit: Number(document.getElementById("editImageLimit").value || 0),
+            can_use_internet: document.getElementById("editCanInternet").checked,
+            can_use_image: document.getElementById("editCanImage").checked,
+            can_use_local_chat: document.getElementById("editCanLocal").checked,
+            is_banned: document.getElementById("editIsBanned").checked,
+        };
+        const statusEl = document.getElementById("editUserStatus");
+        statusEl.textContent = "Kaydediliyor...";
+        
+        try {
+            const updated = await fetchJSON(ADMIN_BASE + "/users/" + encodeURIComponent(u.username), {
+                method: "PUT",
+                body: JSON.stringify(payload),
+            });
+            const idx = state.users.findIndex(x => x.username === u.username);
+            if (idx >= 0) state.users[idx] = updated;
+            renderUsers();
+            statusEl.textContent = "✅ Güncellendi.";
+        } catch (e) {
+            console.error("Kullanıcı güncelleme hatası:", e);
+            statusEl.textContent = "❌ Hata: " + e.message;
+        }
+    }
+    
+    function hideUserEdit() {
+        document.getElementById("userEditSection").style.display = "none";
+        state.selectedUser = null;
+    }
+
+    async function createInvite() {
+        try {
+            const inv = await fetchJSON(ADMIN_BASE + "/invites", { method: "POST", body: JSON.stringify({}) });
+            state.invites.push(inv);
+            renderInvites();
+        } catch (e) {
+            console.error("Davet kodu oluşturulamadı:", e);
+            alert("Davet kodu oluşturulamadı: " + e.message);
+        }
+    }
+
+    async function deleteInvite(code) {
+        if (!confirm("Bu davet kodunu silmek istediğine emin misin?")) return;
+        try {
+            await fetchJSON(ADMIN_BASE + "/invites/" + encodeURIComponent(code), { method: "DELETE" });
+            state.invites = state.invites.filter(i => i.code !== code);
+            renderInvites();
+        } catch (e) {
+            console.error("Silme başarısız:", e);
+            alert("Silme başarısız: " + e.message);
+        }
+    }
+
+    async function toggleFeature(key, enabled) {
+        try {
+            await fetchJSON(SYSTEM_BASE + "/features/toggle", {
+                method: "POST",
+                body: JSON.stringify({ key, enabled }),
+            });
+            state.features[key] = enabled;
+            loadOverview();
+        } catch (e) {
+            console.error("Feature güncellenemedi:", e);
+            alert("Feature güncellenemedi: " + e.message);
+        }
+    }
+
+    // YENİ EKLENEN KİMLİK KAYDETME FONKSİYONLARI
+    async function saveIdentitySettings() {
+        const statusEl = document.getElementById("identityStatus");
+        statusEl.textContent = "Kaydediliyor...";
+        
+        const payload = {
+            display_name: document.getElementById("identityDisplayName").value,
+            developer_name: document.getElementById("identityDeveloperName").value,
+            product_family: document.getElementById("identityProductFamily").value,
+            short_intro: document.getElementById("identityShortIntro").value,
+            forbid_provider_mention: document.getElementById("forbidProviderMention").checked,
+        };
+        
+        try {
+            await fetchJSON(ADMIN_BASE + "/ai-identity", {
+                method: "PUT",
+                body: JSON.stringify(payload),
+            });
+            statusEl.textContent = "✅ Ayarlar Güncellendi! (Yeniden başlatma gerekebilir)";
+        } catch (e) {
+            console.error("Kimlik kaydetme hatası:", e);
+            statusEl.textContent = "❌ Kaydetme hatası: " + e.message;
+        }
+    }
+
+    // --- BAŞLATMA MANTIĞI ---
+
+    function initNav() {
+        document.querySelectorAll(".nav-btn").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const view = btn.getAttribute("data-view");
+                setView(view);
+                // View'a özel veri yükleme fonksiyonlarını çağır
+                if (view === "overview") loadOverview();
+                if (view === "users") loadUsers();
+                if (view === "invites") loadInvites();
+                if (view === "logs") loadLogs();
+                if (view === "features") loadFeatures();
+                if (view === "feedback") loadFeedback();
+                if (view === "identity") loadIdentitySettings(); // YENİ EKLENDİ
+            });
+        });
+        
+        const refresh = document.getElementById("refreshAllBtn");
+        if (refresh) {
+            refresh.addEventListener("click", () => {
+                const active = document.querySelector(".nav-btn.active")?.getAttribute("data-view") || "overview";
+                if (active === "overview") loadOverview();
+                if (active === "users") loadUsers();
+                if (active === "invites") loadInvites();
+                if (active === "logs") loadLogs();
+                if (active === "features") loadFeatures();
+                if (active === "feedback") loadFeedback();
+                if (active === "identity") loadIdentitySettings(); // YENİ EKLENDİ
+            });
+        }
+    }
+
+    (function init() {
+        loadAdminInfo();
+        initNav();
+        // Varsayılan view'ları yükle
+        loadOverview(); 
+        loadFeatures();
+    })();
+</script>
+</body>
+</html>

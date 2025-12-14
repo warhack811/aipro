@@ -1,0 +1,354 @@
+/* ============================================
+   HEADER.CSS - Header & Main Layout
+   Extracted from chat.css lines 731-772
+   ============================================ */
+
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+    min-height: 0 !important;
+}
+
+.header {
+    padding: 12px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    height: 60px;
+    position: relative;
+    z-index: 1000;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    overflow-x: visible;
+    overflow-y: visible;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.action-btn {
+    background: var(--bg-input);
+    border: none;
+    color: var(--text);
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    gap: 6px;
+    -webkit-transition: 0.2s;
+    -moz-transition: 0.2s;
+    -o-transition: 0.2s;
+    transition: 0.2s;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+.action-btn:hover {
+    background: var(--border);
+}
+
+.header-icon-btn {
+    background: linear-gradient(120deg,
+            color-mix(in srgb, var(--primary) 50%, transparent),
+            color-mix(in srgb, var(--primary-hover) 50%, transparent));
+    color: #fff;
+    border: 1px solid color-mix(in srgb, var(--primary) 25%, transparent);
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    display: -ms-grid;
+    display: grid;
+    place-items: center;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    -webkit-transition: 0.2s;
+    -moz-transition: 0.2s;
+    -o-transition: 0.2s;
+    transition: 0.2s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+.header-icon-btn:hover {
+    background: linear-gradient(120deg,
+            color-mix(in srgb, var(--primary) 60%, transparent),
+            color-mix(in srgb, var(--primary-hover) 60%, transparent));
+    border-color: color-mix(in srgb, var(--primary) 35%, transparent);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.22);
+}
+
+.header-select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    /* Samsung Browser fallback */
+    background: rgba(99, 102, 241, 0.5);
+    background: linear-gradient(120deg,
+            color-mix(in srgb, var(--primary) 50%, transparent),
+            color-mix(in srgb, var(--primary-hover) 50%, transparent));
+    color: #fff;
+    border: 1px solid rgba(99, 102, 241, 0.25);
+    border: 1px solid color-mix(in srgb, var(--primary) 25%, transparent);
+    border-radius: 999px;
+    height: 42px;
+    padding: 0 32px 0 12px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+    -webkit-transition: 0.2s;
+    -moz-transition: 0.2s;
+    -o-transition: 0.2s;
+    transition: 0.2s;
+    position: relative;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    min-width: 110px;
+    max-width: 150px;
+}
+
+.header-select:hover,
+.header-select:active,
+.header-select:focus {
+    /* Samsung Browser fallback */
+    background: rgba(99, 102, 241, 0.6);
+    background: linear-gradient(120deg,
+            color-mix(in srgb, var(--primary) 60%, transparent),
+            color-mix(in srgb, var(--primary-hover) 60%, transparent));
+    border-color: rgba(99, 102, 241, 0.35);
+    border-color: color-mix(in srgb, var(--primary) 35%, transparent);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.22);
+}
+
+
+.header-select option {
+    color: var(--text);
+    background: var(--bg-surface);
+}
+
+/* ============================================
+   THEME DROPDOWN
+   ============================================ */
+
+.theme-dropdown-wrapper {
+    position: relative;
+    display: inline-block;
+    z-index: 10000;
+    /* Samsung Browser fix */
+    -webkit-tap-highlight-color: transparent;
+}
+
+.theme-dropdown-btn {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 0 14px 0 14px !important;
+    min-width: 120px;
+    max-width: 100%;
+    border-radius: 999px !important;
+    -webkit-transition: border-radius 0.25s ease, border-bottom 0.25s ease;
+    -moz-transition: border-radius 0.25s ease, border-bottom 0.25s ease;
+    transition: border-radius 0.25s ease, border-bottom 0.25s ease;
+    white-space: nowrap;
+    overflow: visible; /* Changed from hidden for Samsung Browser */
+    text-overflow: ellipsis;
+    /* Touch optimization */
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    cursor: pointer;
+}
+
+
+.theme-dropdown-wrapper.active .theme-dropdown-btn {
+    border-radius: 999px 999px 0 0 !important;
+    border-bottom: none;
+}
+
+.theme-dropdown-arrow {
+    font-size: 0.7rem;
+    opacity: 0.7;
+    -webkit-transition: -webkit-transform 0.2s ease;
+    -moz-transition: -moz-transform 0.2s ease;
+    -o-transition: transform 0.2s ease;
+    transition: transform 0.2s ease;
+}
+
+.theme-dropdown-wrapper.active .theme-dropdown-arrow {
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+
+.theme-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    /* Samsung Browser fallback - solid background if color-mix not supported */
+    background: rgba(99, 102, 241, 0.9);
+    background: linear-gradient(120deg,
+            color-mix(in srgb, var(--primary) 85%, transparent),
+            color-mix(in srgb, var(--primary-hover) 85%, transparent));
+    border: 1px solid rgba(99, 102, 241, 0.4);
+    border: 1px solid color-mix(in srgb, var(--primary) 40%, transparent);
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    /* Samsung Browser fix: use display instead of visibility */
+    display: none;
+    opacity: 0;
+    -webkit-transform: translateY(-10px);
+    -moz-transform: translateY(-10px);
+    -ms-transform: translateY(-10px);
+    transform: translateY(-10px);
+    -webkit-transition: opacity 0.25s ease, -webkit-transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    -moz-transition: opacity 0.25s ease, -moz-transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    -o-transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 10001;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS/Samsung */
+    margin-top: 0;
+    max-height: 0;
+    padding: 0;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    /* Force hardware acceleration */
+    -webkit-transform: translateZ(0) translateY(-10px);
+    transform: translateZ(0) translateY(-10px);
+}
+
+.theme-dropdown-wrapper.active .theme-dropdown-menu {
+    display: block; /* Samsung Browser fix */
+    opacity: 1;
+    visibility: visible;
+    -webkit-transform: translateY(0) translateZ(0);
+    -moz-transform: translateY(0);
+    -ms-transform: translateY(0);
+    transform: translateY(0) translateZ(0);
+    max-height: 400px;
+    margin-top: 0;
+    padding: 4px 0 8px 0;
+}
+
+.theme-dropdown-item {
+    padding: 10px 16px;
+    cursor: pointer;
+    color: #fff;
+    font-weight: 500;
+    font-size: 0.9rem;
+    -webkit-transition: all 0.15s ease;
+    -moz-transition: all 0.15s ease;
+    -o-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+    border-bottom: 1px solid color-mix(in srgb, var(--primary) 30%, transparent);
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    gap: 8px;
+    margin: 0 4px;
+    border-radius: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.theme-dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.theme-dropdown-item:hover {
+    background: linear-gradient(120deg,
+            color-mix(in srgb, var(--primary) 95%, transparent),
+            color-mix(in srgb, var(--primary-hover) 95%, transparent));
+    -webkit-transform: translateX(2px);
+    -moz-transform: translateX(2px);
+    -ms-transform: translateX(2px);
+    transform: translateX(2px);
+}
+
+.theme-dropdown-item.active {
+    background: linear-gradient(120deg,
+            color-mix(in srgb, var(--primary) 100%, transparent),
+            color-mix(in srgb, var(--primary-hover) 100%, transparent));
+    color: #fff;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+#searchBox {
+    background: var(--bg-input);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 12px;
+    min-width: 220px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+    transition: 0.2s;
+}
+
+#searchBox::placeholder {
+    color: var(--text-muted);
+}
+
+#searchBox:focus {
+    outline: none;
+    border-color: color-mix(in srgb, var(--primary) 35%, transparent);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.22);
+}

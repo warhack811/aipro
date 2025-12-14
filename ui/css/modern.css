@@ -1,0 +1,480 @@
+/* ============================================
+   MODERN.CSS - UI Modernization Features
+   Streaming effects, message actions, welcome cards
+   ============================================ */
+
+/* ===========================================
+   1. STREAMING TEXT EFFECT
+   =========================================== */
+
+.message.streaming .msg-bubble {
+    position: relative;
+}
+
+.message.streaming .msg-bubble::after {
+    content: '';
+    display: inline-block;
+    width: 3px;
+    height: 1.2em;
+    background: var(--primary);
+    margin-left: 4px;
+    vertical-align: text-bottom;
+    animation: cursor-blink 0.8s infinite;
+    border-radius: 1px;
+}
+
+@keyframes cursor-blink {
+
+    0%,
+    50% {
+        opacity: 1;
+    }
+
+    51%,
+    100% {
+        opacity: 0;
+    }
+}
+
+/* Smooth text appearance */
+.message.streaming .stream-content {
+    animation: none;
+}
+
+/* ===========================================
+   2. MESSAGE ACTION BAR
+   =========================================== */
+
+.msg-actions {
+    display: flex;
+    gap: 4px;
+    margin-top: 8px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.message:hover .msg-actions,
+.message:focus-within .msg-actions {
+    opacity: 1;
+}
+
+/* Touch devices: always show */
+@media (hover: none) {
+    .msg-actions {
+        opacity: 0.7;
+    }
+}
+
+.msg-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.15s ease;
+}
+
+.msg-action:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text);
+    transform: translateY(-1px);
+}
+
+.msg-action:active {
+    transform: scale(0.95);
+}
+
+.msg-action.active {
+    color: var(--primary);
+    background: rgba(99, 102, 241, 0.15);
+    border-color: var(--primary);
+}
+
+.msg-action.copied {
+    color: var(--success, #10b981);
+    background: rgba(16, 185, 129, 0.15);
+}
+
+/* Tooltip for actions */
+.msg-action[title] {
+    position: relative;
+}
+
+.msg-action::before {
+    content: attr(title);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 6px 10px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.15s, visibility 0.15s;
+    pointer-events: none;
+    z-index: 100;
+}
+
+.msg-action:hover::before {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ===========================================
+   3. WELCOME SCREEN & SUGGESTION CARDS
+   =========================================== */
+
+.welcome-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    text-align: center;
+    padding: 40px 20px;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.welcome-logo {
+    font-size: 4rem;
+    margin-bottom: 24px;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+.welcome-title {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+}
+
+.welcome-subtitle {
+    color: var(--text-muted);
+    max-width: 450px;
+    margin-bottom: 32px;
+    line-height: 1.6;
+}
+
+.suggestion-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    max-width: 700px;
+    width: 100%;
+    padding: 0 20px;
+}
+
+.suggestion-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+}
+
+.suggestion-card:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(99, 102, 241, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.suggestion-card:active {
+    transform: scale(0.98);
+}
+
+.suggestion-icon {
+    font-size: 1.5rem;
+}
+
+.suggestion-text {
+    font-size: 0.9rem;
+    color: var(--text);
+    font-weight: 500;
+}
+
+.suggestion-desc {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+/* ===========================================
+   4. SKELETON LOADING
+   =========================================== */
+
+.skeleton {
+    background: linear-gradient(90deg,
+            var(--bg-surface) 25%,
+            rgba(255, 255, 255, 0.08) 50%,
+            var(--bg-surface) 75%);
+    background-size: 200% 100%;
+    animation: skeleton-wave 1.5s infinite linear;
+    border-radius: 8px;
+}
+
+@keyframes skeleton-wave {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+.skeleton-message {
+    display: flex;
+    gap: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.skeleton-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+
+.skeleton-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.skeleton-line {
+    height: 16px;
+    border-radius: 8px;
+}
+
+.skeleton-line:nth-child(1) {
+    width: 80%;
+}
+
+.skeleton-line:nth-child(2) {
+    width: 60%;
+}
+
+.skeleton-line:nth-child(3) {
+    width: 70%;
+}
+
+/* ===========================================
+   5. ENHANCED MICRO-INTERACTIONS
+   =========================================== */
+
+/* Button ripple effect */
+.ripple {
+    position: relative;
+    overflow: hidden;
+}
+
+.ripple::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.4s, height 0.4s, opacity 0.4s;
+    opacity: 0;
+}
+
+.ripple:active::after {
+    width: 200%;
+    height: 200%;
+    opacity: 1;
+    transition: 0s;
+}
+
+/* Smooth hover transitions */
+.menu-btn,
+.action-btn,
+.send-btn {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Toast notifications */
+.toast {
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    padding: 12px 24px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--text);
+    font-size: 14px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+    visibility: visible;
+}
+
+.toast.success {
+    border-color: var(--success, #10b981);
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.toast.error {
+    border-color: var(--error, #ef4444);
+    background: rgba(239, 68, 68, 0.1);
+}
+
+/* ===========================================
+   6. IMPROVED MODEL TAGS
+   =========================================== */
+
+.model-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.model-tag.groq {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(139, 92, 246, 0.15));
+    color: #a5b4fc;
+    border: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+.model-tag.bela {
+    background: linear-gradient(135deg, rgba(251, 146, 60, 0.15), rgba(249, 115, 22, 0.15));
+    color: #fdba74;
+    border: 1px solid rgba(251, 146, 60, 0.3);
+}
+
+.model-tag.net {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(5, 150, 105, 0.15));
+    color: #6ee7b7;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.model-tag.image {
+    background: linear-gradient(135deg, rgba(236, 72, 153, 0.15), rgba(192, 38, 211, 0.15));
+    color: #f9a8d4;
+    border: 1px solid rgba(236, 72, 153, 0.3);
+}
+
+/* ===========================================
+   7. IMAGE PENDING CARD
+   =========================================== */
+
+.message.image-pending .msg-avatar {
+    background: linear-gradient(135deg, #ec4899, #c026d3);
+    box-shadow: 0 2px 8px rgba(236, 72, 153, 0.3);
+}
+
+.message.image-pending .msg-bubble {
+    max-width: 85%;
+}
+
+.pending-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.pending-title {
+    font-weight: 600;
+    color: var(--text);
+}
+
+.pending-queue {
+    font-size: 0.85rem;
+    color: var(--primary);
+    font-weight: 600;
+    background: rgba(99, 102, 241, 0.15);
+    padding: 2px 8px;
+    border-radius: 12px;
+}
+
+.pending-status {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+}
+
+.pending-progress-container {
+    width: 100%;
+    height: 8px;
+    background: var(--bg-input);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 4px;
+}
+
+.pending-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), #8b5cf6);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.pending-progress-text {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-align: right;
+    margin-bottom: 8px;
+}

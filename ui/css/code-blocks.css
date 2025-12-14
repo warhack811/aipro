@@ -1,0 +1,135 @@
+/* ============================================
+   CODE-BLOCKS.CSS - Code Blocks & Syntax
+   Extracted from chat.css lines 1001-1136
+   ============================================ */
+
+.code-wrapper {
+    margin: 12px 0;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #1a1a24;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 13px;
+    position: relative;
+    max-width: 100%;
+}
+
+.code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: #13131a;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.code-header button {
+    z-index: 10;
+}
+
+.code-wrapper pre {
+    margin: 0;
+    padding: 14px 16px;
+    overflow-x: auto;
+    overflow-y: auto;
+    max-height: 400px;
+    max-width: 100%;
+    background: transparent;
+    color: #e4e4e7;
+    font-family: var(--font-mono);
+    line-height: 1.5;
+    tab-size: 4;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+.code-wrapper code {
+    font-family: inherit;
+    font-size: inherit;
+    background: transparent;
+    color: inherit;
+    text-shadow: none;
+}
+
+/* Custom Syntax Highlighting (Replaces Prism CSS) */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+    color: #636e7b;
+    font-style: italic;
+}
+
+.token.punctuation {
+    color: #8996a8;
+}
+
+.token.namespace {
+    opacity: .7;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+    color: #f472b6;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+    color: #a5f3fc;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+    color: #e4e4e7;
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+    color: #c084fc;
+}
+
+.token.function,
+.token.class-name {
+    color: #fbbf24;
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+    color: #fb7185;
+}
+
+.token.important,
+.token.bold {
+    font-weight: bold;
+}
+
+.token.italic {
+    font-style: italic;
+}
+
+/* Inline Code */
+.msg-bubble code:not(pre code) {
+    background: rgba(99, 102, 241, 0.12);
+    color: #e06c75;
+    padding: 2px 7px;
+    border-radius: 5px;
+    font-size: 0.88em;
+    font-weight: 500;
+    font-family: var(--font-mono);
+    border: 1px solid rgba(99, 102, 241, 0.15);
+    white-space: nowrap;
+}

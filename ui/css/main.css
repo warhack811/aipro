@@ -1,0 +1,27 @@
+/* ============================================
+   MAIN.CSS - Central Import File
+   CSS Modular System for Mami AI v4
+   ============================================ */
+
+/* 1. Variables & Themes (must be first) */
+@import url('variables.css');
+@import url('themes.css');
+
+/* 2. Base - Reset, body, scrollbar */
+@import url('base.css');
+
+/* 3. Layout - Main structure */
+@import url('sidebar.css');
+@import url('header.css');
+
+/* 4. Components - UI elements */
+@import url('messages.css');
+@import url('layout.css');
+@import url('code-blocks.css');
+@import url('modals.css');
+
+/* 5. Utilities - Responsive, animations */
+@import url('utilities.css');
+
+/* 6. Modern Features - Streaming, actions, welcome */
+@import url('modern.css');
