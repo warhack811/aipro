@@ -1,0 +1,436 @@
+.
+├── .env
+├── .env.example
+├── .gitignore
+├── .pre-commit-config.yaml
+├── Makefile
+├── README.md
+├── alembic
+│   ├── env.py
+│   ├── script.py.mako
+│   └── versions
+│       └── 20251207_1933_8ff1f9138cea_add_active_persona_to_users.py
+├── alembic.ini
+├── app
+│   ├── __init__.py
+│   ├── ai
+│   │   ├── __init__.py
+│   │   ├── groq
+│   │   │   └── __init__.py
+│   │   ├── ollama
+│   │   │   ├── __init__.py
+│   │   │   └── gemma_handler.py
+│   │   └── prompts
+│   │       ├── __init__.py
+│   │       ├── compiler.py
+│   │       ├── identity.py
+│   │       └── image_guard.py
+│   ├── api
+│   │   ├── __init__.py
+│   │   ├── admin_routes.py
+│   │   ├── auth_routes.py
+│   │   ├── public_routes.py
+│   │   ├── routes
+│   │   │   └── __init__.py
+│   │   ├── system_routes.py
+│   │   └── user_routes.py
+│   ├── auth
+│   │   ├── __init__.py
+│   │   ├── dependencies.py
+│   │   ├── invite_manager.py
+│   │   ├── permissions.py
+│   │   ├── remember.py
+│   │   ├── session.py
+│   │   └── user_manager.py
+│   ├── chat
+│   │   ├── __init__.py
+│   │   ├── answerer.py
+│   │   ├── decider.py
+│   │   ├── processor.py
+│   │   ├── search.py
+│   │   ├── smart_router.py
+│   │   └── streaming_buffer.py
+│   ├── config.py
+│   ├── core
+│   │   ├── __init__.py
+│   │   ├── config_models.py
+│   │   ├── config_seed.py
+│   │   ├── database.py
+│   │   ├── dynamic_config.py
+│   │   ├── exceptions.py
+│   │   ├── feature_flags.py
+│   │   ├── feedback_store.py
+│   │   ├── gpu_manager.py
+│   │   ├── health.py
+│   │   ├── logger.py
+│   │   ├── maintenance.py
+│   │   ├── models.py
+│   │   ├── prompts.py
+│   │   ├── summary_config.py
+│   │   ├── types.py
+│   │   └── usage_limiter.py
+│   ├── image
+│   │   ├── __init__.py
+│   │   ├── circuit_breaker.py
+│   │   ├── flux_stub.py
+│   │   ├── gpu_state.py
+│   │   ├── image_manager.py
+│   │   ├── job_queue.py
+│   │   ├── pending_state.py
+│   │   ├── routing.py
+│   │   └── safe_callback.py
+│   ├── main.py
+│   ├── memory
+│   │   ├── __init__.py
+│   │   ├── conversation.py
+│   │   ├── rag.py
+│   │   └── store.py
+│   ├── plugins
+│   │   ├── __init__.py
+│   │   ├── async_image
+│   │   │   ├── __init__.py
+│   │   │   ├── plugin.py
+│   │   │   └── tasks.py
+│   │   └── response_enhancement
+│   │       ├── __init__.py
+│   │       ├── config.py
+│   │       ├── orchestrator.py
+│   │       ├── plugin.py
+│   │       ├── prompt_enhancer.py
+│   │       ├── smart_shaper.py
+│   │       └── visual_beautifier.py
+│   ├── search
+│   │   ├── __init__.py
+│   │   ├── manager.py
+│   │   ├── providers
+│   │   │   ├── __init__.py
+│   │   │   ├── bing.py
+│   │   │   ├── duck.py
+│   │   │   └── serper.py
+│   │   └── structured_parser.py
+│   ├── services
+│   │   ├── __init__.py
+│   │   ├── context_truncation_manager.py
+│   │   ├── memory_duplicate_detector.py
+│   │   ├── memory_service.py
+│   │   ├── model_router.py
+│   │   ├── query_enhancer.py
+│   │   ├── response_processor.py
+│   │   ├── semantic_classifier.py
+│   │   ├── streaming_memory_manager.py
+│   │   ├── summary_service.py
+│   │   ├── tool_output_formatter.py
+│   │   ├── user_context.py
+│   │   └── user_preferences.py
+│   └── websocket_sender.py
+├── data
+│   ├── app.db
+│   ├── app.db-shm
+│   ├── app.db-wal
+│   ├── app.db.backup
+│   ├── chroma_db
+│   │   ├── 2406b525-4e95-46bb-9f93-cc0488daa8b1
+│   │   ├── 98b15e69-2c50-4f72-a9b1-4294e93f214e
+│   │   │   ├── data_level0.bin
+│   │   │   ├── header.bin
+│   │   │   ├── index_metadata.pickle
+│   │   │   ├── length.bin
+│   │   │   └── link_lists.bin
+│   │   └── chroma.sqlite3
+│   ├── chroma_db.backup
+│   │   ├── 2406b525-4e95-46bb-9f93-cc0488daa8b1
+│   │   ├── 98b15e69-2c50-4f72-a9b1-4294e93f214e
+│   │   └── chroma.sqlite3
+│   ├── images
+│   │   ├── flux_1765574150.png
+│   │   ├── flux_1765582276.png
+│   │   ├── flux_1765582521.png
+│   │   ├── flux_1765582740.png
+│   │   ├── flux_1765582915.png
+│   │   ├── flux_1765583125.png
+│   │   ├── flux_1765615252.png
+│   │   ├── flux_1765615338.png
+│   │   ├── flux_1765615568.png
+│   │   ├── flux_1765615678.png
+│   │   ├── flux_1765616485.png
+│   │   ├── flux_1765616575.png
+│   │   ├── flux_1765616670.png
+│   │   ├── flux_1765616874.png
+│   │   ├── flux_1765616974.png
+│   │   ├── flux_1765617063.png
+│   │   ├── flux_1765617148.png
+│   │   ├── flux_1765617839.png
+│   │   ├── flux_1765617923.png
+│   │   ├── flux_1765618534.png
+│   │   ├── flux_1765618981.png
+│   │   ├── flux_1765619087.png
+│   │   ├── flux_1765619171.png
+│   │   ├── flux_1765619252.png
+│   │   ├── flux_1765619384.png
+│   │   ├── flux_1765619481.png
+│   │   ├── flux_1765619565.png
+│   │   ├── flux_1765619650.png
+│   │   ├── flux_1765620799.png
+│   │   ├── flux_1765620882.png
+│   │   ├── flux_1765620965.png
+│   │   ├── flux_1765623982.png
+│   │   ├── flux_1765627057.png
+│   │   ├── flux_1765627345.png
+│   │   ├── flux_1765634742.png
+│   │   ├── flux_1765634826.png
+│   │   ├── flux_1765634908.png
+│   │   ├── flux_1765636451.png
+│   │   ├── flux_1765636555.png
+│   │   ├── flux_1765636856.png
+│   │   ├── flux_1765637112.png
+│   │   ├── flux_1765637221.png
+│   │   ├── flux_1765637312.png
+│   │   ├── flux_1765637404.png
+│   │   ├── flux_1765637489.png
+│   │   ├── flux_1765637575.png
+│   │   ├── flux_1765637669.png
+│   │   ├── flux_1765637752.png
+│   │   ├── flux_1765637835.png
+│   │   ├── flux_1765640843.png
+│   │   ├── flux_1765641157.png
+│   │   ├── flux_1765641487.png
+│   │   ├── flux_1765641814.png
+│   │   ├── flux_1765641957.png
+│   │   ├── flux_1765642042.png
+│   │   ├── flux_1765642121.png
+│   │   ├── flux_1765642874.png
+│   │   ├── flux_1765643098.png
+│   │   ├── flux_1765643256.png
+│   │   ├── flux_1765643350.png
+│   │   ├── flux_1765643489.png
+│   │   ├── flux_1765644924.png
+│   │   ├── flux_1765645022.png
+│   │   ├── flux_1765645115.png
+│   │   ├── flux_1765645200.png
+│   │   ├── flux_1765645292.png
+│   │   ├── flux_1765645375.png
+│   │   ├── flux_1765645458.png
+│   │   ├── flux_1765646776.png
+│   │   ├── flux_1765646866.png
+│   │   ├── flux_1765646948.png
+│   │   ├── flux_1765647396.png
+│   │   ├── flux_1765647481.png
+│   │   ├── flux_1765647667.png
+│   │   ├── flux_1765647755.png
+│   │   ├── flux_1765670524.png
+│   │   └── placeholders
+│   │       ├── error.png
+│   │       ├── maintenance.png
+│   │       └── timeout.png
+│   └── uploads
+├── docker
+│   ├── .dockerignore
+│   ├── Dockerfile
+│   └── docker-compose.yml
+├── docs
+│   ├── ARCHITECTURE.md
+│   ├── BACKEND_ANALYSIS_REPORT.md
+│   ├── DETAYLI_HATA_ANALIZI_VE_COZUMLER.md
+│   ├── DETAYLI_HATA_ANALIZI_VE_COZUMLER_DEVAM.md
+│   ├── FRONTEND_ANALYSIS_REPORT.md
+│   ├── IMAGE_QUEUE_SYSTEM.md
+│   ├── IMPROVEMENTS_FOR_10_10.md
+│   ├── MESSAGE_RENDERING.md
+│   ├── PROJECT_DOCUMENTATION.md
+│   ├── QUALITY_MASTER_PLAN.md
+│   ├── README.md
+│   ├── ROADMAP.md
+│   ├── UYGULAMA_RAPORU_FINAL.md
+│   └── auto
+│       └── _generator.py
+├── logs
+│   ├── deployment_20251211_232941.log
+│   ├── deployment_20251211_233454.log
+│   ├── deployment_20251211_233952.log
+│   ├── deployment_20251211_234825.log
+│   └── mami.log
+├── main.py
+├── plans
+│   ├── theme_compatibility_report.md
+│   └── ui_migration_analysis.md
+├── pyproject.toml
+├── requirements-dev.txt
+├── requirements.txt
+├── requirements_upgrade.txt
+├── scripts
+│   ├── __init__.py
+│   ├── cleanup_memories.py
+│   ├── create_placeholder_images.py
+│   ├── deploy_critical_fixes.py
+│   ├── deploy_critical_fixes.sh
+│   ├── launcher.pyw
+│   ├── list_memories.py
+│   ├── mobile_server.bat
+│   ├── redis.bat
+│   ├── setup_alembic_migration.py
+│   └── start.bat
+├── test_persona.py
+├── tests
+│   ├── __init__.py
+│   ├── conftest.py
+│   ├── eval_harness
+│   │   ├── cases
+│   │   │   └── suite_v1.json
+│   │   ├── client.py
+│   │   ├── judges
+│   │   │   └── rule_based.py
+│   │   ├── metrics.py
+│   │   ├── reports
+│   │   │   ├── report_20251205_214909.json
+│   │   │   ├── report_20251205_221738.json
+│   │   │   ├── report_20251205_223934.json
+│   │   │   └── report_20251205_224949.json
+│   │   └── runner.py
+│   ├── test_critical_fixes.py
+│   ├── test_fixes_8_9.py
+│   ├── test_image_router.py
+│   ├── test_next_three_fixes.py
+│   ├── test_persona_system.py
+│   ├── test_professional_output.py
+│   ├── test_response_enhancement.py
+│   ├── test_smart_router.py
+│   └── test_streaming_buffer.py
+├── ui
+│   ├── admin.html
+│   ├── chat.html
+│   ├── css
+│   │   ├── base.css
+│   │   ├── code-blocks.css
+│   │   ├── header.css
+│   │   ├── layout.css
+│   │   ├── main.css
+│   │   ├── messages.css
+│   │   ├── modals.css
+│   │   ├── modern.css
+│   │   ├── sidebar.css
+│   │   ├── themes.css
+│   │   ├── utilities.css
+│   │   └── variables.css
+│   ├── js
+│   │   ├── chat-core.js
+│   │   ├── images.js
+│   │   ├── main.js
+│   │   ├── markdown.js
+│   │   ├── memory.js
+│   │   ├── persona.js
+│   │   ├── ui.js
+│   │   └── utils.js
+│   ├── login.html
+│   ├── manifest.json
+│   ├── register.html
+│   └── sw.js
+└── ui-new
+    ├── .gitignore
+    ├── README.md
+    ├── eslint.config.js
+    ├── index.html
+    ├── lint.log
+    ├── package-lock.json
+    ├── package.json
+    ├── public
+    │   ├── manifest.json
+    │   ├── pwa
+    │   │   ├── apple-touch-icon.png
+    │   │   ├── icon-144.png
+    │   │   ├── icon-16.png
+    │   │   ├── icon-192.png
+    │   │   ├── icon-32.png
+    │   │   ├── icon-512.png
+    │   │   ├── icon-72.png
+    │   │   └── icon-96.png
+    │   ├── sw.js
+    │   └── vite.svg
+    ├── src
+    │   ├── App.css
+    │   ├── App.tsx
+    │   ├── api
+    │   │   ├── client.ts
+    │   │   └── index.ts
+    │   ├── assets
+    │   │   └── react.svg
+    │   ├── components
+    │   │   ├── chat
+    │   │   │   ├── ChatArea.tsx
+    │   │   │   ├── ChatInput.tsx
+    │   │   │   ├── CodeBlock.tsx
+    │   │   │   ├── ContextPanel.tsx
+    │   │   │   ├── ImageCompletedCard.tsx
+    │   │   │   ├── ImageProgressCard.tsx
+    │   │   │   ├── MessageBubble.tsx
+    │   │   │   ├── MessageList.tsx
+    │   │   │   ├── MessageReactions.tsx
+    │   │   │   ├── QuickSettings.tsx
+    │   │   │   ├── ReplyPreview.tsx
+    │   │   │   ├── ScrollToBottomButton.tsx
+    │   │   │   ├── TypingIndicator.tsx
+    │   │   │   ├── WelcomeScreen.tsx
+    │   │   │   └── index.ts
+    │   │   ├── common
+    │   │   │   ├── BottomNav.tsx
+    │   │   │   ├── CommandPalette.tsx
+    │   │   │   ├── ConversationSearch.tsx
+    │   │   │   ├── EmptyState.tsx
+    │   │   │   ├── ErrorBoundary.tsx
+    │   │   │   ├── ExportImport.tsx
+    │   │   │   ├── FileUpload.tsx
+    │   │   │   ├── FloatingImageBadge.tsx
+    │   │   │   ├── ImageGallery.tsx
+    │   │   │   ├── MemoryManager.tsx
+    │   │   │   ├── MobileDrawer.tsx
+    │   │   │   ├── MultiModalInput.tsx
+    │   │   │   ├── PageTransition.tsx
+    │   │   │   ├── SettingsSheet.tsx
+    │   │   │   ├── ThemePicker.tsx
+    │   │   │   ├── Toast.tsx
+    │   │   │   └── index.ts
+    │   │   ├── layout
+    │   │   │   ├── ChatLayout.tsx
+    │   │   │   ├── Header.tsx
+    │   │   │   ├── Sidebar.tsx
+    │   │   │   └── index.ts
+    │   │   └── ui
+    │   │       ├── Avatar.tsx
+    │   │       ├── Button.tsx
+    │   │       ├── Input.tsx
+    │   │       ├── Skeleton.tsx
+    │   │       ├── Textarea.tsx
+    │   │       └── index.ts
+    │   ├── hooks
+    │   │   ├── index.ts
+    │   │   ├── useAuth.ts
+    │   │   ├── useConversations.ts
+    │   │   ├── useImageJobs.ts
+    │   │   ├── useImageProgress.ts
+    │   │   ├── useMobileGestures.ts
+    │   │   ├── useMobileKeyboard.ts
+    │   │   ├── usePreferences.ts
+    │   │   ├── useResponsive.ts
+    │   │   └── useWebSocket.ts
+    │   ├── index.css
+    │   ├── lib
+    │   │   ├── codeHighlighter.ts
+    │   │   ├── errorMessages.ts
+    │   │   ├── markdownRenderer.ts
+    │   │   └── utils.ts
+    │   ├── main.tsx
+    │   ├── stores
+    │   │   ├── chatStore.ts
+    │   │   ├── imageJobsStore.ts
+    │   │   ├── index.ts
+    │   │   ├── settingsStore.ts
+    │   │   ├── themeStore.ts
+    │   │   └── userStore.ts
+    │   ├── styles
+    │   │   ├── code.css
+    │   │   └── globals.css
+    │   └── types
+    │       └── index.ts
+    ├── tsconfig.app.json
+    ├── tsconfig.json
+    ├── tsconfig.node.json
+    └── vite.config.ts

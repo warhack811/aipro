@@ -1,0 +1,6061 @@
+{
+  "generated_at": "2025-12-15T13:30:20.470368",
+  "repo_root": ".",
+  "stats": {
+    "total_files": 376,
+    "total_python_files": 120,
+    "total_ts_files": 79,
+    "total_test_files": 11
+  },
+  "files": [
+    {
+      "path": ".env",
+      "type": "other",
+      "loc": 65,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": ".env.example",
+      "type": "other",
+      "loc": 65,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": ".gitignore",
+      "type": "other",
+      "loc": 137,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": ".pre-commit-config.yaml",
+      "type": "yaml",
+      "loc": 22,
+      "summary": "yaml file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "alembic.ini",
+      "type": "other",
+      "loc": 70,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "main.py",
+      "type": "python",
+      "loc": 31,
+      "summary": "Mami AI - Ana Giri\u015f Noktas\u0131",
+      "imports": [
+        "app.main",
+        "app.websocket_sender"
+      ],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "Makefile",
+      "type": "other",
+      "loc": 130,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "pyproject.toml",
+      "type": "other",
+      "loc": 100,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "README.md",
+      "type": "markdown",
+      "loc": 26,
+      "summary": "markdown file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "requirements-dev.txt",
+      "type": "other",
+      "loc": 38,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "requirements.txt",
+      "type": "other",
+      "loc": 21,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "requirements_upgrade.txt",
+      "type": "other",
+      "loc": 10,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "test_persona.py",
+      "type": "python",
+      "loc": 19,
+      "summary": "python file validation/logic.",
+      "imports": [
+        "httpx",
+        "asyncio"
+      ],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "alembic/env.py",
+      "type": "python",
+      "loc": 95,
+      "summary": "Mami AI - Alembic Migration Environment",
+      "imports": [
+        "os",
+        "sys",
+        "logging.config",
+        "sqlalchemy",
+        "alembic",
+        "app.config",
+        "app.core.config_models",
+        "app.core.models"
+      ],
+      "exports": [
+        "func:run_migrations_offline",
+        "func:run_migrations_online"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "alembic/script.py.mako",
+      "type": "other",
+      "loc": 36,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "alembic/versions/20251207_1933_8ff1f9138cea_add_active_persona_to_users.py",
+      "type": "python",
+      "loc": 38,
+      "summary": "add_active_persona_to_users",
+      "imports": [
+        "typing",
+        "sqlalchemy",
+        "sqlmodel",
+        "alembic"
+      ],
+      "exports": [
+        "func:upgrade",
+        "func:downgrade"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/config.py",
+      "type": "python",
+      "loc": 222,
+      "summary": "Mami AI - Uygulama Yap\u0131land\u0131rmas\u0131",
+      "imports": [
+        "functools",
+        "typing",
+        "pydantic",
+        "pydantic_settings"
+      ],
+      "exports": [
+        "class:Settings",
+        "func:get_settings"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/main.py",
+      "type": "python",
+      "loc": 358,
+      "summary": "Mami AI - Ana Uygulama Giri\u015f Noktas\u0131",
+      "imports": [
+        "os",
+        "sys",
+        "pathlib",
+        "fastapi",
+        "fastapi.middleware.cors",
+        "fastapi.responses",
+        "fastapi.staticfiles",
+        "starlette.middleware.sessions",
+        "app.auth.invite_manager",
+        "app.auth.session",
+        "app.auth.user_manager",
+        "app.config",
+        "app.core.database",
+        "app.core.exceptions",
+        "app.core.logger",
+        "app.memory.conversation",
+        "app.memory.store",
+        "http.cookies",
+        "app.auth.dependencies",
+        "app.auth.session",
+        "app.websocket_sender",
+        "app.api",
+        "fastapi.responses",
+        "fastapi.responses",
+        "app.core.maintenance",
+        "app.core.dynamic_config",
+        "fastapi.responses"
+      ],
+      "exports": [
+        "func:_resolve_user_id"
+      ],
+      "entrypoints": [
+        "fastapi_app"
+      ],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/websocket_sender.py",
+      "type": "python",
+      "loc": 226,
+      "summary": "WebSocket \u0130leti\u015fim Mod\u00fcl\u00fc",
+      "imports": [
+        "logging",
+        "enum",
+        "typing"
+      ],
+      "exports": [
+        "class:ImageJobStatus"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/__init__.py",
+      "type": "python",
+      "loc": 33,
+      "summary": "python file validation/logic.",
+      "imports": [
+        "os"
+      ],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/ai/__init__.py",
+      "type": "python",
+      "loc": 8,
+      "summary": "Mami AI - AI Module",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/ai/groq/__init__.py",
+      "type": "python",
+      "loc": 18,
+      "summary": "Groq Entegrasyonu",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/ai/ollama/gemma_handler.py",
+      "type": "python",
+      "loc": 346,
+      "summary": "python file validation/logic.",
+      "imports": [
+        "__future__",
+        "json",
+        "re",
+        "typing",
+        "httpx",
+        "app.ai.prompts.identity",
+        "app.config",
+        "app.core.gpu_manager",
+        "app.core.logger",
+        "app.services.response_processor",
+        "re",
+        "re"
+      ],
+      "exports": [
+        "func:strip_think_blocks",
+        "func:strip_think_stateful"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/ai/ollama/__init__.py",
+      "type": "python",
+      "loc": 0,
+      "summary": "python file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/ai/prompts/compiler.py",
+      "type": "python",
+      "loc": 518,
+      "summary": "Mami AI - System Prompt Compiler",
+      "imports": [
+        "logging",
+        "typing",
+        "app.core.models",
+        "app.auth.permissions",
+        "app.core.dynamic_config",
+        "app.core.dynamic_config"
+      ],
+      "exports": [
+        "func:_get_persona_prompt",
+        "func:_get_user_prefs_prompt",
+        "func:_get_toggle_context",
+        "func:_get_safety_context",
+        "func:build_system_prompt",
+        "func:get_persona_initial_message"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/ai/prompts/identity.py",
+      "type": "python",
+      "loc": 222,
+      "summary": "Mami AI - AI Kimlik Y\u00f6netimi",
+      "imports": [
+        "logging",
+        "re",
+        "datetime",
+        "typing",
+        "sqlmodel",
+        "app.core.database",
+        "app.core.models",
+        "app.core.database",
+        "app.core.models"
+      ],
+      "exports": [
+        "func:_get_imports",
+        "func:_get_default_identity",
+        "func:get_ai_identity",
+        "func:update_ai_identity",
+        "func:enforce_model_identity"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/ai/prompts/image_guard.py",
+      "type": "python",
+      "loc": 256,
+      "summary": "Mami AI - Image Prompt Guard",
+      "imports": [
+        "logging",
+        "re",
+        "typing"
+      ],
+      "exports": [
+        "func:_normalize_for_search",
+        "func:_token_in_text",
+        "func:get_forbidden_tokens_in_prompt",
+        "func:sanitize_image_prompt",
+        "func:validate_prompt_minimal"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/ai/prompts/__init__.py",
+      "type": "python",
+      "loc": 30,
+      "summary": "Mami AI - Prompts Module",
+      "imports": [
+        "app.ai.prompts.compiler",
+        "app.ai.prompts.image_guard"
+      ],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/api/admin_routes.py",
+      "type": "python",
+      "loc": 384,
+      "summary": "python file validation/logic.",
+      "imports": [
+        "__future__",
+        "dataclasses",
+        "datetime",
+        "pathlib",
+        "typing",
+        "fastapi",
+        "pydantic",
+        "sqlmodel",
+        "app.ai.prompts.identity",
+        "app.auth",
+        "app.auth.dependencies",
+        "app.auth.session",
+        "app.core.database",
+        "app.core.feedback_store",
+        "app.core.logger",
+        "app.core.models",
+        "app.core.summary_config",
+        "app.image.gpu_state",
+        "app.image.image_manager",
+        "sqlmodel"
+      ],
+      "exports": [
+        "class:AdminUserOut",
+        "class:AdminUserUpdate",
+        "class:AdminSummaryOut",
+        "class:AdminInviteOut",
+        "class:AdminCreateInvite",
+        "class:IdentityUpdate",
+        "class:AdminMessageLogItem",
+        "class:SummarySettingsUpdate",
+        "class:AdminFeedbackOut"
+      ],
+      "entrypoints": [
+        "fastapi_app"
+      ],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/api/auth_routes.py",
+      "type": "python",
+      "loc": 48,
+      "summary": "Auth Routes - Kimlik do\u011frulama endpoint'leri",
+      "imports": [
+        "fastapi",
+        "app.core.logger",
+        "app.auth.dependencies"
+      ],
+      "exports": [],
+      "entrypoints": [
+        "fastapi_app"
+      ],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/api/public_routes.py",
+      "type": "python",
+      "loc": 192,
+      "summary": "python file validation/logic.",
+      "imports": [
+        "typing",
+        "fastapi",
+        "pydantic",
+        "app.auth",
+        "app.auth",
+        "app.auth",
+        "app.auth",
+        "app.config",
+        "app.core.logger"
+      ],
+      "exports": [
+        "class:RegisterRequest",
+        "class:LoginRequest"
+      ],
+      "entrypoints": [
+        "fastapi_app"
+      ],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/api/system_routes.py",
+      "type": "python",
+      "loc": 83,
+      "summary": "python file validation/logic.",
+      "imports": [
+        "typing",
+        "fastapi",
+        "pydantic",
+        "app.config",
+        "app.core.feature_flags",
+        "app.core.health",
+        "app.image.gpu_state",
+        "app.image.image_manager"
+      ],
+      "exports": [
+        "class:FeatureToggleRequest"
+      ],
+      "entrypoints": [
+        "fastapi_app"
+      ],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/api/user_routes.py",
+      "type": "python",
+      "loc": 808,
+      "summary": "python file validation/logic.",
+      "imports": [
+        "json",
+        "pathlib",
+        "typing",
+        "fastapi",
+        "fastapi.responses",
+        "pydantic",
+        "app.auth.dependencies",
+        "app.chat.decider",
+        "app.chat.processor",
+        "app.core.database",
+        "app.core.feedback_store",
+        "app.core.logger",
+        "app.core.models",
+        "app.core.usage_limiter",
+        "app.image.gpu_state",
+        "app.image.job_queue",
+        "app.image.pending_state",
+        "app.memory.conversation",
+        "app.memory.conversation",
+        "app.memory.conversation",
+        "app.memory.conversation",
+        "app.memory.conversation",
+        "app.memory.rag",
+        "app.memory.store",
+        "app.services",
+        "PyPDF2",
+        "PyPDF2",
+        "app.image.pending_state",
+        "sqlmodel",
+        "app.auth.permissions",
+        "app.core.dynamic_config",
+        "app.core.dynamic_config",
+        "sqlmodel",
+        "app.auth.permissions",
+        "app.core.dynamic_config",
+        "app.core.dynamic_config",
+        "app.image.pending_state",
+        "app.memory.conversation"
+      ],
+      "exports": [
+        "func:chunk_text",
+        "func:extract_text_from_pdf",
+        "func:_build_message_metadata",
+        "class:ChatRequest",
+        "class:ConversationSummaryOut",
+        "class:MessageOut",
+        "class:MemoryItemOut",
+        "class:MemoryCreateIn",
+        "class:MemoryUpdateIn",
+        "class:UserImageOut",
+        "class:FeedbackIn",
+        "class:UserPreferenceIn",
+        "class:UserPreferenceOut",
+        "class:UserPreferencesListOut",
+        "class:PersonaOut",
+        "class:PersonaListOut",
+        "class:PersonaSelectIn",
+        "class:PersonaSelectOut"
+      ],
+      "entrypoints": [
+        "fastapi_app"
+      ],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/api/__init__.py",
+      "type": "python",
+      "loc": 0,
+      "summary": "python file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/api/routes/__init__.py",
+      "type": "python",
+      "loc": 20,
+      "summary": "API Routes",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/auth/dependencies.py",
+      "type": "python",
+      "loc": 231,
+      "summary": "Mami AI - FastAPI Auth Dependencies",
+      "imports": [
+        "__future__",
+        "typing",
+        "fastapi",
+        "app.core.models",
+        "app.auth",
+        "app.auth.user_manager",
+        "app.config",
+        "app.core.logger",
+        "app.core.models",
+        "app.auth.user_manager",
+        "app.config",
+        "app.core.logger",
+        "app.core.models",
+        "auth"
+      ],
+      "exports": [
+        "func:_get_imports",
+        "func:get_optional_user"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/auth/invite_manager.py",
+      "type": "python",
+      "loc": 200,
+      "summary": "Mami AI - Davet Kodu Y\u00f6netimi",
+      "imports": [
+        "__future__",
+        "logging",
+        "secrets",
+        "datetime",
+        "typing",
+        "sqlmodel",
+        "app.core.database",
+        "app.core.models",
+        "app.core.database",
+        "app.core.models"
+      ],
+      "exports": [
+        "func:_get_imports",
+        "func:generate_invite",
+        "func:find_valid_invite",
+        "func:mark_invite_used",
+        "func:list_invites",
+        "func:delete_invite",
+        "func:ensure_initial_invite"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/auth/permissions.py",
+      "type": "python",
+      "loc": 368,
+      "summary": "Mami AI - Kullan\u0131c\u0131 \u0130zin Yard\u0131mc\u0131lar\u0131",
+      "imports": [
+        "logging",
+        "typing",
+        "app.core.models"
+      ],
+      "exports": [
+        "func:_get_permissions",
+        "func:_get_bool_permission",
+        "func:user_can_use_local",
+        "func:user_can_use_internet",
+        "func:user_can_use_image",
+        "func:get_censorship_level",
+        "func:is_censorship_strict",
+        "func:is_censorship_unrestricted",
+        "func:can_generate_nsfw_image",
+        "func:can_auto_route_to_local",
+        "func:get_user_permission_summary"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/auth/remember.py",
+      "type": "python",
+      "loc": 208,
+      "summary": "Mami AI - \"Beni Hat\u0131rla\" Token Y\u00f6netimi",
+      "imports": [
+        "__future__",
+        "logging",
+        "secrets",
+        "datetime",
+        "typing",
+        "sqlmodel",
+        "app.core.database",
+        "app.core.models",
+        "app.auth.user_manager",
+        "app.auth.user_manager",
+        "app.core.database",
+        "app.core.models",
+        "app.auth.user_manager",
+        "app.auth.user_manager"
+      ],
+      "exports": [
+        "func:_get_imports",
+        "func:create_remember_token",
+        "func:get_username_from_token",
+        "func:invalidate_token",
+        "func:cleanup_expired_tokens"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/auth/session.py",
+      "type": "python",
+      "loc": 337,
+      "summary": "Mami AI - Oturum Y\u00f6netimi",
+      "imports": [
+        "__future__",
+        "logging",
+        "secrets",
+        "datetime",
+        "typing",
+        "fastapi",
+        "sqlmodel",
+        "app.auth",
+        "app.auth.dependencies",
+        "app.auth.user_manager",
+        "app.core.database",
+        "app.core.models",
+        "app.auth.dependencies",
+        "app.auth.user_manager",
+        "app.core.database",
+        "app.core.models",
+        "auth"
+      ],
+      "exports": [
+        "func:_get_imports",
+        "func:create_session",
+        "func:get_session_by_token",
+        "func:invalidate_session",
+        "func:touch_session",
+        "func:get_user_from_session_token",
+        "func:cleanup_expired_sessions",
+        "func:get_username_from_request"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/auth/user_manager.py",
+      "type": "python",
+      "loc": 380,
+      "summary": "Mami AI - Kullan\u0131c\u0131 Y\u00f6netimi",
+      "imports": [
+        "__future__",
+        "logging",
+        "typing",
+        "passlib.context",
+        "sqlmodel",
+        "app.config",
+        "app.core.database",
+        "app.core.models",
+        "app.config",
+        "app.core.database",
+        "app.core.models"
+      ],
+      "exports": [
+        "func:_get_imports",
+        "func:_hash_password",
+        "func:verify_password",
+        "func:create_user",
+        "func:get_user_by_username",
+        "func:get_user_by_id",
+        "func:list_users",
+        "func:update_user",
+        "func:get_user_limits_and_permissions",
+        "func:ensure_default_admin"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/auth/__init__.py",
+      "type": "python",
+      "loc": 76,
+      "summary": "Auth Mod\u00fcl\u00fc",
+      "imports": [
+        "app.auth.dependencies",
+        "app.auth.invite_manager",
+        "app.auth.remember",
+        "app.auth.session",
+        "app.auth.user_manager"
+      ],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/chat/answerer.py",
+      "type": "python",
+      "loc": 529,
+      "summary": "Mami AI - Yan\u0131t \u00dcretici (Groq Answerer)",
+      "imports": [
+        "__future__",
+        "logging",
+        "re",
+        "typing",
+        "app.ai.prompts.identity",
+        "app.chat.decider",
+        "app.config",
+        "app.services.response_processor",
+        "app.chat.streaming_buffer",
+        "app.chat.streaming_buffer"
+      ],
+      "exports": [
+        "func:_get_imports",
+        "func:get_dynamic_temperature",
+        "func:_clean_thinking_block",
+        "func:_build_user_content",
+        "func:_append_history"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/chat/decider.py",
+      "type": "python",
+      "loc": 472,
+      "summary": "Mami AI - Groq API & Query Builder",
+      "imports": [
+        "__future__",
+        "asyncio",
+        "json",
+        "logging",
+        "typing",
+        "httpx",
+        "app.config"
+      ],
+      "exports": [
+        "func:_get_settings",
+        "func:_get_available_keys"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/chat/processor.py",
+      "type": "python",
+      "loc": 844,
+      "summary": "Mami AI - Ana Sohbet \u0130\u015flemcisi",
+      "imports": [
+        "__future__",
+        "asyncio",
+        "logging",
+        "re",
+        "datetime",
+        "html",
+        "typing",
+        "app.ai.ollama.gemma_handler",
+        "app.ai.prompts.compiler",
+        "app.ai.prompts.identity",
+        "app.auth.permissions",
+        "app.chat.answerer",
+        "app.chat.decider",
+        "app.chat.search",
+        "app.chat.smart_router",
+        "app.config",
+        "app.core.exceptions",
+        "app.core.feature_flags",
+        "app.core.logger",
+        "app.core.models",
+        "app.image.image_manager",
+        "app.image.job_queue",
+        "app.memory.conversation",
+        "app.memory.rag",
+        "app.memory.store",
+        "app.services.model_router",
+        "app.services.query_enhancer",
+        "app.services.semantic_classifier",
+        "app.services.summary_service",
+        "app.services.user_context",
+        "app.memory.conversation",
+        "app.services.context_truncation_manager",
+        "app.services.context_truncation_manager",
+        "app.ai.prompts.image_guard",
+        "app.chat.decider",
+        "uuid",
+        "app.chat.decider",
+        "app.chat.streaming_buffer",
+        "app.services.streaming_memory_manager",
+        "hashlib",
+        "app.memory.conversation"
+      ],
+      "exports": [
+        "func:_get_imports",
+        "func:_get_conversation_summary",
+        "func:_norm_mem_text",
+        "func:_mem_key",
+        "func:_estimate_tokens",
+        "func:build_memory_hint",
+        "func:build_history_budget",
+        "func:normalize_groq_history",
+        "func:_format_context_block",
+        "func:_truncate_context_text"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/chat/search.py",
+      "type": "python",
+      "loc": 229,
+      "summary": "Mami AI - \u0130nternet Arama \u0130\u015fleyicisi",
+      "imports": [
+        "__future__",
+        "json",
+        "logging",
+        "traceback",
+        "typing",
+        "app.chat.answerer",
+        "app.search.manager",
+        "app.search.structured_parser",
+        "app.services.tool_output_formatter"
+      ],
+      "exports": [
+        "func:_get_imports"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/chat/smart_router.py",
+      "type": "python",
+      "loc": 586,
+      "summary": "Mami AI - Ak\u0131ll\u0131 Model Y\u00f6nlendirici",
+      "imports": [
+        "logging",
+        "re",
+        "dataclasses",
+        "enum",
+        "typing",
+        "app.core.models",
+        "app.auth.permissions",
+        "app.core.dynamic_config",
+        "app.services"
+      ],
+      "exports": [
+        "class:RoutingTarget",
+        "class:ToolIntent",
+        "class:RoutingDecision",
+        "class:SmartRouter",
+        "func:route_message"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/chat/streaming_buffer.py",
+      "type": "python",
+      "loc": 150,
+      "summary": "Mami AI - Streaming Buffer Manager",
+      "imports": [
+        "logging",
+        "collections",
+        "typing"
+      ],
+      "exports": [
+        "class:StreamingBuffer"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/chat/__init__.py",
+      "type": "python",
+      "loc": 26,
+      "summary": "Chat Mod\u00fcl\u00fc",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/core/config_models.py",
+      "type": "python",
+      "loc": 547,
+      "summary": "Mami AI - Dinamik Yap\u0131land\u0131rma Modelleri",
+      "imports": [
+        "datetime",
+        "enum",
+        "typing",
+        "sqlalchemy",
+        "sqlmodel"
+      ],
+      "exports": [
+        "class:ConfigValueType",
+        "class:ConfigCategory",
+        "class:ModelProvider",
+        "class:PersonaModeType",
+        "class:SystemConfig",
+        "class:ModelConfig",
+        "class:APIConfig",
+        "class:ThemeConfig",
+        "class:PersonaConfig",
+        "class:ImageGenConfig",
+        "class:UITextConfig"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/core/config_seed.py",
+      "type": "python",
+      "loc": 958,
+      "summary": "Mami AI - Varsay\u0131lan Yap\u0131land\u0131rma Seed",
+      "imports": [
+        "logging",
+        "datetime",
+        "typing",
+        "sqlmodel",
+        "app.core.config_models",
+        "app.core.database"
+      ],
+      "exports": [
+        "func:_get_imports",
+        "func:seed_system_configs",
+        "func:seed_model_configs",
+        "func:seed_api_configs",
+        "func:seed_theme_configs",
+        "func:seed_persona_configs",
+        "func:seed_image_gen_configs",
+        "func:seed_ui_texts",
+        "func:seed_all_configs"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/core/database.py",
+      "type": "python",
+      "loc": 417,
+      "summary": "Mami AI - Veritaban\u0131 Y\u00f6netimi",
+      "imports": [
+        "logging",
+        "os",
+        "contextlib",
+        "pathlib",
+        "typing",
+        "sqlalchemy",
+        "sqlmodel",
+        "chromadb",
+        "chromadb.config",
+        "sqlalchemy",
+        "app.core.config_models",
+        "app.core.models",
+        "chromadb",
+        "app.config",
+        "os",
+        "alembic",
+        "alembic.config",
+        "app.core.config_seed",
+        "os",
+        "app.config"
+      ],
+      "exports": [
+        "func:_get_settings",
+        "func:get_db_url",
+        "func:_init_sqlite_engine",
+        "func:get_engine",
+        "func:create_db_and_tables",
+        "func:init_database_with_defaults",
+        "func:get_session",
+        "func:get_chroma_persist_dir",
+        "func:get_chroma_client",
+        "func:get_memories_collection",
+        "func:get_rag_collection"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/core/dynamic_config.py",
+      "type": "python",
+      "loc": 891,
+      "summary": "Mami AI - Dinamik Yap\u0131land\u0131rma Servisi",
+      "imports": [
+        "json",
+        "logging",
+        "datetime",
+        "functools",
+        "threading",
+        "typing",
+        "sqlmodel",
+        "app.core.database",
+        "app.core.config_models"
+      ],
+      "exports": [
+        "class:ConfigCache",
+        "class:DynamicConfigService",
+        "func:get_config",
+        "func:set_config"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/core/exceptions.py",
+      "type": "python",
+      "loc": 214,
+      "summary": "Mami AI - \u00d6zel Hata S\u0131n\u0131flar\u0131",
+      "imports": [
+        "typing"
+      ],
+      "exports": [
+        "class:MamiException",
+        "class:AuthenticationError",
+        "class:DailyLimitError",
+        "class:GroqAPIError",
+        "class:ImageGenerationError",
+        "class:FeatureDisabledError",
+        "class:SearchError",
+        "class:ValidationError"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/core/feature_flags.py",
+      "type": "python",
+      "loc": 195,
+      "summary": "Mami AI - \u00d6zellik Bayraklar\u0131 (Feature Flags)",
+      "imports": [
+        "json",
+        "logging",
+        "pathlib",
+        "typing"
+      ],
+      "exports": [
+        "func:_load_flags",
+        "func:_save_flags",
+        "func:feature_enabled",
+        "func:set_feature_flag",
+        "func:get_all_flags",
+        "func:reload_flags"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/core/feedback_store.py",
+      "type": "python",
+      "loc": 70,
+      "summary": "python file validation/logic.",
+      "imports": [
+        "__future__",
+        "datetime",
+        "typing",
+        "sqlmodel",
+        "app.auth.user_manager",
+        "app.core.database",
+        "app.core.logger",
+        "app.core.models",
+        "sqlmodel"
+      ],
+      "exports": [
+        "func:add_feedback",
+        "func:list_all_feedback"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/core/gpu_manager.py",
+      "type": "python",
+      "loc": 109,
+      "summary": "python file validation/logic.",
+      "imports": [
+        "asyncio",
+        "logging",
+        "time",
+        "enum",
+        "typing",
+        "httpx",
+        "app.config"
+      ],
+      "exports": [
+        "class:ModelState",
+        "class:GPUManager"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/core/health.py",
+      "type": "python",
+      "loc": 29,
+      "summary": "python file validation/logic.",
+      "imports": [
+        "time",
+        "fastapi",
+        "app.config",
+        "app.core.feature_flags"
+      ],
+      "exports": [],
+      "entrypoints": [
+        "fastapi_app"
+      ],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/core/logger.py",
+      "type": "python",
+      "loc": 201,
+      "summary": "Mami AI - Merkezi Loglama Sistemi",
+      "imports": [
+        "logging",
+        "logging.handlers",
+        "pathlib",
+        "typing"
+      ],
+      "exports": [
+        "func:_ensure_log_directory",
+        "func:get_logger",
+        "func:get_debug_logger",
+        "func:configure_root_logger",
+        "func:log_request",
+        "func:log_response"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/core/maintenance.py",
+      "type": "python",
+      "loc": 51,
+      "summary": "python file validation/logic.",
+      "imports": [
+        "threading",
+        "time",
+        "schedule",
+        "app.auth.user_manager",
+        "app.core.logger",
+        "app.memory.store",
+        "asyncio"
+      ],
+      "exports": [
+        "func:start_maintenance_scheduler"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/core/models.py",
+      "type": "python",
+      "loc": 396,
+      "summary": "Mami AI - Veritaban\u0131 Modelleri",
+      "imports": [
+        "datetime",
+        "typing",
+        "uuid",
+        "sqlalchemy",
+        "sqlmodel"
+      ],
+      "exports": [
+        "class:User",
+        "class:UserPreference",
+        "class:ModelPreset",
+        "class:Conversation",
+        "class:Message",
+        "class:ConversationSummary",
+        "class:AnswerCache",
+        "class:UsageCounter",
+        "class:Session",
+        "class:Invite",
+        "class:Feedback",
+        "class:AIIdentityConfig",
+        "class:ConversationSummarySettings"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/core/prompts.py",
+      "type": "python",
+      "loc": 105,
+      "summary": "Merkezi Prompt Y\u00f6netimi",
+      "imports": [
+        "locale",
+        "datetime",
+        "typing",
+        "app.ai.prompts.identity"
+      ],
+      "exports": [
+        "func:_time_context",
+        "func:get_system_prompt",
+        "func:get_groq_system_prompt_tr"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/core/summary_config.py",
+      "type": "python",
+      "loc": 67,
+      "summary": "python file validation/logic.",
+      "imports": [
+        "logging",
+        "datetime",
+        "typing",
+        "sqlmodel",
+        "app.core.database",
+        "app.core.models"
+      ],
+      "exports": [
+        "func:_build_default_settings",
+        "func:get_summary_settings",
+        "func:update_summary_settings"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/core/types.py",
+      "type": "python",
+      "loc": 200,
+      "summary": "Mami AI - Shared Type Definitions",
+      "imports": [
+        "typing",
+        "typing_extensions"
+      ],
+      "exports": [
+        "class:UserLike",
+        "class:UserPreferenceLike",
+        "class:SettingsLike",
+        "class:MessageLike",
+        "class:ConversationLike",
+        "class:SemanticAnalysisDict",
+        "class:SemanticAnalysisLike",
+        "class:RoutingDecisionDict",
+        "class:MemoryRecordDict",
+        "class:UserContextDict",
+        "class:ImageJobSpecDict"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/core/usage_limiter.py",
+      "type": "python",
+      "loc": 287,
+      "summary": "Mami AI - Kullan\u0131m Limitleri Y\u00f6netimi",
+      "imports": [
+        "__future__",
+        "logging",
+        "datetime",
+        "typing",
+        "fastapi",
+        "sqlmodel",
+        "app.core.database",
+        "app.core.models",
+        "app.core.database",
+        "app.core.models"
+      ],
+      "exports": [
+        "class:UsageLimiter"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/core/__init__.py",
+      "type": "python",
+      "loc": 20,
+      "summary": "Core Mod\u00fcl\u00fc",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/image/circuit_breaker.py",
+      "type": "python",
+      "loc": 171,
+      "summary": "Mami AI - Circuit Breaker for Forge API",
+      "imports": [
+        "logging",
+        "datetime",
+        "enum",
+        "typing"
+      ],
+      "exports": [
+        "class:CircuitState",
+        "class:ForgeCircuitBreaker"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/image/flux_stub.py",
+      "type": "python",
+      "loc": 287,
+      "summary": "python file validation/logic.",
+      "imports": [
+        "__future__",
+        "asyncio",
+        "base64",
+        "time",
+        "pathlib",
+        "typing",
+        "aiohttp",
+        "requests",
+        "app.config",
+        "app.core.exceptions",
+        "app.core.logger",
+        "app.image.circuit_breaker",
+        "app.image.gpu_state",
+        "app.image.pending_state",
+        "app.websocket_sender",
+        "app.memory.conversation"
+      ],
+      "exports": [
+        "func:_build_forge_url"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/image/gpu_state.py",
+      "type": "python",
+      "loc": 54,
+      "summary": "python file validation/logic.",
+      "imports": [
+        "__future__",
+        "time",
+        "enum",
+        "requests",
+        "app.config",
+        "app.core.logger"
+      ],
+      "exports": [
+        "class:ModelState",
+        "func:_unload_ollama",
+        "func:switch_to_flux",
+        "func:switch_to_gemma",
+        "func:get_state"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/image/image_manager.py",
+      "type": "python",
+      "loc": 215,
+      "summary": "python file validation/logic.",
+      "imports": [
+        "__future__",
+        "asyncio",
+        "typing",
+        "app.core.logger",
+        "app.image.flux_stub",
+        "app.image.gpu_state",
+        "app.image.job_queue",
+        "app.image.pending_state",
+        "app.websocket_sender",
+        "app.core.models",
+        "html",
+        "app.image.routing",
+        "app.memory.conversation",
+        "app.services.user_preferences",
+        "app.image.routing"
+      ],
+      "exports": [
+        "func:_on_job_added",
+        "func:_on_job_finished",
+        "func:get_image_queue_stats",
+        "func:request_image_generation"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/image/job_queue.py",
+      "type": "python",
+      "loc": 264,
+      "summary": "python file validation/logic.",
+      "imports": [
+        "__future__",
+        "asyncio",
+        "threading",
+        "time",
+        "typing",
+        "uuid",
+        "app.core.logger",
+        "app.image.flux_stub",
+        "app.image.gpu_state",
+        "app.websocket_sender",
+        "httpx",
+        "app.core.config"
+      ],
+      "exports": [
+        "class:ImageJob",
+        "class:ImageJobQueue"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/image/pending_state.py",
+      "type": "python",
+      "loc": 45,
+      "summary": "python file validation/logic.",
+      "imports": [
+        "__future__",
+        "typing"
+      ],
+      "exports": [
+        "func:register_pending_job",
+        "func:update_pending_job",
+        "func:remove_pending_job",
+        "func:list_pending_jobs_for_user",
+        "func:get_job_status"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/image/routing.py",
+      "type": "python",
+      "loc": 390,
+      "summary": "Mami AI - Image Router",
+      "imports": [
+        "logging",
+        "re",
+        "dataclasses",
+        "enum",
+        "typing",
+        "app.core.models",
+        "app.config",
+        "app.auth.permissions",
+        "app.auth.permissions",
+        "app.auth.permissions"
+      ],
+      "exports": [
+        "class:FluxVariant",
+        "func:_get_checkpoints",
+        "class:ImageJobSpec",
+        "func:_detect_nsfw_in_prompt",
+        "func:_get_censorship_level",
+        "func:_can_generate_nsfw",
+        "func:_can_use_image",
+        "func:decide_image_job",
+        "func:get_checkpoint_from_config"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/image/safe_callback.py",
+      "type": "python",
+      "loc": 137,
+      "summary": "Mami AI - Safe Callback Executor",
+      "imports": [
+        "asyncio",
+        "logging",
+        "datetime",
+        "typing"
+      ],
+      "exports": [
+        "class:SafeCallbackExecutor"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/image/__init__.py",
+      "type": "python",
+      "loc": 0,
+      "summary": "python file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/memory/conversation.py",
+      "type": "python",
+      "loc": 362,
+      "summary": "Mami AI - Sohbet Ge\u00e7mi\u015fi Y\u00f6netimi",
+      "imports": [
+        "__future__",
+        "logging",
+        "datetime",
+        "typing",
+        "sqlmodel",
+        "app.core.database",
+        "app.core.models",
+        "sqlmodel",
+        "app.core.models",
+        "app.core.database",
+        "app.core.models",
+        "app.core.models"
+      ],
+      "exports": [
+        "func:_default_user_resolver",
+        "func:set_user_resolver",
+        "func:_resolve_user_id",
+        "func:_get_imports",
+        "func:create_conversation",
+        "func:list_conversations",
+        "func:load_messages",
+        "func:append_message",
+        "func:update_message",
+        "func:delete_conversation",
+        "func:get_conversation_summary_text",
+        "func:get_recent_context"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/memory/rag.py",
+      "type": "python",
+      "loc": 381,
+      "summary": "Mami AI - RAG (Retrieval Augmented Generation) Deposu",
+      "imports": [
+        "__future__",
+        "logging",
+        "uuid",
+        "dataclasses",
+        "datetime",
+        "typing",
+        "app.core.database",
+        "app.core.database"
+      ],
+      "exports": [
+        "class:RagDocument",
+        "func:_get_chroma_client",
+        "func:_get_rag_collection",
+        "func:chunk_text",
+        "func:add_document",
+        "func:search_documents",
+        "func:delete_document",
+        "func:delete_by_owner"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/memory/store.py",
+      "type": "python",
+      "loc": 308,
+      "summary": "Mami AI - Haf\u0131za Deposu",
+      "imports": [
+        "__future__",
+        "logging",
+        "dataclasses",
+        "typing",
+        "app.services.memory_service",
+        "app.services.memory_service"
+      ],
+      "exports": [
+        "class:MemoryItem",
+        "func:_default_user_resolver",
+        "func:set_user_resolver",
+        "func:_resolve_user_id",
+        "func:_get_memory_service",
+        "func:_record_to_item"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/memory/__init__.py",
+      "type": "python",
+      "loc": 27,
+      "summary": "Memory Mod\u00fcl\u00fc",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/plugins/__init__.py",
+      "type": "python",
+      "loc": 86,
+      "summary": "Mami AI - Plugin Sistemi",
+      "imports": [
+        "__future__",
+        "logging",
+        "typing",
+        "app.plugins.response_enhancement.plugin",
+        "app.plugins.async_image.plugin"
+      ],
+      "exports": [
+        "class:PluginProtocol",
+        "func:register_plugin",
+        "func:get_plugin",
+        "func:list_plugins",
+        "func:load_plugins"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/plugins/async_image/plugin.py",
+      "type": "python",
+      "loc": 77,
+      "summary": "Async Image Plugin - Ana S\u0131n\u0131f",
+      "imports": [
+        "logging",
+        "typing",
+        "app.plugins",
+        "app.plugins.async_image.tasks"
+      ],
+      "exports": [
+        "class:AsyncImagePlugin"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/plugins/async_image/tasks.py",
+      "type": "python",
+      "loc": 151,
+      "summary": "Celery Tasks - Async Image Generation",
+      "imports": [
+        "logging",
+        "typing",
+        "celery",
+        "app.config",
+        "asyncio",
+        "uuid",
+        "html",
+        "app.image.flux_stub",
+        "app.image.gpu_state",
+        "app.image.job_queue",
+        "app.memory.conversation",
+        "asyncio",
+        "app.websocket_sender",
+        "app.memory.conversation"
+      ],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/plugins/async_image/__init__.py",
+      "type": "python",
+      "loc": 11,
+      "summary": "Async Image Generation Plugin",
+      "imports": [
+        "app.plugins.async_image.plugin"
+      ],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/plugins/response_enhancement/config.py",
+      "type": "python",
+      "loc": 124,
+      "summary": "Response Enhancement Plugin - Konfig\u00fcrasyon",
+      "imports": [
+        "typing"
+      ],
+      "exports": [
+        "class:EnhancementConfig"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/plugins/response_enhancement/orchestrator.py",
+      "type": "python",
+      "loc": 246,
+      "summary": "Response Orchestrator - \u0130\u015flem Koordinat\u00f6r\u00fc",
+      "imports": [
+        "logging",
+        "typing",
+        "re",
+        "re",
+        "re",
+        "re"
+      ],
+      "exports": [
+        "class:ResponseOrchestrator"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/plugins/response_enhancement/plugin.py",
+      "type": "python",
+      "loc": 136,
+      "summary": "Response Enhancement Plugin - Ana Mod\u00fcl",
+      "imports": [
+        "logging",
+        "typing",
+        "app.plugins.response_enhancement.prompt_enhancer",
+        "app.plugins.response_enhancement.smart_shaper",
+        "app.plugins.response_enhancement.visual_beautifier",
+        "app.plugins.response_enhancement.orchestrator"
+      ],
+      "exports": [
+        "class:ResponseEnhancementPlugin"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/plugins/response_enhancement/prompt_enhancer.py",
+      "type": "python",
+      "loc": 151,
+      "summary": "Prompt Enhancer - Geli\u015fmi\u015f Prompt M\u00fchendisli\u011fi",
+      "imports": [
+        "logging",
+        "typing"
+      ],
+      "exports": [
+        "class:PromptEnhancer"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/plugins/response_enhancement/smart_shaper.py",
+      "type": "python",
+      "loc": 346,
+      "summary": "Smart Answer Shaper - Ak\u0131ll\u0131 Cevap Yap\u0131land\u0131r\u0131c\u0131",
+      "imports": [
+        "logging",
+        "re",
+        "typing"
+      ],
+      "exports": [
+        "class:SmartAnswerShaper"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/plugins/response_enhancement/visual_beautifier.py",
+      "type": "python",
+      "loc": 305,
+      "summary": "Visual Beautifier - G\u00f6rsel Zenginle\u015ftirme",
+      "imports": [
+        "logging",
+        "re",
+        "typing"
+      ],
+      "exports": [
+        "class:VisualBeautifier"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/plugins/response_enhancement/__init__.py",
+      "type": "python",
+      "loc": 18,
+      "summary": "Response Enhancement Plugin",
+      "imports": [
+        "app.plugins.response_enhancement.plugin"
+      ],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/search/manager.py",
+      "type": "python",
+      "loc": 95,
+      "summary": "python file validation/logic.",
+      "imports": [
+        "__future__",
+        "asyncio",
+        "dataclasses",
+        "typing",
+        "httpx",
+        "app.config",
+        "app.core.logger",
+        "app.search.providers.bing",
+        "app.search.providers.serper"
+      ],
+      "exports": [
+        "class:SearchQuery",
+        "class:SearchSnippet",
+        "func:_convert_serper_results",
+        "func:_convert_bing_results"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/search/structured_parser.py",
+      "type": "python",
+      "loc": 96,
+      "summary": "python file validation/logic.",
+      "imports": [
+        "__future__",
+        "re",
+        "typing",
+        "app.search.manager"
+      ],
+      "exports": [
+        "func:parse_weather_result",
+        "func:parse_exchange_rate_result",
+        "func:parse_sports_fixture_result",
+        "func:parse_standings_result"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/search/__init__.py",
+      "type": "python",
+      "loc": 0,
+      "summary": "python file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/search/providers/bing.py",
+      "type": "python",
+      "loc": 79,
+      "summary": "python file validation/logic.",
+      "imports": [
+        "__future__",
+        "dataclasses",
+        "typing",
+        "httpx",
+        "app.config",
+        "app.core.logger"
+      ],
+      "exports": [
+        "class:BingResult"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/search/providers/duck.py",
+      "type": "python",
+      "loc": 39,
+      "summary": "python file validation/logic.",
+      "imports": [
+        "__future__",
+        "dataclasses",
+        "typing",
+        "requests",
+        "app.core.logger"
+      ],
+      "exports": [
+        "class:DuckResult",
+        "func:duck_search"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/search/providers/serper.py",
+      "type": "python",
+      "loc": 80,
+      "summary": "python file validation/logic.",
+      "imports": [
+        "__future__",
+        "dataclasses",
+        "typing",
+        "httpx",
+        "app.config",
+        "app.core.logger"
+      ],
+      "exports": [
+        "class:SerperResult"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/search/providers/__init__.py",
+      "type": "python",
+      "loc": 0,
+      "summary": "python file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/services/context_truncation_manager.py",
+      "type": "python",
+      "loc": 304,
+      "summary": "Mami AI - Context Truncation Manager",
+      "imports": [
+        "logging",
+        "datetime",
+        "typing"
+      ],
+      "exports": [
+        "class:ContextTruncationManager"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/services/memory_duplicate_detector.py",
+      "type": "python",
+      "loc": 224,
+      "summary": "Mami AI - Memory Duplicate Detection Service",
+      "imports": [
+        "logging",
+        "re",
+        "difflib",
+        "typing"
+      ],
+      "exports": [
+        "class:MemoryDuplicateDetector"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/services/memory_service.py",
+      "type": "python",
+      "loc": 398,
+      "summary": "python file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/services/model_router.py",
+      "type": "python",
+      "loc": 116,
+      "summary": "Mami AI - Model Router (Legacy Wrapper)",
+      "imports": [
+        "__future__",
+        "logging",
+        "typing",
+        "app.core.models",
+        "app.auth.permissions",
+        "app.chat.smart_router"
+      ],
+      "exports": [
+        "func:choose_model_for_request",
+        "func:_legacy_choose_model"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/services/query_enhancer.py",
+      "type": "python",
+      "loc": 130,
+      "summary": "Query Enhancement Service",
+      "imports": [
+        "__future__",
+        "logging",
+        "typing",
+        "app.chat.decider",
+        "app.config",
+        "json"
+      ],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/services/response_processor.py",
+      "type": "python",
+      "loc": 144,
+      "summary": "Response Post-Processing Service",
+      "imports": [
+        "__future__",
+        "logging",
+        "re",
+        "typing",
+        "app.plugins",
+        "app.plugins.response_enhancement.config"
+      ],
+      "exports": [
+        "func:post_process_response",
+        "func:clean_thinking_blocks",
+        "func:format_code_blocks",
+        "func:full_post_process",
+        "func:get_preset_config"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/services/semantic_classifier.py",
+      "type": "python",
+      "loc": 230,
+      "summary": "python file validation/logic.",
+      "imports": [
+        "__future__",
+        "json",
+        "re",
+        "typing",
+        "pydantic",
+        "app.chat.decider",
+        "app.config"
+      ],
+      "exports": [
+        "class:SemanticAnalysis",
+        "func:_derive_should_use_internet",
+        "func:_post_process_overrides"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/services/streaming_memory_manager.py",
+      "type": "python",
+      "loc": 145,
+      "summary": "Mami AI - Streaming Memory Manager",
+      "imports": [
+        "asyncio",
+        "logging",
+        "datetime",
+        "typing"
+      ],
+      "exports": [
+        "class:StreamingMemoryManager"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/services/summary_service.py",
+      "type": "python",
+      "loc": 143,
+      "summary": "python file validation/logic.",
+      "imports": [
+        "logging",
+        "datetime",
+        "typing",
+        "sqlmodel",
+        "app.chat.decider",
+        "app.core.database",
+        "app.core.models",
+        "app.core.summary_config"
+      ],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/services/tool_output_formatter.py",
+      "type": "python",
+      "loc": 154,
+      "summary": "Tool Output Formatter",
+      "imports": [
+        "logging",
+        "typing",
+        "urllib.parse"
+      ],
+      "exports": [
+        "func:extract_domain",
+        "func:format_web_result",
+        "func:_format_sources_section",
+        "func:format_search_summary",
+        "func:format_image_result"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/services/user_context.py",
+      "type": "python",
+      "loc": 139,
+      "summary": "python file validation/logic.",
+      "imports": [
+        "__future__",
+        "asyncio",
+        "typing",
+        "app.core.logger",
+        "app.memory.conversation",
+        "app.memory.rag",
+        "app.memory.store",
+        "app.services",
+        "app.services.semantic_classifier"
+      ],
+      "exports": [
+        "func:_to_mapping"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/services/user_preferences.py",
+      "type": "python",
+      "loc": 358,
+      "summary": "python file validation/logic.",
+      "imports": [
+        "__future__",
+        "logging",
+        "re",
+        "datetime",
+        "typing",
+        "sqlalchemy",
+        "sqlmodel",
+        "app.core.database",
+        "app.core.models"
+      ],
+      "exports": [
+        "func:get_user_preferences",
+        "func:get_user_preference",
+        "func:set_user_preference",
+        "func:deactivate_user_preference",
+        "func:get_effective_preferences",
+        "func:_infer_style_v2",
+        "func:infer_style_from_message_and_semantic",
+        "func:merge_style_preferences",
+        "func:get_user_formatting_preferences",
+        "func:set_user_formatting_preference",
+        "func:set_bulk_formatting_preferences"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "app/services/__init__.py",
+      "type": "python",
+      "loc": 0,
+      "summary": "python file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/app.db",
+      "type": "other",
+      "loc": 1128,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/app.db-shm",
+      "type": "other",
+      "loc": 9,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/app.db-wal",
+      "type": "other",
+      "loc": 17991,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/app.db.backup",
+      "type": "other",
+      "loc": 2,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/chroma_db/chroma.sqlite3",
+      "type": "other",
+      "loc": 1337,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/chroma_db/98b15e69-2c50-4f72-a9b1-4294e93f214e/data_level0.bin",
+      "type": "other",
+      "loc": 258,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/chroma_db/98b15e69-2c50-4f72-a9b1-4294e93f214e/header.bin",
+      "type": "other",
+      "loc": 1,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/chroma_db/98b15e69-2c50-4f72-a9b1-4294e93f214e/index_metadata.pickle",
+      "type": "other",
+      "loc": 6,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/chroma_db/98b15e69-2c50-4f72-a9b1-4294e93f214e/length.bin",
+      "type": "other",
+      "loc": 5,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/chroma_db/98b15e69-2c50-4f72-a9b1-4294e93f214e/link_lists.bin",
+      "type": "other",
+      "loc": 1,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/chroma_db.backup/chroma.sqlite3",
+      "type": "other",
+      "loc": 423,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765574150.png",
+      "type": "other",
+      "loc": 8398,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765582276.png",
+      "type": "other",
+      "loc": 8937,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765582521.png",
+      "type": "other",
+      "loc": 8094,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765582740.png",
+      "type": "other",
+      "loc": 9112,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765582915.png",
+      "type": "other",
+      "loc": 8892,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765583125.png",
+      "type": "other",
+      "loc": 9286,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765615252.png",
+      "type": "other",
+      "loc": 8557,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765615338.png",
+      "type": "other",
+      "loc": 8923,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765615568.png",
+      "type": "other",
+      "loc": 11746,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765615678.png",
+      "type": "other",
+      "loc": 15176,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765616485.png",
+      "type": "other",
+      "loc": 5716,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765616575.png",
+      "type": "other",
+      "loc": 10637,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765616670.png",
+      "type": "other",
+      "loc": 11883,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765616874.png",
+      "type": "other",
+      "loc": 8446,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765616974.png",
+      "type": "other",
+      "loc": 9187,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765617063.png",
+      "type": "other",
+      "loc": 14321,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765617148.png",
+      "type": "other",
+      "loc": 11597,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765617839.png",
+      "type": "other",
+      "loc": 9419,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765617923.png",
+      "type": "other",
+      "loc": 9769,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765618534.png",
+      "type": "other",
+      "loc": 8318,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765618981.png",
+      "type": "other",
+      "loc": 9930,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765619087.png",
+      "type": "other",
+      "loc": 12281,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765619171.png",
+      "type": "other",
+      "loc": 8791,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765619252.png",
+      "type": "other",
+      "loc": 9528,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765619384.png",
+      "type": "other",
+      "loc": 8707,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765619481.png",
+      "type": "other",
+      "loc": 9582,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765619565.png",
+      "type": "other",
+      "loc": 10680,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765619650.png",
+      "type": "other",
+      "loc": 9548,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765620799.png",
+      "type": "other",
+      "loc": 8925,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765620882.png",
+      "type": "other",
+      "loc": 11077,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765620965.png",
+      "type": "other",
+      "loc": 10634,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765623982.png",
+      "type": "other",
+      "loc": 8161,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765627057.png",
+      "type": "other",
+      "loc": 4834,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765627345.png",
+      "type": "other",
+      "loc": 9381,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765634742.png",
+      "type": "other",
+      "loc": 8868,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765634826.png",
+      "type": "other",
+      "loc": 8647,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765634908.png",
+      "type": "other",
+      "loc": 10408,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765636451.png",
+      "type": "other",
+      "loc": 10136,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765636555.png",
+      "type": "other",
+      "loc": 4179,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765636856.png",
+      "type": "other",
+      "loc": 8054,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765637112.png",
+      "type": "other",
+      "loc": 8523,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765637221.png",
+      "type": "other",
+      "loc": 8060,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765637312.png",
+      "type": "other",
+      "loc": 9565,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765637404.png",
+      "type": "other",
+      "loc": 9248,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765637489.png",
+      "type": "other",
+      "loc": 9426,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765637575.png",
+      "type": "other",
+      "loc": 9598,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765637669.png",
+      "type": "other",
+      "loc": 8353,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765637752.png",
+      "type": "other",
+      "loc": 8394,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765637835.png",
+      "type": "other",
+      "loc": 8545,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765640843.png",
+      "type": "other",
+      "loc": 10041,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765641157.png",
+      "type": "other",
+      "loc": 8872,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765641487.png",
+      "type": "other",
+      "loc": 8515,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765641814.png",
+      "type": "other",
+      "loc": 7942,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765641957.png",
+      "type": "other",
+      "loc": 8675,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765642042.png",
+      "type": "other",
+      "loc": 9322,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765642121.png",
+      "type": "other",
+      "loc": 10223,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765642874.png",
+      "type": "other",
+      "loc": 9054,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765643098.png",
+      "type": "other",
+      "loc": 10026,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765643256.png",
+      "type": "other",
+      "loc": 9100,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765643350.png",
+      "type": "other",
+      "loc": 9940,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765643489.png",
+      "type": "other",
+      "loc": 7949,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765644924.png",
+      "type": "other",
+      "loc": 8532,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765645022.png",
+      "type": "other",
+      "loc": 8690,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765645115.png",
+      "type": "other",
+      "loc": 8569,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765645200.png",
+      "type": "other",
+      "loc": 8491,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765645292.png",
+      "type": "other",
+      "loc": 9254,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765645375.png",
+      "type": "other",
+      "loc": 10424,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765645458.png",
+      "type": "other",
+      "loc": 8733,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765646776.png",
+      "type": "other",
+      "loc": 8332,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765646866.png",
+      "type": "other",
+      "loc": 9254,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765646948.png",
+      "type": "other",
+      "loc": 10857,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765647396.png",
+      "type": "other",
+      "loc": 10021,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765647481.png",
+      "type": "other",
+      "loc": 9974,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765647667.png",
+      "type": "other",
+      "loc": 9894,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765647755.png",
+      "type": "other",
+      "loc": 7771,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/flux_1765670524.png",
+      "type": "other",
+      "loc": 9026,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/placeholders/error.png",
+      "type": "other",
+      "loc": 81,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/placeholders/maintenance.png",
+      "type": "other",
+      "loc": 45,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "data/images/placeholders/timeout.png",
+      "type": "other",
+      "loc": 38,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "docker/.dockerignore",
+      "type": "other",
+      "loc": 61,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "docker/docker-compose.yml",
+      "type": "yml",
+      "loc": 85,
+      "summary": "yml file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "docker/Dockerfile",
+      "type": "other",
+      "loc": 72,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "type": "markdown",
+      "loc": 219,
+      "summary": "markdown file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "docs/BACKEND_ANALYSIS_REPORT.md",
+      "type": "markdown",
+      "loc": 797,
+      "summary": "markdown file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "docs/DETAYLI_HATA_ANALIZI_VE_COZUMLER.md",
+      "type": "markdown",
+      "loc": 813,
+      "summary": "markdown file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "docs/DETAYLI_HATA_ANALIZI_VE_COZUMLER_DEVAM.md",
+      "type": "markdown",
+      "loc": 652,
+      "summary": "markdown file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "docs/FRONTEND_ANALYSIS_REPORT.md",
+      "type": "markdown",
+      "loc": 274,
+      "summary": "markdown file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "docs/IMAGE_QUEUE_SYSTEM.md",
+      "type": "markdown",
+      "loc": 319,
+      "summary": "markdown file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "docs/IMPROVEMENTS_FOR_10_10.md",
+      "type": "markdown",
+      "loc": 1406,
+      "summary": "markdown file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "docs/MESSAGE_RENDERING.md",
+      "type": "markdown",
+      "loc": 132,
+      "summary": "markdown file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "docs/PROJECT_DOCUMENTATION.md",
+      "type": "markdown",
+      "loc": 847,
+      "summary": "markdown file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "docs/QUALITY_MASTER_PLAN.md",
+      "type": "markdown",
+      "loc": 833,
+      "summary": "markdown file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "docs/README.md",
+      "type": "markdown",
+      "loc": 68,
+      "summary": "markdown file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "docs/ROADMAP.md",
+      "type": "markdown",
+      "loc": 403,
+      "summary": "markdown file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "docs/UYGULAMA_RAPORU_FINAL.md",
+      "type": "markdown",
+      "loc": 451,
+      "summary": "markdown file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "docs/auto/repo_tree.txt",
+      "type": "other",
+      "loc": 436,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "docs/auto/_generator.py",
+      "type": "python",
+      "loc": 212,
+      "summary": "python file validation/logic.",
+      "imports": [
+        "os",
+        "json",
+        "datetime",
+        "ast",
+        "re"
+      ],
+      "exports": [
+        "func:is_ignored",
+        "func:get_tree_structure",
+        "func:analyze_python_file",
+        "func:analyze_ts_file",
+        "func:generate_inventory",
+        "func:main"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "logs/deployment_20251211_232941.log",
+      "type": "other",
+      "loc": 0,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "logs/deployment_20251211_233454.log",
+      "type": "other",
+      "loc": 30,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "logs/deployment_20251211_233952.log",
+      "type": "other",
+      "loc": 30,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "logs/deployment_20251211_234825.log",
+      "type": "other",
+      "loc": 29,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "logs/mami.log",
+      "type": "other",
+      "loc": 40815,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "plans/theme_compatibility_report.md",
+      "type": "markdown",
+      "loc": 694,
+      "summary": "markdown file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "plans/ui_migration_analysis.md",
+      "type": "markdown",
+      "loc": 356,
+      "summary": "markdown file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "scripts/cleanup_memories.py",
+      "type": "python",
+      "loc": 202,
+      "summary": "Haf\u0131za Temizleme ve Kalite Kontrol Scripti",
+      "imports": [
+        "re",
+        "sys",
+        "pathlib",
+        "app.services.memory_service",
+        "argparse"
+      ],
+      "exports": [
+        "func:is_general_knowledge",
+        "func:analyze_all_memories",
+        "func:main"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "scripts/create_placeholder_images.py",
+      "type": "python",
+      "loc": 82,
+      "summary": "Placeholder Image Generator",
+      "imports": [
+        "pathlib",
+        "PIL"
+      ],
+      "exports": [
+        "func:create_placeholder",
+        "func:main"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "scripts/deploy_critical_fixes.py",
+      "type": "python",
+      "loc": 525,
+      "summary": "Otomatik Deployment Script - Kritik D\u00fczeltmeler",
+      "imports": [
+        "shutil",
+        "subprocess",
+        "sys",
+        "time",
+        "datetime",
+        "pathlib",
+        "typing",
+        "traceback"
+      ],
+      "exports": [
+        "class:Colors",
+        "func:print_header",
+        "func:print_step",
+        "func:print_success",
+        "func:print_warning",
+        "func:print_error",
+        "func:run_command",
+        "func:create_backup",
+        "func:check_prerequisites",
+        "func:step1_chromadb_upgrade",
+        "func:step2_circuit_breaker",
+        "func:step3_alembic_migration",
+        "func:run_integration_tests",
+        "func:generate_report",
+        "func:main"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "scripts/deploy_critical_fixes.sh",
+      "type": "other",
+      "loc": 36,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "scripts/launcher.pyw",
+      "type": "other",
+      "loc": 134,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "scripts/list_memories.py",
+      "type": "python",
+      "loc": 23,
+      "summary": "Haf\u0131zalar\u0131 listele.",
+      "imports": [
+        "sys",
+        "pathlib",
+        "app.services.memory_service"
+      ],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "scripts/mobile_server.bat",
+      "type": "other",
+      "loc": 142,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "scripts/redis.bat",
+      "type": "other",
+      "loc": 13,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "scripts/setup_alembic_migration.py",
+      "type": "python",
+      "loc": 131,
+      "summary": "Alembic Migration Setup Script",
+      "imports": [
+        "subprocess",
+        "sys",
+        "pathlib"
+      ],
+      "exports": [
+        "func:run_command",
+        "func:main"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "scripts/start.bat",
+      "type": "other",
+      "loc": 119,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "scripts/__init__.py",
+      "type": "python",
+      "loc": 18,
+      "summary": "Scripts Paketi",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "tests/conftest.py",
+      "type": "python",
+      "loc": 60,
+      "summary": "Mami AI - Pytest Yap\u0131land\u0131rmas\u0131",
+      "imports": [
+        "os",
+        "sys",
+        "pathlib",
+        "pytest",
+        "app.config",
+        "fastapi.testclient",
+        "main"
+      ],
+      "exports": [
+        "func:app_settings",
+        "func:test_client",
+        "func:sample_user_message",
+        "func:sample_code_message"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "tests/test_critical_fixes.py",
+      "type": "python",
+      "loc": 319,
+      "summary": "Kritik D\u00fczeltmelerin Test Dosyas\u0131",
+      "imports": [
+        "asyncio",
+        "datetime",
+        "unittest.mock",
+        "pytest",
+        "app.memory.rag",
+        "app.services.memory_service",
+        "app.image.circuit_breaker",
+        "app.image.circuit_breaker",
+        "app.image.circuit_breaker",
+        "time",
+        "app.image.circuit_breaker",
+        "app.image.circuit_breaker",
+        "app.image.flux_stub",
+        "pathlib",
+        "pathlib",
+        "app.core.database",
+        "logging",
+        "app.core.database",
+        "app.memory.rag",
+        "app.image.circuit_breaker",
+        "pathlib"
+      ],
+      "exports": [
+        "class:TestChromaDBWhereFilter",
+        "class:TestForgeCircuitBreaker",
+        "class:TestAlembicMigration",
+        "class:TestCriticalFixesIntegration"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "tests/test_fixes_8_9.py",
+      "type": "python",
+      "loc": 251,
+      "summary": "Tests for HATA #8 (Safe Callback) and HATA #9 (DB Connection Pool)",
+      "imports": [
+        "asyncio",
+        "unittest.mock",
+        "pytest",
+        "app.core.database",
+        "app.image.safe_callback",
+        "app.core.models",
+        "app.core.models",
+        "concurrent.futures",
+        "sqlalchemy",
+        "app.core.models",
+        "sqlalchemy",
+        "app.core.models"
+      ],
+      "exports": [
+        "class:TestSafeCallbackExecutor",
+        "class:TestDatabaseConnectionPool",
+        "class:TestIntegration"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "tests/test_image_router.py",
+      "type": "python",
+      "loc": 334,
+      "summary": "Mami AI - Image Router Tests",
+      "imports": [
+        "os",
+        "sys",
+        "pytest",
+        "app.image.routing",
+        "app.image.routing",
+        "app.image.routing",
+        "app.image.routing",
+        "app.image.routing",
+        "app.image.routing",
+        "app.image.routing",
+        "app.image.routing",
+        "app.image.routing",
+        "app.image.routing",
+        "app.image.routing",
+        "app.image.routing"
+      ],
+      "exports": [
+        "class:TestCheckpointSelection",
+        "class:TestNSFWDetection",
+        "class:TestPermissionEnforcement",
+        "class:TestParameters",
+        "class:TestSpecToDict"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "tests/test_next_three_fixes.py",
+      "type": "python",
+      "loc": 362,
+      "summary": "Test Suite for Next 3 Critical Fixes",
+      "imports": [
+        "asyncio",
+        "typing",
+        "pytest",
+        "app.services.memory_duplicate_detector",
+        "app.services.memory_duplicate_detector",
+        "app.services.memory_duplicate_detector",
+        "app.services.memory_duplicate_detector",
+        "app.services.memory_duplicate_detector",
+        "app.services.memory_duplicate_detector",
+        "app.services.memory_duplicate_detector",
+        "app.services.streaming_memory_manager",
+        "app.services.streaming_memory_manager",
+        "app.services.streaming_memory_manager",
+        "app.services.streaming_memory_manager",
+        "app.services.context_truncation_manager",
+        "app.services.context_truncation_manager",
+        "app.services.context_truncation_manager",
+        "app.services.context_truncation_manager",
+        "app.services.context_truncation_manager",
+        "app.services.context_truncation_manager",
+        "app.services.context_truncation_manager",
+        "app.services.memory_service",
+        "app.chat.processor"
+      ],
+      "exports": [
+        "class:TestMemoryDuplicateDetection",
+        "class:TestStreamingMemoryManager",
+        "class:TestContextTruncationManager",
+        "class:TestIntegration"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "tests/test_persona_system.py",
+      "type": "python",
+      "loc": 492,
+      "summary": "Mami AI - Persona System Tests",
+      "imports": [
+        "os",
+        "sys",
+        "pytest",
+        "app.ai.prompts.image_guard",
+        "app.ai.prompts.image_guard",
+        "app.ai.prompts.image_guard",
+        "app.ai.prompts.image_guard",
+        "app.ai.prompts.image_guard",
+        "app.ai.prompts.image_guard",
+        "app.chat.smart_router",
+        "app.chat.smart_router",
+        "app.chat.smart_router",
+        "app.chat.smart_router",
+        "app.auth.permissions",
+        "app.auth.permissions",
+        "app.auth.permissions",
+        "app.ai.prompts.compiler",
+        "app.ai.prompts.compiler",
+        "app.auth.permissions",
+        "app.auth.permissions",
+        "app.ai.prompts.image_guard",
+        "app.ai.prompts.image_guard",
+        "app.ai.prompts.image_guard",
+        "app.ai.prompts.image_guard"
+      ],
+      "exports": [
+        "class:TestImageGuard",
+        "class:TestSmartRouterPersona",
+        "class:TestPersonaSelection",
+        "class:TestPromptCompiler",
+        "class:TestPermissionHelpers",
+        "class:TestImagePromptPrefix"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "tests/test_professional_output.py",
+      "type": "python",
+      "loc": 303,
+      "summary": "Professional Output Tests",
+      "imports": [
+        "typing",
+        "pytest",
+        "app.services.tool_output_formatter",
+        "app.services.response_processor",
+        "app.services.answer_shaper",
+        "app.plugins.response_enhancement.config",
+        "app.plugins.response_enhancement.config",
+        "app.plugins.response_enhancement.smart_shaper"
+      ],
+      "exports": [
+        "func:formatter",
+        "func:shaper",
+        "func:post_processor",
+        "class:TestStepByStep",
+        "class:TestComparison",
+        "class:TestCodeExample",
+        "class:TestTableJson",
+        "class:TestCasualChat",
+        "class:TestWebToolOutput",
+        "class:TestPersonaTone",
+        "class:TestStrictCensorship",
+        "class:TestPresets"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "tests/test_response_enhancement.py",
+      "type": "python",
+      "loc": 255,
+      "summary": "Response Enhancement System - Test Script",
+      "imports": [
+        "app.services.response_processor",
+        "traceback"
+      ],
+      "exports": [
+        "func:test_basic_markdown",
+        "func:test_code_enhancement",
+        "func:test_emoji_callouts",
+        "func:test_list_formatting",
+        "func:test_turkish_rules",
+        "func:test_format_levels",
+        "func:test_comprehensive"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "tests/test_smart_router.py",
+      "type": "python",
+      "loc": 149,
+      "summary": "python file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "tests/test_streaming_buffer.py",
+      "type": "python",
+      "loc": 257,
+      "summary": "Tests for Streaming Buffer Memory Management",
+      "imports": [
+        "asyncio",
+        "pytest",
+        "app.chat.streaming_buffer"
+      ],
+      "exports": [
+        "class:TestStreamingBuffer",
+        "class:TestStreamingBufferMemoryManagement",
+        "class:TestStreamingBufferAsyncUsage",
+        "class:TestStreamingBufferEdgeCases"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "tests/__init__.py",
+      "type": "python",
+      "loc": 10,
+      "summary": "Mami AI - Test Paketi",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "tests/eval_harness/client.py",
+      "type": "python",
+      "loc": 90,
+      "summary": "python file validation/logic.",
+      "imports": [
+        "json",
+        "os",
+        "time",
+        "dataclasses",
+        "typing",
+        "httpx"
+      ],
+      "exports": [
+        "class:ChatResponse",
+        "class:ChatClient"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "tests/eval_harness/metrics.py",
+      "type": "python",
+      "loc": 20,
+      "summary": "python file validation/logic.",
+      "imports": [
+        "dataclasses",
+        "typing"
+      ],
+      "exports": [
+        "class:EvalMetrics"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "tests/eval_harness/runner.py",
+      "type": "python",
+      "loc": 113,
+      "summary": "python file validation/logic.",
+      "imports": [
+        "asyncio",
+        "json",
+        "os",
+        "datetime",
+        "typing",
+        "tests.eval_harness.client",
+        "tests.eval_harness.judges.rule_based"
+      ],
+      "exports": [
+        "func:load_suite",
+        "func:summarize"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "tests/eval_harness/cases/suite_v1.json",
+      "type": "json",
+      "loc": 140,
+      "summary": "json file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "tests/eval_harness/judges/rule_based.py",
+      "type": "python",
+      "loc": 82,
+      "summary": "python file validation/logic.",
+      "imports": [
+        "re",
+        "typing",
+        "eval_harness.metrics"
+      ],
+      "exports": [
+        "func:estimate_tokens",
+        "func:contains_any",
+        "func:judge_case"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "tests/eval_harness/reports/report_20251205_214909.json",
+      "type": "json",
+      "loc": 463,
+      "summary": "json file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "tests/eval_harness/reports/report_20251205_221738.json",
+      "type": "json",
+      "loc": 463,
+      "summary": "json file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "tests/eval_harness/reports/report_20251205_223934.json",
+      "type": "json",
+      "loc": 463,
+      "summary": "json file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "tests/eval_harness/reports/report_20251205_224949.json",
+      "type": "json",
+      "loc": 463,
+      "summary": "json file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui/admin.html",
+      "type": "other",
+      "loc": 802,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui/chat.html",
+      "type": "other",
+      "loc": 384,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui/login.html",
+      "type": "other",
+      "loc": 317,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui/manifest.json",
+      "type": "json",
+      "loc": 12,
+      "summary": "json file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui/register.html",
+      "type": "other",
+      "loc": 329,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui/sw.js",
+      "type": "javascript",
+      "loc": 63,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui/css/base.css",
+      "type": "other",
+      "loc": 92,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui/css/code-blocks.css",
+      "type": "other",
+      "loc": 135,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui/css/header.css",
+      "type": "other",
+      "loc": 354,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui/css/layout.css",
+      "type": "other",
+      "loc": 310,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui/css/main.css",
+      "type": "other",
+      "loc": 27,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui/css/messages.css",
+      "type": "other",
+      "loc": 524,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui/css/modals.css",
+      "type": "other",
+      "loc": 687,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui/css/modern.css",
+      "type": "other",
+      "loc": 480,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui/css/sidebar.css",
+      "type": "other",
+      "loc": 441,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui/css/themes.css",
+      "type": "other",
+      "loc": 179,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui/css/utilities.css",
+      "type": "other",
+      "loc": 362,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui/css/variables.css",
+      "type": "other",
+      "loc": 47,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui/js/chat-core.js",
+      "type": "javascript",
+      "loc": 796,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "./utils.js",
+        "./images.js",
+        "./persona.js"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui/js/images.js",
+      "type": "javascript",
+      "loc": 328,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "./utils.js"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui/js/main.js",
+      "type": "javascript",
+      "loc": 209,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "./images.js",
+        "./utils.js"
+      ],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui/js/markdown.js",
+      "type": "javascript",
+      "loc": 171,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "./utils.js"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui/js/memory.js",
+      "type": "javascript",
+      "loc": 128,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "./utils.js"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui/js/persona.js",
+      "type": "javascript",
+      "loc": 248,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui/js/ui.js",
+      "type": "javascript",
+      "loc": 260,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "./utils.js"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui/js/utils.js",
+      "type": "javascript",
+      "loc": 105,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/.gitignore",
+      "type": "other",
+      "loc": 24,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/eslint.config.js",
+      "type": "javascript",
+      "loc": 23,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "@eslint/js",
+        "globals",
+        "eslint-plugin-react-hooks",
+        "eslint-plugin-react-refresh",
+        "typescript-eslint",
+        "eslint/config"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/index.html",
+      "type": "other",
+      "loc": 61,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/lint.log",
+      "type": "other",
+      "loc": 401,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/package-lock.json",
+      "type": "json",
+      "loc": 4041,
+      "summary": "json file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/package.json",
+      "type": "json",
+      "loc": 44,
+      "summary": "json file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/README.md",
+      "type": "markdown",
+      "loc": 73,
+      "summary": "markdown file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/tsconfig.app.json",
+      "type": "json",
+      "loc": 62,
+      "summary": "json file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/tsconfig.json",
+      "type": "json",
+      "loc": 7,
+      "summary": "json file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/tsconfig.node.json",
+      "type": "json",
+      "loc": 26,
+      "summary": "json file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/vite.config.ts",
+      "type": "typescript",
+      "loc": 56,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "vite",
+        "@vitejs/plugin-react",
+        "@tailwindcss/vite",
+        "path"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/public/manifest.json",
+      "type": "json",
+      "loc": 128,
+      "summary": "json file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/public/sw.js",
+      "type": "javascript",
+      "loc": 142,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/public/vite.svg",
+      "type": "other",
+      "loc": 1,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/public/pwa/apple-touch-icon.png",
+      "type": "other",
+      "loc": 1861,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/public/pwa/icon-144.png",
+      "type": "other",
+      "loc": 1861,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/public/pwa/icon-16.png",
+      "type": "other",
+      "loc": 1861,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/public/pwa/icon-192.png",
+      "type": "other",
+      "loc": 1861,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/public/pwa/icon-32.png",
+      "type": "other",
+      "loc": 1861,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/public/pwa/icon-512.png",
+      "type": "other",
+      "loc": 1861,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/public/pwa/icon-72.png",
+      "type": "other",
+      "loc": 1861,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/public/pwa/icon-96.png",
+      "type": "other",
+      "loc": 1861,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/App.css",
+      "type": "other",
+      "loc": 42,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/App.tsx",
+      "type": "typescript",
+      "loc": 92,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "react",
+        "@tanstack/react-query",
+        "@/stores",
+        "@/components/layout/ChatLayout",
+        "@/hooks",
+        "@/lib/utils",
+        "react"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/index.css",
+      "type": "other",
+      "loc": 85,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/main.tsx",
+      "type": "typescript",
+      "loc": 10,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "react",
+        "react-dom/client",
+        "./App.tsx"
+      ],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/api/client.ts",
+      "type": "typescript",
+      "loc": 434,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "@/lib/utils"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/api/index.ts",
+      "type": "typescript",
+      "loc": 13,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/assets/react.svg",
+      "type": "other",
+      "loc": 1,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/chat/ChatArea.tsx",
+      "type": "typescript",
+      "loc": 189,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "react",
+        "@/stores",
+        "@/hooks/useImageProgress",
+        "@/api",
+        "./MessageList",
+        "./ChatInput",
+        "./WelcomeScreen",
+        "./ScrollToBottomButton",
+        "./ReplyPreview",
+        "lucide-react",
+        "@/lib/utils",
+        "@/types"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/chat/ChatInput.tsx",
+      "type": "typescript",
+      "loc": 464,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "react",
+        "framer-motion",
+        "lucide-react",
+        "@/stores",
+        "@/api",
+        "@/components/ui",
+        "@/hooks",
+        "@/components/common",
+        "./QuickSettings",
+        "@/lib/utils",
+        "@/types"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/chat/CodeBlock.tsx",
+      "type": "typescript",
+      "loc": 82,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "react",
+        "framer-motion",
+        "lucide-react",
+        "@/lib/codeHighlighter",
+        "@/lib/utils"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/chat/ContextPanel.tsx",
+      "type": "typescript",
+      "loc": 262,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "react",
+        "framer-motion",
+        "@/lib/utils"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/chat/ImageCompletedCard.tsx",
+      "type": "typescript",
+      "loc": 274,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "react",
+        "framer-motion"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/chat/ImageProgressCard.tsx",
+      "type": "typescript",
+      "loc": 409,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "react",
+        "framer-motion",
+        "lucide-react",
+        "@/types"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/chat/index.ts",
+      "type": "typescript",
+      "loc": 21,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/chat/MessageBubble.tsx",
+      "type": "typescript",
+      "loc": 540,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "react",
+        "framer-motion",
+        "lucide-react",
+        "@/types",
+        "@/components/ui",
+        "./MessageReactions",
+        "./ReplyPreview",
+        "./ContextPanel",
+        "./ImageProgressCard",
+        "./ImageCompletedCard",
+        "@/lib/markdownRenderer",
+        "@/lib/utils",
+        "@/stores",
+        "@/hooks/useImageProgress",
+        "@/api"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/chat/MessageList.tsx",
+      "type": "typescript",
+      "loc": 39,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "framer-motion",
+        "@/types",
+        "./MessageBubble"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/chat/MessageReactions.tsx",
+      "type": "typescript",
+      "loc": 120,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "react",
+        "framer-motion",
+        "lucide-react",
+        "@/lib/utils"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/chat/QuickSettings.tsx",
+      "type": "typescript",
+      "loc": 158,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "react",
+        "framer-motion",
+        "lucide-react",
+        "@/stores/settingsStore",
+        "@/hooks",
+        "@/lib/utils"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/chat/ReplyPreview.tsx",
+      "type": "typescript",
+      "loc": 69,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "framer-motion",
+        "lucide-react",
+        "@/lib/utils",
+        "@/types"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/chat/ScrollToBottomButton.tsx",
+      "type": "typescript",
+      "loc": 68,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "framer-motion",
+        "lucide-react",
+        "@/lib/utils"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/chat/TypingIndicator.tsx",
+      "type": "typescript",
+      "loc": 56,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "framer-motion",
+        "@/lib/utils",
+        "@/stores"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/chat/WelcomeScreen.tsx",
+      "type": "typescript",
+      "loc": 186,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "framer-motion",
+        "lucide-react",
+        "@/stores",
+        "@/lib/utils",
+        "@/lib/utils"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/common/BottomNav.tsx",
+      "type": "typescript",
+      "loc": 151,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "react",
+        "framer-motion",
+        "@/lib/utils",
+        "@/stores"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/common/CommandPalette.tsx",
+      "type": "typescript",
+      "loc": 312,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "react",
+        "framer-motion",
+        "@/stores",
+        "@/lib/utils",
+        "@/types"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/common/ConversationSearch.tsx",
+      "type": "typescript",
+      "loc": 323,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "react",
+        "framer-motion",
+        "lucide-react",
+        "@/stores",
+        "@/components/ui",
+        "@/lib/utils",
+        "@/types"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/common/EmptyState.tsx",
+      "type": "typescript",
+      "loc": 212,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "framer-motion",
+        "@/components/ui",
+        "@/lib/utils"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/common/ErrorBoundary.tsx",
+      "type": "typescript",
+      "loc": 273,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "react",
+        "framer-motion",
+        "lucide-react",
+        "@/components/ui",
+        "@/lib/utils"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/common/ExportImport.tsx",
+      "type": "typescript",
+      "loc": 389,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "react",
+        "framer-motion",
+        "@/stores",
+        "@/components/ui",
+        "@/lib/utils",
+        "@/types"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/common/FileUpload.tsx",
+      "type": "typescript",
+      "loc": 363,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "react",
+        "framer-motion",
+        "@tanstack/react-query",
+        "@/api",
+        "@/components/ui",
+        "@/lib/utils"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/common/FloatingImageBadge.tsx",
+      "type": "typescript",
+      "loc": 191,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "react",
+        "framer-motion",
+        "lucide-react",
+        "@/types"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/common/ImageGallery.tsx",
+      "type": "typescript",
+      "loc": 314,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "react",
+        "framer-motion",
+        "@tanstack/react-query",
+        "@/api",
+        "@/components/ui",
+        "@/lib/utils",
+        "@/types"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/common/index.ts",
+      "type": "typescript",
+      "loc": 57,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/common/MemoryManager.tsx",
+      "type": "typescript",
+      "loc": 332,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "react",
+        "framer-motion",
+        "@tanstack/react-query",
+        "@/api",
+        "@/components/ui",
+        "@/lib/utils",
+        "@/types"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/common/MobileDrawer.tsx",
+      "type": "typescript",
+      "loc": 224,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "react",
+        "framer-motion",
+        "framer-motion",
+        "lucide-react",
+        "@/lib/utils",
+        "@/components/ui"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/common/MultiModalInput.tsx",
+      "type": "typescript",
+      "loc": 296,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "react",
+        "framer-motion",
+        "lucide-react",
+        "@/lib/utils"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/common/PageTransition.tsx",
+      "type": "typescript",
+      "loc": 238,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "framer-motion",
+        "react"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/common/SettingsSheet.tsx",
+      "type": "typescript",
+      "loc": 574,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "react",
+        "framer-motion",
+        "@/stores/settingsStore",
+        "@/stores/themeStore",
+        "@/components/ui",
+        "@/hooks",
+        "@/lib/utils"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/common/ThemePicker.tsx",
+      "type": "typescript",
+      "loc": 399,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "framer-motion",
+        "lucide-react",
+        "@/stores",
+        "@/components/ui",
+        "@/lib/utils",
+        "@/types"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/common/Toast.tsx",
+      "type": "typescript",
+      "loc": 213,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "react",
+        "framer-motion",
+        "lucide-react",
+        "@/lib/utils",
+        "@/types"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/layout/ChatLayout.tsx",
+      "type": "typescript",
+      "loc": 175,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "react",
+        "framer-motion",
+        "@/stores",
+        "./Sidebar",
+        "./Header",
+        "@/components/chat/ChatArea",
+        "@/hooks",
+        "@/lib/utils"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/layout/Header.tsx",
+      "type": "typescript",
+      "loc": 99,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "lucide-react",
+        "@/components/ui",
+        "@/lib/utils"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/layout/index.ts",
+      "type": "typescript",
+      "loc": 7,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/layout/Sidebar.tsx",
+      "type": "typescript",
+      "loc": 378,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "framer-motion",
+        "lucide-react",
+        "@/stores",
+        "@/stores/userStore",
+        "@/hooks",
+        "@/components/ui",
+        "@/lib/utils",
+        "@/types"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/ui/Avatar.tsx",
+      "type": "typescript",
+      "loc": 57,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "react",
+        "@/lib/utils"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/ui/Button.tsx",
+      "type": "typescript",
+      "loc": 116,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "react",
+        "class-variance-authority",
+        "@/lib/utils"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/ui/index.ts",
+      "type": "typescript",
+      "loc": 17,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/ui/Input.tsx",
+      "type": "typescript",
+      "loc": 63,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "react",
+        "@/lib/utils"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/ui/Skeleton.tsx",
+      "type": "typescript",
+      "loc": 181,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "react",
+        "framer-motion",
+        "@/lib/utils"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/components/ui/Textarea.tsx",
+      "type": "typescript",
+      "loc": 63,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "react",
+        "@/lib/utils"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/hooks/index.ts",
+      "type": "typescript",
+      "loc": 54,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/hooks/useAuth.ts",
+      "type": "typescript",
+      "loc": 143,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "react",
+        "@tanstack/react-query",
+        "@/api",
+        "@/stores",
+        "@/types"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/hooks/useConversations.ts",
+      "type": "typescript",
+      "loc": 49,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "react",
+        "@tanstack/react-query",
+        "@/api",
+        "@/stores"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/hooks/useImageJobs.ts",
+      "type": "typescript",
+      "loc": 211,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "react",
+        "@/types"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/hooks/useImageProgress.ts",
+      "type": "typescript",
+      "loc": 160,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "react"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/hooks/useMobileGestures.ts",
+      "type": "typescript",
+      "loc": 330,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "react"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/hooks/useMobileKeyboard.ts",
+      "type": "typescript",
+      "loc": 88,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "react"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/hooks/usePreferences.ts",
+      "type": "typescript",
+      "loc": 172,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "react",
+        "@tanstack/react-query",
+        "@/api",
+        "@/stores/settingsStore"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/hooks/useResponsive.ts",
+      "type": "typescript",
+      "loc": 289,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "react"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/hooks/useWebSocket.ts",
+      "type": "typescript",
+      "loc": 235,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "react",
+        "@/components/common",
+        "@/lib/utils",
+        "@/types"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/lib/codeHighlighter.ts",
+      "type": "typescript",
+      "loc": 98,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "prismjs"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/lib/errorMessages.ts",
+      "type": "typescript",
+      "loc": 113,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/lib/markdownRenderer.ts",
+      "type": "typescript",
+      "loc": 145,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "marked",
+        "marked",
+        "dompurify",
+        "./codeHighlighter"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/lib/utils.ts",
+      "type": "typescript",
+      "loc": 236,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "clsx",
+        "tailwind-merge"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/stores/chatStore.ts",
+      "type": "typescript",
+      "loc": 247,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "zustand",
+        "@/types",
+        "@/lib/utils"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/stores/imageJobsStore.ts",
+      "type": "typescript",
+      "loc": 194,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "zustand",
+        "@/types"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/stores/index.ts",
+      "type": "typescript",
+      "loc": 24,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/stores/settingsStore.ts",
+      "type": "typescript",
+      "loc": 200,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "zustand",
+        "zustand/middleware"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/stores/themeStore.ts",
+      "type": "typescript",
+      "loc": 91,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "zustand",
+        "zustand/middleware",
+        "@/types"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/stores/userStore.ts",
+      "type": "typescript",
+      "loc": 138,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [
+        "zustand",
+        "zustand/middleware",
+        "@/types"
+      ],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/styles/code.css",
+      "type": "other",
+      "loc": 358,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/styles/globals.css",
+      "type": "other",
+      "loc": 794,
+      "summary": "other file validation/logic.",
+      "imports": [],
+      "exports": [],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    },
+    {
+      "path": "ui-new/src/types/index.ts",
+      "type": "typescript",
+      "loc": 393,
+      "summary": "TypeScript/JavaScript file.",
+      "imports": [],
+      "exports": [
+        "Exports symbols"
+      ],
+      "entrypoints": [],
+      "calls_out_to": [],
+      "related_tests": []
+    }
+  ]
+}
