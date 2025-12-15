@@ -153,10 +153,10 @@ DEFAULT_MODEL_CONFIGS = [
         "capabilities": {"streaming": False, "json_mode": True},
         "description": "Semantic analiz için"
     },
-    # Ollama/Qwen Modeli
+    # --- OLLAMA / LOCAL ---
     {
-        "name": "ollama_uncensored",
-        "display_name": "Qwen3 Sansürsüz",
+        "name": "local_uncensored",
+        "display_name": "Qwen3 Yerel",
         "provider": "ollama",
         "model_id": "josiefied-qwen3-8b",
         "purpose": "uncensored",
@@ -164,7 +164,7 @@ DEFAULT_MODEL_CONFIGS = [
         "priority": 100,
         "parameters": {"temperature": 0.7, "num_ctx": 8192, "top_k": 40, "top_p": 0.9, "repeat_penalty": 1.15},
         "capabilities": {"streaming": True, "json_mode": False},
-        "description": "Sansürsüz sohbet ve roleplay için yerel model"
+        "description": "Sansürsüz yerel model (Qwen)"
     },
 ]
 

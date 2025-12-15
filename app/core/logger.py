@@ -122,22 +122,6 @@ def get_logger(
     return logger
 
 
-def get_debug_logger(name: str = "mami.debug") -> logging.Logger:
-    """
-    Debug seviyesinde logger döndürür.
-    
-    Geliştirme sırasında detaylı log için kullanılır.
-    Production'da DEBUG logları dosyaya yazılmaz (performans).
-    
-    Args:
-        name: Logger adı
-    
-    Returns:
-        logging.Logger: DEBUG seviyesinde logger
-    """
-    return get_logger(name, level=logging.DEBUG)
-
-
 def configure_root_logger(level: int = logging.INFO) -> None:
     """
     Root logger'ı yapılandırır.

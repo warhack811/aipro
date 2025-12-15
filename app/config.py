@@ -116,7 +116,7 @@ class Settings(BaseSettings):
         default="http://127.0.0.1:11434",
         description="Ollama sunucu adresi"
     )
-    OLLAMA_GEMMA_MODEL: str = Field(
+    OLLAMA_LOCAL_MODEL: str = Field(
         default="josiefied-qwen3-8b",
         description="Ollama'da kullanılacak model adı"
     )

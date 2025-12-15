@@ -334,25 +334,3 @@ def set_user_formatting_preference(
     )
 
 
-def set_bulk_formatting_preferences(
-    user_id: int,
-    preferences: Dict[str, Any],
-) -> List[UserPreference]:
-    """
-    Birden fazla formatting tercihini toplu olarak ayarlar.
-    
-    Args:
-        user_id: Kullanıcı ID
-        preferences: Tercihler dictionary'si
-    
-    Returns:
-        Oluşturulan UserPreference listesi
-    """
-    results = []
-    for key, value in preferences.items():
-        pref = set_user_formatting_preference(user_id, key, value)
-        results.append(pref)
-    
-    logger.info(f"[FORMATTING_PREFS] Set {len(results)} preferences for user {user_id}")
-    return results
-
