@@ -56,7 +56,11 @@ export function Sidebar({
 
     const handleNewChat = () => {
         createConversation()
-        onItemSelect?.()
+        // Mobilde menüyü kapatmak istersek: onMobileMenuClose() gibi bir sey lazim
+        // Simdilik sadece state'i resetliyoruz, bu yeterli.
+        if (window.innerWidth < 768) {
+            onItemSelect?.() // Mobildeysek menüyü kapat
+        }
     }
 
     const handleSelectConversation = async (id: string) => {

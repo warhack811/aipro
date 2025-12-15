@@ -148,7 +148,7 @@ def update_ai_identity(
         return config
 
 
-def enforce_model_identity(engine_key: str, text: str) -> str:
+def enforce_model_identity(_engine_key: str, text: str) -> str:
     """
     Model yanıtındaki sağlayıcı isimlerini projenin kimliğiyle değiştirir.
     

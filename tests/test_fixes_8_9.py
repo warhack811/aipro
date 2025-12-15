@@ -9,7 +9,7 @@ from unittest.mock import AsyncMock, Mock
 import pytest
 
 from app.core.database import get_engine, get_session
-from app.image.safe_callback import SafeCallbackExecutor, safe_executor
+from app.image.safe_callback import SafeCallbackExecutor
 
 
 class TestSafeCallbackExecutor:

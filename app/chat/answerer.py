@@ -47,12 +47,13 @@ logger = logging.getLogger(__name__)
 
 def _get_imports():
     """Import döngüsünü önlemek için lazy import."""
+    from app.ai.prompts.compiler import CORE_PROMPT
     from app.ai.prompts.identity import enforce_model_identity, get_ai_identity
     from app.chat.decider import call_groq_api_async, call_groq_api_stream_async
     from app.config import get_settings
     from app.services.response_processor import full_post_process
     
-    return get_settings, get_ai_identity, enforce_model_identity, call_groq_api_async, call_groq_api_stream_async, full_post_process
+    return get_settings, get_ai_identity, enforce_model_identity, call_groq_api_async, call_groq_api_stream_async, full_post_process, CORE_PROMPT
 
 
 # =============================================================================
@@ -130,8 +131,6 @@ def get_dynamic_temperature(
     elif creativity == "low":
         base_temp = min(base_temp, 0.35)
     
-    return round(base_temp, 2)
-
     # -------------------------------------------------------------------------
     # STİL BAZLI MODİFİKASYONLAR (Kullanıcı Tercihleri)
     # -------------------------------------------------------------------------
@@ -154,7 +153,7 @@ def get_dynamic_temperature(
         elif formality == "high":  # Resmi
             base_temp -= 0.05
 
-        # 3. Yaratıcı Mod Kontrolü 
+        # 3. Yaratıcı Mod Kontrolü
         # (Eğer kullanıcı özellikle 'creative' bir mod seçtiyse)
         # NOT: Kullanıcı "Emniyet kemeri yok" dediği için burada
         # riskli domain olsa bile artışa izin veriyoruz (kısmi).
@@ -324,7 +323,7 @@ async def generate_answer(
     Returns:
         str: Üretilen yanıt
     """
-    get_settings, get_ai_identity, enforce_model_identity, call_groq_api_async, _, full_post_process = _get_imports()
+    get_settings, get_ai_identity, enforce_model_identity, call_groq_api_async, _, full_post_process, CORE_PROMPT = _get_imports()
     settings = get_settings()
     
     # Dinamik temperature (Style profile ile)
@@ -339,7 +338,7 @@ async def generate_answer(
     )
     
     # Sistem prompt
-    base_system = system_prompt or SYSTEM_PROMPT_UNIVERSAL
+    base_system = system_prompt or CORE_PROMPT
     
     # Semantic analiz bazlı ek talimatlar
     extra_instructions = []
@@ -444,7 +443,7 @@ async def generate_answer_stream(
     Yields:
         str: Yanıt parçaları
     """
-    get_settings, get_ai_identity, enforce_model_identity, _, call_groq_api_stream_async, full_post_process = _get_imports()
+    get_settings, get_ai_identity, enforce_model_identity, _, call_groq_api_stream_async, full_post_process, CORE_PROMPT = _get_imports()
     settings = get_settings()
     
     temperature = get_dynamic_temperature(analysis, style_profile)
@@ -456,7 +455,7 @@ async def generate_answer_stream(
         "GİZLİLİK: Sağlayıcı isimlerini (Google, Groq, Llama vb.) asla söyleme.\n"
     )
     
-    base_system = system_prompt or SYSTEM_PROMPT_UNIVERSAL
+    base_system = system_prompt or CORE_PROMPT
     
     extra_instructions = []
     if analysis:

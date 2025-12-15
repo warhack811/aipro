@@ -1,0 +1,6 @@
+app\ai\prompts\identity.py:151: unused variable 'engine_key' (100% confidence)
+app\auth\session.py:78: unused variable 'ip_address' (100% confidence)
+app\auth\session.py:254: unused variable 'max_age_minutes' (100% confidence)
+app\chat\answerer.py:138: unreachable code after 'return' (100% confidence)
+app\core\database.py:160: unused variable 'connection_record' (100% confidence)
+tests\test_fixes_8_9.py:12: unused import 'safe_executor' (90% confidence)

@@ -110,10 +110,15 @@ export function ChatArea() {
 
     // Force scroll to bottom when conversation changes
     useEffect(() => {
-        if (currentConversationId && messages.length > 0) {
-            // Reset scroll state and scroll to bottom when switching conversations
+        if (currentConversationId) {
+            // Reset scroll state to true whenever we switch conversations.
+            // This ensures that when new messages load, the auto-scroll effect will trigger.
             setIsAtBottom(true)
-            scrollToBottom(false)
+
+            // If we happen to have messages already (e.g. valid cache), scroll immediately
+            if (messages.length > 0) {
+                scrollToBottom(false)
+            }
         }
     }, [currentConversationId, scrollToBottom])
 

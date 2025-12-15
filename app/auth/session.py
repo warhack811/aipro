@@ -75,7 +75,7 @@ def _get_imports():
 def create_session(
     user,
     user_agent: Optional[str] = None,
-    ip_address: Optional[str] = None,
+    _ip_address: Optional[str] = None,
 ):
     """
     Yeni oturum oluşturur.
@@ -83,7 +83,7 @@ def create_session(
     Args:
         user: Kullanıcı nesnesi (User model)
         user_agent: Tarayıcı bilgisi (opsiyonel)
-        ip_address: IP adresi (opsiyonel, şu an kullanılmıyor)
+        _ip_address: IP adresi (opsiyonel, gelecekte kullanılabilir - şu an kullanılmıyor)
     
     Returns:
         Session: Oluşturulan oturum kaydı
@@ -251,14 +251,14 @@ def get_user_from_session_token(token: str):
     return user
 
 
-def cleanup_expired_sessions(max_age_minutes: int = 1440) -> int:
+def cleanup_expired_sessions(_max_age_minutes: int = 1440) -> int:
     """
     Süresi dolmuş oturumları temizler.
     
     Periyodik bakım görevi olarak çalıştırılmalıdır.
     
     Args:
-        max_age_minutes: Maksimum oturum yaşı (varsayılan: 24 saat)
+        _max_age_minutes: Maksimum oturum yaşı (şu an kullanılmıyor, expires_at kullanılıyor)
     
     Returns:
         int: Temizlenen oturum sayısı

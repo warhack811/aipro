@@ -371,9 +371,8 @@ async def build_image_prompt(user_message: str, style_profile: Optional[Dict[str
         Kullanıcı istemediği sürece style tokenlar eklenmez.
         Bkz: app/ai/prompts/image_guard.py
     """
-    (
-        _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _
-    ) = _get_imports()
+    # _get_imports çağrısı kaldırıldı - gereksiz unpacking hatasına sebep oluyordu
+
     
     # Decider import'u
     # Forbidden token guard import'u

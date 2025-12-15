@@ -157,7 +157,7 @@ def _init_sqlite_engine() -> Engine:
 
     # SQLite PRAGMA ayarları (her bağlantıda çalışır)
     @event.listens_for(engine, "connect")
-    def set_sqlite_pragma(dbapi_connection, connection_record):
+    def set_sqlite_pragma(dbapi_connection, _connection_record):
         """Her yeni bağlantıda SQLite optimizasyonlarını uygula."""
         cursor = dbapi_connection.cursor()
         cursor.execute("PRAGMA journal_mode=WAL")   # Performans: Write-Ahead Logging

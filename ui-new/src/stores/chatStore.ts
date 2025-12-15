@@ -78,24 +78,20 @@ export const useChatStore = create<ChatState>()((set, get) => ({
     },
 
     createConversation: () => {
-        const newId = generateId('conv')
-        const now = new Date().toISOString()
-
-        const newConversation: Conversation = {
-            id: newId,
-            title: 'Yeni Sohbet',
-            messageCount: 0,
-            createdAt: now,
-            updatedAt: now,
-        }
+        // ID üretmiyoruz, null yapıyoruz (Backend ilk mesajda üretecek)
+        // Böylece 500 hatası ve çöp kayıt oluşumu engellenir.
 
         set((state) => ({
-            conversations: [newConversation, ...state.conversations],
-            currentConversationId: newId,
-            messages: []
+            // Yeni sohbeti listeye eklemiyoruz, ilk mesaj atılınca eklenecek
+            // conversations: [newConversation, ...state.conversations], 
+
+            currentConversationId: null, // ÖNEMLİ: ID yok, backend bekleyecek
+            messages: [],
+            inputValue: '' // Varsa yazılanı da temizle
         }))
 
-        return newId
+        // Geriye boş string dönüyoruz çünkü ID henüz yok
+        return ''
     },
 
     deleteConversation: (id) => {
