@@ -379,6 +379,31 @@ export function MessageBubble({ message, onReply }: MessageBubbleProps) {
                     {/* Content */}
                     {isUser ? (
                         <p className="text-base leading-relaxed whitespace-pre-wrap">{cleanContent}</p>
+                    ) : message.isStreaming && !cleanContent ? (
+                        /* Typing Indicator - when streaming but no content yet */
+                        <div className="flex items-center gap-2">
+                            <span className="text-sm text-(--color-text-muted)">
+                                AI Assistant yazıyor
+                            </span>
+                            <div className="flex gap-1">
+                                {[0, 1, 2].map((i) => (
+                                    <motion.span
+                                        key={i}
+                                        className="w-1.5 h-1.5 rounded-full bg-(--color-primary)"
+                                        animate={{
+                                            y: [0, -4, 0],
+                                            opacity: [0.4, 1, 0.4]
+                                        }}
+                                        transition={{
+                                            duration: 0.6,
+                                            repeat: Infinity,
+                                            delay: i * 0.15,
+                                            ease: "easeInOut"
+                                        }}
+                                    />
+                                ))}
+                            </div>
+                        </div>
                     ) : (
                         <>
                             <div

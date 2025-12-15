@@ -187,29 +187,29 @@ class UsageLimiter:
             )
 
     @staticmethod
-    def consume_usage(user_id: int, reply_content: str) -> None:
+    def consume_usage(user_id: int, engine: str = "groq") -> None:
         """
         İşlem tamamlandıktan sonra kullanımı kaydeder.
         
-        Yanıtın prefix'ine göre ilgili sayaç artırılır:
-        - [GROQ]: groq_count artırılır
-        - [BELA]: local_count artırılır
+        Engine parametresine göre ilgili sayaç artırılır:
+        - "groq": groq_count artırılır
+        - "local": local_count artırılır
         - Her durumda total_chat_count artırılır
         
         Args:
             user_id: Kullanıcı ID'si
-            reply_content: Bot yanıtı (prefix ile)
+            engine: Model engine tipi ("groq" veya "local")
         
         Example:
-            >>> limiter.consume_usage(user_id, "[GROQ] Merhaba!")
-            >>> limiter.consume_usage(user_id, "[BELA] Selam!")
+            >>> limiter.consume_usage(user_id, engine="groq")
+            >>> limiter.consume_usage(user_id, engine="local")
         """
         get_session, UsageCounter, _, _ = UsageLimiter._get_database_imports()
         today = UsageLimiter._get_today_utc()
 
-        # Yanıt türünü belirle
-        is_groq = reply_content.startswith("[GROQ]")
-        is_local = reply_content.startswith("[BELA]")
+        # Engine tipine göre sayaç artır
+        is_groq = engine == "groq"
+        is_local = engine == "local"
 
         with get_session() as session:
             stmt = select(UsageCounter).where(

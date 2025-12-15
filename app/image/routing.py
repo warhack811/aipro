@@ -224,6 +224,7 @@ def decide_image_job(
     user: Optional["User"] = None,
     negative_prompt: Optional[str] = None,
     params: Optional[Dict[str, Any]] = None,
+    style_profile: Optional[Dict[str, Any]] = None,
 ) -> ImageJobSpec:
     """
     Gorsel uretim istegi icin routing karari verir.
@@ -319,12 +320,26 @@ def decide_image_job(
     
     # 6. Parametreleri hazirla
     final_params = params or {}
+    
+    # Varsayılan çözünürlük: Kare (1024x1024)
+    default_w, default_h = 1024, 1024
+    
+    # Kullanıcı tercihi varsa uygula
+    if style_profile:
+        ratio = style_profile.get("image_ratio", "square")
+        if ratio == "portrait":
+            default_w, default_h = 896, 1152
+        elif ratio == "landscape":
+            default_w, default_h = 1216, 832
+        elif ratio == "cinematic":
+            default_w, default_h = 1344, 768
+            
     if "steps" not in final_params:
         final_params["steps"] = 20
     if "width" not in final_params:
-        final_params["width"] = 1024
+        final_params["width"] = default_w
     if "height" not in final_params:
-        final_params["height"] = 1024
+        final_params["height"] = default_h
     if "cfg_scale" not in final_params:
         final_params["cfg_scale"] = 1.0
     if "sampler_name" not in final_params:

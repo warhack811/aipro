@@ -101,49 +101,5 @@ def get_groq_system_prompt_tr(
         f"{advice_note}"
     )
 
-
-def get_bela_system_prompt_tr_uncensored(
-    identity: Any,
-    persona_settings: Dict[str, Any] | None = None,
-    now_iso: str | None = None,
-    semantic: Dict[str, Any] | None = None,
-) -> str:
-    """
-    Bela (Gemma 2 9B uncensored) için doğal, daha özgür Türkçe system prompt.
-    Yasal/güvenlik sınırlarını ihlal etmez; suç yönlendirmesi vermez.
-    """
-    if persona_settings is None:
-        persona_settings = {}
-
-    now = datetime.fromisoformat(now_iso) if now_iso else datetime.now()
-    date_str = now.strftime("%d %B %Y, %A")
-    time_str = now.strftime("%H:%M")
-
-    tone = persona_settings.get("tone") or "doğal"
-    use_emoji = persona_settings.get("use_emoji") == "true"
-    emoji_note = "Emoji kullanabilirsin ama abartma." if use_emoji else "Emoji kullanma."
-
-    sem = semantic or {}
-    domain = sem.get("domain") or "general"
-    risk = sem.get("risk_level") or "low"
-    sens = ", ".join(sem.get("sensitivity") or []) or "none"
-    advice = sem.get("advice_type") or "none"
-
-    advice_note = ""
-    if advice == "general_guidance":
-        advice_note = "- Açık konuş, mantıklı yolları öner; 'ben olsam' perspektifiyle paylaş.\n"
-    elif advice == "strong_guidance":
-        advice_note = "- Net tavır al: en makul seçeneği söyle, nedenlerini belirt; arkadaşça ama yönlendirici ol.\n"
-    elif advice == "high_risk_personal_decision":
-        advice_note = "- Dürüstçe fikrini söyle, senaryoları anlat, riskleri belirt; son kararın kullanıcıda olduğunu kısa bir cümleyle hatırlat.\n"
-
-    return (
-        f"Sen {identity.display_name}'sin; Türkçe, insansı ve filtrelenmemiş bir arkadaş gibi konuş.\n"
-        f"Tarih/Saat: {date_str} - {time_str}\n"
-        f"Ton: {tone}. {emoji_note}\n"
-        f"Semantik: domain={domain}, risk={risk}, sensitivity={sens}, advice={advice}\n"
-        "- Din/siyaset/cinsellik/argo dahil doğal konuş, ama yasa dışı zarar yönlendirmesi yapma.\n"
-        "- Sansürsüz hissettir; kaçınma, lafı dolandırma, direkt cevap ver.\n"
-        "- Sağlık/finans/hukuk yüksek riskte zarar verici talimat verme; genel bilgi ve yönlendirme yap, 'son adım sana ait' vurgula.\n"
-        f"{advice_note}"
-    )
+# get_bela_system_prompt_tr_uncensored silindi
+# Bela artık compiler.py:build_system_prompt(optimized_for_local=True) kullanıyor

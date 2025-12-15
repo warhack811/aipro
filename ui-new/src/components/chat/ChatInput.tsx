@@ -7,7 +7,7 @@
 import { useState, useRef, useCallback, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Paperclip, Mic, Send, Smile, X, Loader2, Slash, Image as ImageIcon } from 'lucide-react'
-import { useChatStore } from '@/stores'
+import { useChatStore, useSettingsStore } from '@/stores'
 import { chatApi } from '@/api'
 import { Button, Textarea } from '@/components/ui'
 import { useIsMobile } from '@/hooks'
@@ -32,6 +32,7 @@ export function ChatInput({ replyTo, onClearReply }: ChatInputProps) {
     const appendToStreaming = useChatStore((state) => state.appendToStreaming)
     const stopStreaming = useChatStore((state) => state.stopStreaming)
     const isMobile = useIsMobile()
+    const responseStyle = useSettingsStore((state) => state.responseStyle)
     const [isFocused, setIsFocused] = useState(false)
     const [attachments, setAttachments] = useState<File[]>([])
     const [isSending, setIsSending] = useState(false)
@@ -96,6 +97,7 @@ export function ChatInput({ replyTo, onClearReply }: ChatInputProps) {
                 message,
                 conversationId: convId, // null for new conversation
                 stream: true,
+                styleProfile: responseStyle,
             })
 
             console.log('[Chat] Response status:', response.status, response.headers.get('content-type'))

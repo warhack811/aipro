@@ -6,7 +6,7 @@ from typing import Any, AsyncGenerator, Dict, List, Optional
 
 import httpx
 
-from app.ai.prompts.identity import enforce_model_identity, get_ai_identity
+from app.ai.prompts.identity import enforce_model_identity
 from app.config import get_settings
 from app.core.gpu_manager import GPUManager  # YENİ IMPORT
 from app.core.logger import get_logger
@@ -71,49 +71,42 @@ async def run_local_chat(
     message: str,
     analysis: Optional[Dict[str, Any]] = None,
     history: Optional[List[Dict[str, str]]] = None,
-    memory_hint: Optional[str] = None
+    memory_hint: Optional[str] = None,
+    system_prompt: str = "",  # Artık zorunlu (processor.py her zaman geçiyor)
 ) -> str:
     """Yerel model (Bela / Gemma) ile sohbet."""
     
-    # 1. GPU Erişim İzni İste (Bu satır sistemi kilitlenmekten kurtarır)
+    # 1. GPU Erişim İzni İste
     await GPUManager.request_gemma_access()
 
     base_url = settings.OLLAMA_BASE_URL.rstrip("/")
     model_name = settings.OLLAMA_GEMMA_MODEL
     
- 
-    identity = get_ai_identity()
-    system_prompt = f""" Senin ismin {identity.display_name}. – {identity.product_family}.
-KİMLİK: Senin ile konuşan kişinin ismi {identity.developer_name}. {identity.short_intro}
-
-AMAÇ:
-Kullanıcıya doğru, pratik, uygulanabilir ve bağlama sadık şekilde yardım et.
-
-TEMEL KURALLAR:
-1) İç düşünce, akıl yürütme, analiz, plan veya “think/thinking” içeriği yazma. Sadece nihai cevabı yaz.
-2) Yanıt dili Türkçe. Kullanıcıya “sen” diye hitap et.
-3) Uydurma bilgi üretme. Emin değilsen “emin değilim” de ve net olarak hangi bilgiye ihtiyaç olduğunu söyle.
-4) Gereksiz uzatma yapma; ama kullanıcı teknik soru soruyorsa eksiksiz ve hatasız, çalışır çözüm ver.
-5) Aynı soruyu kullanıcıya tekrar tekrar sorma. Eksik bilgi gerekiyorsa tek seferde, maddeler halinde iste.
-6) Kullanıcıdaki bağlamı (geçmiş mesajlar + aşağıdaki bağlam blokları) dikkate al; çelişki varsa bunu belirt.
-
-ÇIKTI STANDARTLARI (Kalite):
-- Önce sonucu söyle, sonra kısa gerekçe/uygulama adımlarını ver.
-- Kod veriyorsan: minimal ama production-uygun, hata yakalama içeren, net isimlendirmeli olsun.
-- Liste gerekiyorsa maddelerle yaz; tablo gerektiğinde tablo kullan.
-
-SOHBET GEÇMİŞİ VE BAĞLAM:
-Aşağıdaki konuşma geçmişini ve sağlanan bağlamı hatırla; kullanıcı mesajını bu bağlama göre yanıtla.
-"""
+    # system_prompt artık compiler.py tarafından üretiliyor
+    if not system_prompt:
+        logger.warning("[LOCAL_CHAT] system_prompt boş geldi, minimal fallback kullanılıyor")
+        system_prompt = "Sen Mami AI'sın. Türkçe konuş, samimi ol."
 
     messages = [{"role": "system", "content": system_prompt}]
+    
+    # Helper: Clean prefixes from history to prevent model from learning/copying them
+    def _clean_message_content(text: str) -> str:
+        """Remove [GROQ]/[BELA] prefixes and other artifacts from message content."""
+        import re
+        # Remove all variations of model prefixes
+        text = re.sub(r'^\s*\[(GROQ|BELA|GROÇ)\]\s*', '', text, flags=re.IGNORECASE)
+        text = re.sub(r'\[(GROQ|BELA|GROÇ)\]\s*', '', text, flags=re.IGNORECASE)
+        return text.strip()
     
     if history:
         for msg in history:
             role = "user" if msg.get("role") == "user" else "assistant"
             content = msg.get("content") or msg.get("text") or ""
             if content:
-                messages.append({"role": role, "content": content})
+                # Clean any prefixes from historical messages
+                clean_content = _clean_message_content(content)
+                if clean_content:
+                    messages.append({"role": role, "content": clean_content})
     
     user_content = message
     if memory_hint:
@@ -140,9 +133,9 @@ Aşağıdaki konuşma geçmişini ve sağlanan bağlamı hatırla; kullanıcı m
             "top_p": 0.90,      
             
             # --- TEKRAR VE DİL BİLGİSİ ---
-            # Qwen Türkçe ekleri sever ama bazen takılır. 1.15 bunu keser.
-            # Daha düşüğü (1.1) döngüye sokabilir, daha yükseği (1.2) yaratıcılığı öldürür.
-            "repeat_penalty": 1.15, 
+            # 1.25: Daha güçlü tekrar engelleme (döngüleri önlemek için)
+            # 1.15 döngülere neden olabiliyordu
+            "repeat_penalty": 1.25, 
             
             # Gereksiz/düşük olasılıklı tokenları budamak için modern standart.
             "min_p": 0.05,      
@@ -151,7 +144,7 @@ Aşağıdaki konuşma geçmişini ve sağlanan bağlamı hatırla; kullanıcı m
             # Gemma'da buna gerek yoktu ama Qwen "ChatML" formatındadır.
             # Eğer bu STOP tokenları eklemezseniz, model cevabı bitirir bitirmez
             # "<|im_start|>user" yazıp kendi kendine sizin yerinize konuşmaya başlar.
-            "stop": ["<|im_start|>", "<|im_end|>"] 
+            "stop": ["<|im_start|>", "<|im_end|>"]
         },
     }
 
@@ -194,6 +187,7 @@ async def run_local_chat_stream(
     analysis: Optional[Dict[str, Any]] = None,
     history: Optional[List[Dict[str, str]]] = None,
     memory_hint: Optional[str] = None,
+    system_prompt: str = "",  # Artık zorunlu (processor.py her zaman geçiyor)
 ) -> AsyncGenerator[str, None]:
     """Yerel model (Bela / Gemma) ile streaming sohbet."""
 
@@ -202,37 +196,33 @@ async def run_local_chat_stream(
     base_url = settings.OLLAMA_BASE_URL.rstrip("/")
     model_name = settings.OLLAMA_GEMMA_MODEL
 
-    identity = get_ai_identity()
-    system_prompt = f""" Senin ismin {identity.display_name}. – {identity.product_family}.
-KİMLİK: Senin sahibinin ismi{identity.developer_name}. {identity.short_intro}
+    # system_prompt artık compiler.py tarafından üretiliyor
+    if not system_prompt:
+        logger.warning("[LOCAL_CHAT_STREAM] system_prompt boş geldi, minimal fallback kullanılıyor")
+        system_prompt = "Sen Mami AI'sın. Türkçe konuş, samimi ol."
 
-AMAÇ:
-Kullanıcıya doğru, pratik, uygulanabilir ve bağlama sadık şekilde yardım et.
-
-TEMEL KURALLAR:
-1) İç düşünce, akıl yürütme, analiz, plan veya “think/thinking” içeriği yazma. Sadece nihai cevabı yaz.
-2) Yanıt dili Türkçe. Kullanıcıya “sen” diye hitap et.
-3) Uydurma bilgi üretme. Emin değilsen “emin değilim” de ve net olarak hangi bilgiye ihtiyaç olduğunu söyle.
-4) Gereksiz uzatma yapma; ama kullanıcı teknik soru soruyorsa eksiksiz ve hatasız, çalışır çözüm ver.
-5) Aynı soruyu kullanıcıya tekrar tekrar sorma. Eksik bilgi gerekiyorsa tek seferde, maddeler halinde iste.
-6) Kullanıcıdaki bağlamı (geçmiş mesajlar + aşağıdaki bağlam blokları) dikkate al; çelişki varsa bunu belirt.
-
-ÇIKTI STANDARTLARI (Kalite):
-- Önce sonucu söyle, sonra kısa gerekçe/uygulama adımlarını ver.
-- Kod veriyorsan: minimal ama production-uygun, hata yakalama içeren, net isimlendirmeli olsun.
-- Liste gerekiyorsa maddelerle yaz; tablo gerektiğinde tablo kullan.
-
-SOHBET GEÇMİŞİ VE BAĞLAM:
-Aşağıdaki konuşma geçmişini ve sağlanan bağlamı hatırla; kullanıcı mesajını bu bağlama göre yanıtla.
-"""
     
     messages = [{"role": "system", "content": system_prompt}]
+    
+    # Helper: Clean prefixes from history to prevent model from learning/copying them
+    def _clean_message_content(text: str) -> str:
+        """Remove [GROQ]/[BELA] prefixes and other artifacts from message content."""
+        import re
+        # Remove all variations of model prefixes
+        text = re.sub(r'^\s*\[(GROQ|BELA|GROÇ)\]\s*', '', text, flags=re.IGNORECASE)
+        text = re.sub(r'\[(GROQ|BELA|GROÇ)\]\s*', '', text, flags=re.IGNORECASE)
+        return text.strip()
+    
     if history:
         for msg in history:
             role = "user" if msg.get("role") == "user" else "assistant"
             content = msg.get("content") or msg.get("text") or ""
             if content:
-                messages.append({"role": role, "content": content})
+                # Clean any prefixes from historical messages
+                clean_content = _clean_message_content(content)
+                if clean_content:
+                    messages.append({"role": role, "content": clean_content})
+                    
     user_content = message
     if memory_hint:
         user_content = f"{memory_hint}\n\n{message}"
@@ -240,37 +230,39 @@ Aşağıdaki konuşma geçmişini ve sağlanan bağlamı hatırla; kullanıcı m
     messages.append({"role": "user", "content": user_content})
 
 
+    # MODEL & PARAMETRE SEÇİMİ
+    # Gemma 7.3GB, Qwen 5GB. 
+    # 8192 context ~2GB VRAM yer.
+    # 8GB VRAM için: Gemma + 8k = Patlar (9.5GB). Gemma + 4k = Sınırda (8GB).
+    # Qwen + 8k = Rahat (7.2GB).
+    
+    is_qwen = "qwen" in model_name.lower() or "josiefied" in model_name.lower()
+    
+    # Context boyutu ayarı (Model büyüklüğüne göre dinamik)
+    safe_ctx = 8192 if is_qwen else 2048  # Gemma için güvenli mod (2k)
+    
     payload = {
         "model": model_name,
         "stream": True,  # Akış istiyorsanız True yapın, API yanıtı için False
         "messages": messages,
         "options": {
-            # --- BELLEK YÖNETİMİ (8GB VRAM OPTİMİZASYONU) ---
-            # Q4 model ~5.2GB yer kaplar. 8192 context ~2GB harcar.
-            # Toplam ~7.2GB ile kartınıza tam sığar.
-            "num_ctx": 8192, 
+            # --- BELLEK YÖNETİMİ ---
+            "num_ctx": safe_ctx, 
 
-            # --- YARATICILIK VE ZEKA (QWEN TUNING) ---
-            # Qwen 0.8'de bazen saçmalar. 0.7 en dengeli (Stable/Creative) noktadır.
+            # --- YARATICILIK VE ZEKA ---
             "temperature": 0.7, 
             
-            # Kelime havuzunu 40 ile sınırlamak, Türkçe'deki anlamsız heceleri eler.
             "top_k": 40,        
             "top_p": 0.90,      
             
-            # --- TEKRAR VE DİL BİLGİSİ ---
-            # Qwen Türkçe ekleri sever ama bazen takılır. 1.15 bunu keser.
-            # Daha düşüğü (1.1) döngüye sokabilir, daha yükseği (1.2) yaratıcılığı öldürür.
-            "repeat_penalty": 1.15, 
-            
-            # Gereksiz/düşük olasılıklı tokenları budamak için modern standart.
+            # 1.25: Daha güçlü tekrar engelleme (döngüleri önlemek için)
+            "repeat_penalty": 1.25, 
             "min_p": 0.05,      
 
-            # --- KRİTİK QWEN MİMARİSİ AYARI (OLMAZSA OLMAZ) ---
-            # Gemma'da buna gerek yoktu ama Qwen "ChatML" formatındadır.
-            # Eğer bu STOP tokenları eklemezseniz, model cevabı bitirir bitirmez
-            # "<|im_start|>user" yazıp kendi kendine sizin yerinize konuşmaya başlar.
-            "stop": ["<|im_start|>", "<|im_end|>"] 
+            # --- MODEL SPESİFİK STOP TOKENLARI ---
+            # Qwen ChatML formatındadır, stop token şarttır.
+            # Gemma ise <end_of_turn> kullanır ama Ollama bunu genelde otomatize eder.
+            "stop": ["<|im_start|>", "<|im_end|>"] if is_qwen else []
         },
     }
     try:
@@ -320,6 +312,35 @@ Aşağıdaki konuşma geçmişini ve sağlanan bağlamı hatırla; kullanıcı m
     except httpx.TimeoutException:
         yield "(BELA) Zaman aşımı: Ollama yanıt vermedi."
     except Exception as e:
-        logger.error(f"[LOCAL_CHAT_STREAM] Bağlantı hatası: {e}")
-        yield "(BELA) Beynim (GPU) şu an yanıt vermiyor. Lütfen Ollama'yı kontrol et."
+        logger.error(f"[LOCAL_CHAT_STREAM] Hata: {e}. Fallback deneniyor...")
+        
+        # FALLBACK MEKANİZMASI
+        # Eğer gemma çökerse (OOM vs), daha hafif olan Qwen modelini dene.
+        fallback_model = "josiefied-qwen3-8b"
+        if model_name != fallback_model:  # Zaten fallback modelde değilsek dene
+            logger.info(f"[LOCAL_CHAT_STREAM] Fallback devreye girdi: {fallback_model}")
+            payload["model"] = fallback_model
+            # Qwen için güvenli ayarlar
+            payload["options"]["num_ctx"] = 8192
+            payload["options"]["stop"] = ["<|im_start|>", "<|im_end|>"]
+            
+            try:
+                async with httpx.AsyncClient(timeout=120.0) as client:
+                    async with client.stream("POST", f"{base_url}/api/chat", json=payload) as resp:
+                        resp.raise_for_status()
+                        async for line in resp.aiter_lines():
+                            if not line: continue
+                            try:
+                                data = json.loads(line)
+                            except: continue
+                            
+                            content = data.get("message", {}).get("content", "")
+                            if content:
+                                yield content
+                            if data.get("done"): break
+                return # Başarılı olduysa çık
+            except Exception as e2:
+                logger.error(f"[LOCAL_CHAT_STREAM] Fallback de başarısız: {e2}")
+
+        yield f"(BELA) Beynim (GPU) şu an yanıt vermiyor. (Hata: {str(e)})"
 

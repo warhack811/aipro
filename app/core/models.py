@@ -168,7 +168,10 @@ class Conversation(SQLModel, table=True):
         back_populates="conversation",
         sa_relationship_kwargs={"cascade": "all, delete"}
     )
-    summary: Optional["ConversationSummary"] = Relationship(back_populates="conversation")
+    summary: Optional["ConversationSummary"] = Relationship(
+        back_populates="conversation",
+        sa_relationship_kwargs={"cascade": "all, delete-orphan"}
+    )
 
 
 class Message(SQLModel, table=True):

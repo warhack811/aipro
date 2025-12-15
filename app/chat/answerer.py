@@ -35,73 +35,10 @@ from typing import Any, AsyncGenerator, Dict, List, Optional, cast
 logger = logging.getLogger(__name__)
 
 # =============================================================================
-# SİSTEM PROMPT
+# NOT: SYSTEM_PROMPT_UNIVERSAL silindi.
+# Sistem promptları artık compiler.py üzerinden build_system_prompt() ile üretiliyor.
 # =============================================================================
 
-SYSTEM_PROMPT_UNIVERSAL = """
-Sen Mami AI'sın - profesyonel, zeki ve kullanıcı odaklı bir yapay zeka asistanısın.
-
-## DÜŞÜNME SÜRECİ
-1. Kullanıcının gerçek niyetini anla (ne soruyor, ne istiyor)
-2. Bağlamdaki kullanıcı bilgilerini (isim, tercihler, geçmiş) cevaba yedir
-3. Açık, net ve değer katan bir cevap oluştur
-
-## TÜRKÇE KALİTESİ KURALLARI (KRİTİK!) 🇹🇷
-- **TAM CÜMLELER:** Her cümle mutlaka tamamlanmalı, yarım kalmamalı. Nokta, soru işareti veya ünlem ile bitmeli.
-- **DİLBİLGİSİ:** Türkçe dilbilgisi kurallarına uy (ekler, çoğul, zamanlar, büyük/küçük harf).
-- **DOĞAL TÜRKÇE:** Robotik kalıp ifadelerden kaçın, doğal konuş. "Size nasıl yardımcı olabilirim?" gibi klişeler kullanma.
-- **KOD AÇIKLAMALARI:** Kod örnekleri verirken açıklamaları TAM ve ANLAŞILIR Türkçe yaz. Yarım cümleler olmamalı.
-- **NOKTALAMA:** Noktalama işaretlerini doğru kullan (nokta, virgül, soru işareti, ünlem).
-- **KELİME SEÇİMİ:** Uygun Türkçe kelimeler kullan, gereksiz İngilizce kelime kullanma.
-- **CÜMLE YAPISI:** Basit ve anlaşılır cümleler kur, çok uzun ve karmaşık cümlelerden kaçın.
-
-**ÖRNEK İYİ TÜRKÇE:**
-✅ "Bu kodun çalışması için, bilgisayarınızda Python yüklü olması gerekir. Kodu çalıştırdığınızda, ekranda 'Merhaba, Dünya!' yazısı görünecektir."
-
-**ÖRNEK KÖTÜ TÜRKÇE (YAPMA!):**
-❌ "print("Mera, Dünya!")`Bu kodun çalışması için, bilgisayarınızda Python)yüklü olması. Kodu çalıştırdığınızda, ekranda "Merhaba, Dünya!" yazısı görünecektir.```**Açıklama:**"
-
-## CEVAP KALİTESİ KURALLARI
-- **Doğruluk:** Bilmediğini açıkça kabul et, asla uydurma
-- **Kişiselleştirme:** Bağlamda kullanıcı ismi, tercihi varsa MUTLAKA kullan
-- **Format:** Karmaşık konularda başlık, liste veya tablo kullan; basit sorularda düz metin yeterli
-- **Ton:** Doğal, samimi Türkçe konuş; robotik kalıplardan kaçın
-- **Uzunluk:** Soru basitse 1-3 cümle, detay istenirse kapsamlı cevap ver
-
-## MARKDOWN KULLANIM KURALLARI (KRİTİTİK!) 📝
-**Kod Blokları**: MUTLAKA 3 backtick (```) kullan
-  ✅ DOĞRU:
-  ```python
-  print("Merhaba")
-  ```
-  
-  ❌ YANLIŞ: 
-  - python print("Merhaba") 
-  - ``print()`` (2 backtick)
-  - [CODE_BLOCK_{}] (placeholder formatı - ASLA KULLANMA!)
-  - "Kod:" veya "*** Kod:" gibi formatlar - direkt ``` kullan
-
-**ÖNEMLİ:** Kod örneği verirken MUTLAKA şu formatı kullan:
-```
-```python
-kod_buraya
-```
-```
-
-**Başlıklar**: ## ile başla
-**Listeler**: - veya 1. ile başla, sonrasında boşluk
-**Vurgular**: **kalın** veya *italik* kullan
-
-## YASAKLAR ❌
-- "Size nasıl yardımcı olabilirim?" klişesi
-- Gereksiz özür dileme ("Maalesef", "Üzgünüm" aşırı kullanımı)
-- Sağlayıcı ismi söyleme (Google, OpenAI, Meta, Groq, Llama vb.)
-- Aynı bilgiyi farklı kelimelerle tekrarlama
-- Belirsiz veya kaçamak cevaplar
-- Kod bloklarında 2 backtick (``) kullanma
-- Yarım kalan cümleler
-- Dilbilgisi hataları
-""".strip()
 
 
 # =============================================================================
@@ -122,9 +59,12 @@ def _get_imports():
 # DİNAMİK TEMPERATURE HESAPLAMA
 # =============================================================================
 
-def get_dynamic_temperature(analysis: Optional[Dict[str, Any]] = None) -> float:
+def get_dynamic_temperature(
+    analysis: Optional[Dict[str, Any]] = None,
+    style_profile: Optional[Dict[str, Any]] = None
+) -> float:
     """
-    Domain ve risk seviyesine göre dinamik temperature hesaplar.
+    Domain, risk seviyesi ve KULLANICI TERCİHLERİNE göre dinamik temperature hesaplar.
     
     Temperature Seviyeleri:
         - Düşük (0.1-0.3): Deterministik, doğruluk kritik
@@ -133,11 +73,12 @@ def get_dynamic_temperature(analysis: Optional[Dict[str, Any]] = None) -> float:
     
     Args:
         analysis: Semantic analiz sonuçları
+        style_profile: Kullanıcı stil tercihleri (tone, creativity vb.)
     
     Returns:
         float: Hesaplanan temperature değeri (0.0-1.0)
     """
-    if not analysis:
+    if not analysis and not style_profile:
         return 0.6  # Varsayılan dengeli
     
     # Domain bazlı base temperature
@@ -190,6 +131,38 @@ def get_dynamic_temperature(analysis: Optional[Dict[str, Any]] = None) -> float:
         base_temp = min(base_temp, 0.35)
     
     return round(base_temp, 2)
+
+    # -------------------------------------------------------------------------
+    # STİL BAZLI MODİFİKASYONLAR (Kullanıcı Tercihleri)
+    # -------------------------------------------------------------------------
+    if style_profile:
+        # 1. Ton Bazlı Değişim
+        tone = style_profile.get("tone", "neutral")
+        if tone == "friendly":
+            base_temp += 0.05
+        elif tone == "humorous":
+            base_temp += 0.15
+        elif tone == "serious":
+            base_temp -= 0.10
+        elif tone == "empathetic":
+            base_temp += 0.05
+
+        # 2. Formality Bazlı Değişim
+        formality = style_profile.get("formality", "medium")
+        if formality == "low":  # Samimi
+            base_temp += 0.05
+        elif formality == "high":  # Resmi
+            base_temp -= 0.05
+
+        # 3. Yaratıcı Mod Kontrolü 
+        # (Eğer kullanıcı özellikle 'creative' bir mod seçtiyse)
+        # NOT: Kullanıcı "Emniyet kemeri yok" dediği için burada
+        # riskli domain olsa bile artışa izin veriyoruz (kısmi).
+        
+    # Sonuç sınırlandırma (0.0 - 1.0 arası)
+    final_temp = max(0.0, min(1.0, base_temp))
+    
+    return round(final_temp, 2)
 
 
 # =============================================================================
@@ -335,6 +308,7 @@ async def generate_answer(
     system_prompt: Optional[str] = None,
     source: Optional[str] = None,
     history: Optional[List[Dict[str, str]]] = None,
+    style_profile: Optional[Dict[str, Any]] = None,
 ) -> str:
     """
     Groq API ile tek seferlik yanıt üretir.
@@ -353,8 +327,8 @@ async def generate_answer(
     get_settings, get_ai_identity, enforce_model_identity, call_groq_api_async, _, full_post_process = _get_imports()
     settings = get_settings()
     
-    # Dinamik temperature
-    temperature = get_dynamic_temperature(analysis)
+    # Dinamik temperature (Style profile ile)
+    temperature = get_dynamic_temperature(analysis, style_profile)
     logger.debug(f"[ANSWERER] Temperature: {temperature}")
 
     # AI kimliği
@@ -391,6 +365,9 @@ async def generate_answer(
         
         if analysis.get("force_no_hallucination"):
             extra_instructions.append("⚠️ DOĞRULUK: Sadece kesin bildiğin verileri paylaş. Tahmin yapma.")
+
+    # NOT: Stil enjeksiyonu artik processor.py tarafindan build_system_prompt() ile yapiliyor.
+    # Burada tekrar eklemeye gerek yok.
     
     extra_block = "\n".join(extra_instructions) if extra_instructions else ""
     
@@ -448,6 +425,7 @@ async def generate_answer_stream(
     system_prompt: Optional[str] = None,
     source: Optional[str] = None,
     history: Optional[List[Dict[str, str]]] = None,
+    style_profile: Optional[Dict[str, Any]] = None,
 ) -> AsyncGenerator[str, None]:
     """
     Groq API ile streaming yanıt üretir.
@@ -469,7 +447,7 @@ async def generate_answer_stream(
     get_settings, get_ai_identity, enforce_model_identity, _, call_groq_api_stream_async, full_post_process = _get_imports()
     settings = get_settings()
     
-    temperature = get_dynamic_temperature(analysis)
+    temperature = get_dynamic_temperature(analysis, style_profile)
     logger.debug(f"[ANSWERER_STREAM] Temperature: {temperature}")
 
     identity = get_ai_identity()

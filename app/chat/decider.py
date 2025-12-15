@@ -1,30 +1,22 @@
 """
-Mami AI - Semantic Router & Groq API Yöneticisi
-===============================================
+Mami AI - Groq API & Query Builder
+==================================
 
-Bu modül, kullanıcı mesajlarını analiz edip uygun alt sisteme yönlendirir.
+Bu modül Groq API çağrıları ve arama sorgusu üretimi yapar.
 
 Sorumluluklar:
-    - Mesaj niyetini belirleme (chat, image, internet, local)
     - Groq API çağrıları (çoklu anahtar rotasyonu)
+    - INTERNET için arama sorgusu üretimi
     - Hafıza kayıt kararları
-    - RAG depolama kararları
-
-Alt Sistemler:
-    - IMAGE: Görsel üretim (Flux/Forge)
-    - INTERNET: Güncel bilgi araması
-    - LOCAL_CHAT: Yerel model (Ollama/Bela)
-    - GROQ_REPLY: Ana sohbet motoru (varsayılan)
 
 Kullanım:
-    from app.chat.decider import run_decider_async, call_groq_api_async
-    
-    # Mesaj yönlendirme kararı
-    decision = await run_decider_async("Dolar kuru nedir?")
-    # {"action": "INTERNET", "analysis": {...}}
+    from app.chat.decider import call_groq_api_async, build_search_queries_async
     
     # Groq API çağrısı
     response = await call_groq_api_async(messages, model="llama-3.3-70b")
+    
+    # İnternet araması için sorgu üretimi
+    queries = await build_search_queries_async("Dolar kuru nedir?")
 """
 
 from __future__ import annotations
@@ -75,84 +67,6 @@ def _get_available_keys() -> List[str]:
     ]
     return [k for k in keys if k]
 
-
-# =============================================================================
-# HIZLI SINIFLANDIRMA (LLM'siz)
-# =============================================================================
-
-def quick_classify(message: str) -> Optional[Dict[str, Any]]:
-    """
-    LLM kullanmadan hızlı sınıflandırma yapar.
-    
-    Kesin anahtar kelimeler içeren mesajlar için token tasarrufu sağlar.
-    
-    Args:
-        message: Kullanıcı mesajı
-    
-    Returns:
-        Dict veya None: Eşleşme varsa karar, yoksa None
-    """
-    text = message.lower()
-
-    # Görsel üretim
-    if any(kw in text for kw in ['çiz', 'resim', 'görsel', 'draw', 'paint']):
-        return {
-            "analysis": {"intent": "image_generation"},
-            "action": "IMAGE",
-            "image": {"prompt": message},
-        }
-    
-    # İnternet araması
-    if any(kw in text for kw in ['dolar', 'kur', 'hava', 'haber', 'güncel', 'son']):
-        return {
-            "analysis": {"intent": "information_retrieval"},
-            "action": "INTERNET",
-            "internet": {"queries": [{"id": "q1", "query": message}]},
-        }
-    
-    # Yerel model
-    if 'bela' in text or 'sansürsüz' in text:
-        return {
-            "analysis": {"intent": "local"},
-            "action": "LOCAL_CHAT",
-        }
-    
-    return None
-
-
-def run_decider_stub(message: str) -> Dict[str, Any]:
-    """
-    API çalışmazsa devreye giren basit kural tabanlı fallback.
-    
-    Args:
-        message: Kullanıcı mesajı
-    
-    Returns:
-        Dict: Varsayılan yönlendirme kararı
-    """
-    text = message.lower()
-
-    if "çiz" in text or "resim" in text or "görsel" in text:
-        return {
-            "analysis": {"intent": "image", "needs_image": True},
-            "action": "IMAGE",
-            "image": {"prompt": message}
-        }
-    
-    if "dolar" in text or "hava" in text or "haber" in text:
-        return {
-            "analysis": {"intent": "internet", "needs_internet": True},
-            "action": "INTERNET",
-            "internet": {"queries": [{"id": "q1", "query": message}]}
-        }
-    
-    if "sansürsüz" in text or "bela" in text:
-        return {
-            "analysis": {"intent": "local", "needs_local_chat": True},
-            "action": "LOCAL_CHAT"
-        }
-
-    return {"analysis": {"intent": "chat"}, "action": "GROQ_REPLY"}
 
 
 # =============================================================================
@@ -365,37 +279,7 @@ async def call_groq_api_stream_async(
 # SİSTEM PROMPTLARI
 # =============================================================================
 
-DECIDER_SYSTEM_PROMPT = """
-You are the **Semantic Router** for an advanced AI Assistant.
-Your ONLY job is to analyze the user's input and output a JSON object determining the correct subsystem to handle the request.
-
-### SUBSYSTEM DEFINITIONS (Strict Semantic Boundaries)
-
-1. **IMAGE (Generative Art Engine)**
-   - **Intent:** The user wants to *see* something new. Creating visual content.
-
-2. **INTERNET (Real-Time Search Engine)**
-   - **Intent:** The user needs *external* or *current* information not present in a static training set.
-
-3. **LOCAL_CHAT (Uncensored/Raw Model)**
-   - **Intent:** The user explicitly demands a raw, unfiltered, or "jailbreak" style interaction.
-
-4. **GROQ_REPLY (Main Reasoning & Memory Engine) [DEFAULT]**
-   - **Intent:** General conversation, coding, reasoning, and **Retrieval Augmented Generation (RAG)**.
-   - **CRITICAL RULE:** Any query regarding the **User's Identity (Who am I?), Past Conversations, Uploaded Files, Personal Preferences, or Stored Memories** MUST be routed here.
-
-### OUTPUT JSON FORMAT
-{
-  "analysis": {
-    "intent": "chat | image_generation | information_retrieval | raw_mode",
-    "requires_memory_access": true/false,
-    "complexity": "medium"
-  },
-  "action": "GROQ_REPLY", // or IMAGE / INTERNET / LOCAL_CHAT
-  "image": { "prompt": "..." },
-  "internet": { "queries": [{"id": "q1", "query": "..."}] }
-}
-"""
+# DECIDER_SYSTEM_PROMPT silindi - SmartRouter artık action belirliyor
 
 MEMORY_DECIDER_SYSTEM_PROMPT = """
 Sen bir KİŞİSEL BİLGİ FİLTRESİSİN. Görevin: SADECE kullanıcının KENDİSİNE AİT kişisel bilgileri tespit etmek.
@@ -458,58 +342,84 @@ Asistan: "Harika! Python öğrenmek güzel bir hedef."
 JSON Format: {"store": true/false, "memory": "...", "importance": 0.0-1.0, "category": "...", "invalidate": ["id1"...]}
 """.strip()
 
-RAG_DECIDER_SYSTEM_PROMPT = """
-Sen bir BİLGİ ÖZETLEYİCİSİSİN. İnternetten gelen cevabın gelecekte tekrar kullanılmasına değer GENEL BİLGİ içerip içermediğine karar ver.
-YALNIZCA Zamandan bağımsız, genel geçer bilgileri (tanım, rehber vb.) kaydet.
-JSON Formatı: {"store": true/false}
+# RAG_DECIDER_SYSTEM_PROMPT ve CONVERSATION_SUMMARY_SYSTEM silindi - Kullanılmıyordu
+
+
+# run_decider_async silindi - SmartRouter artık action belirliyor
+# build_search_queries_async kullanılmalı
+
+# -----------------------------------------------------------------------------
+# QUERY BUILDER (Secenek B - Yeni Sistem)
+# -----------------------------------------------------------------------------
+
+QUERY_BUILDER_PROMPT = """
+You are a search query generator. Given a user's question, create 1-3 optimized web search queries.
+
+Guidelines:
+- For finance (dolar, euro, altın): Add "kuru bugün güncel" to make it time-specific
+- For weather: Add city name if mentioned + "hava durumu"
+- For sports: Add team name + "son maç skor"
+- For news: Add "son dakika" or "güncel haber"
+- Keep queries in Turkish
+
+Output JSON: {"queries": [{"id": "q1", "query": "..."}, {"id": "q2", "query": "..."}]}
 """
 
-CONVERSATION_SUMMARY_SYSTEM = """
-Sen bir SOHBET ÖZETLEYİCİSİSİN. Sohbetin ana noktalarını 3-6 cümlelik kısa bir PARAGRAF şeklinde özetle.
-JSON Formatı: {"summary": "metin..."}
-"""
 
-
-# =============================================================================
-# ANA KARAR FONKSİYONLARI
-# =============================================================================
-
-async def run_decider_async(message: str) -> Dict[str, Any]:
+async def build_search_queries_async(
+    message: str,
+    semantic: Optional[Dict[str, Any]] = None
+) -> List[Dict[str, str]]:
     """
-    Mesaj için yönlendirme kararı üretir.
+    INTERNET akışı için arama sorguları üretir.
     
-    İşlem Sırası:
-    1. Hızlı sınıflandırma (anahtar kelime bazlı)
-    2. LLM tabanlı semantik analiz
-    3. Fallback (kural tabanlı)
+    Özellikler:
+    - SmartRouter'dan bağımsız çalışır
+    - Sadece sorgu oluşturmaya odaklanır
+    - Semantic analiz sonuçlarını kullanabilir
     
     Args:
         message: Kullanıcı mesajı
+        semantic: Semantic analiz sonuçları (opsiyonel)
     
     Returns:
-        Dict: Yönlendirme kararı (action, analysis vb.)
+        List[Dict]: [{"id": "q1", "query": "..."}]
     """
-    # 1. Hızlı sınıflandırma
-    quick_result = quick_classify(message)
-    if quick_result:
-        logger.info(f"[DECIDER] Quick classify: {quick_result['action']}")
-        return quick_result
-
-    # 2. LLM tabanlı karar
-    messages = [
-        {"role": "system", "content": DECIDER_SYSTEM_PROMPT},
+    # Domain bazlı basit kontrol
+    domain = semantic.get("domain", "general") if semantic else "general"
+    text_lower = message.lower()
+    
+    # 1. Hızlı template kontrolü (LLM çağrısı gerekmez)
+    if domain == "finance" or any(kw in text_lower for kw in ["dolar", "euro", "altın", "kur"]):
+        for currency in ["dolar", "euro", "altın", "sterlin"]:
+            if currency in text_lower:
+                return [{"id": "q1", "query": f"{currency} TL kuru bugün güncel"}]
+    
+    if domain == "weather" or "hava" in text_lower:
+        # Şehir çıkarımı
+        cities = ["istanbul", "ankara", "izmir", "bursa", "antalya", "trabzon", "adana"]
+        city = next((c for c in cities if c in text_lower), "türkiye")
+        return [{"id": "q1", "query": f"{city} hava durumu"}]
+    
+    # 2. LLM ile akıllı sorgu üretimi
+    llm_messages = [
+        {"role": "system", "content": QUERY_BUILDER_PROMPT},
         {"role": "user", "content": message},
     ]
-
-    content = await call_groq_api_async(messages, json_mode=True, temperature=0.2)
+    
+    content = await call_groq_api_async(llm_messages, json_mode=True, temperature=0.2)
     if content:
         try:
-            return json.loads(content)
+            data = json.loads(content)
+            queries = data.get("queries", [])
+            if queries:
+                logger.info(f"[QUERY_BUILDER] LLM generated {len(queries)} queries")
+                return queries
         except json.JSONDecodeError:
-            logger.error("[DECIDER] JSON parse hatası")
-
-    # 3. Fallback
-    return run_decider_stub(message)
+            logger.warning("[QUERY_BUILDER] JSON parse hatası, fallback'e geçiliyor")
+    
+    # 3. Fallback: Ham mesajı sorgu olarak kullan
+    return [{"id": "q1", "query": message}]
 
 
 async def decide_memory_storage_async(
@@ -559,55 +469,4 @@ async def decide_memory_storage_async(
     return {"store": False}
 
 
-async def decide_rag_storage_async(question: str, answer: str) -> Dict[str, Any]:
-    """
-    İnternet sonucunun RAG'a kaydedilip edilmeyeceğine karar verir.
-    
-    Args:
-        question: Sorulan soru
-        answer: Alınan yanıt
-    
-    Returns:
-        Dict: {store: true/false}
-    """
-    user_content = f"Soru: {question}\nCevap: {answer}"
-    messages = [
-        {"role": "system", "content": RAG_DECIDER_SYSTEM_PROMPT},
-        {"role": "user", "content": user_content},
-    ]
-    
-    content = await call_groq_api_async(messages, json_mode=True, temperature=0.2)
-    if content:
-        try:
-            return json.loads(content)
-        except json.JSONDecodeError:
-            pass
-    
-    return {"store": False}
-
-
-async def summarize_conversation_for_rag_async(text: str) -> str:
-    """
-    Sohbet özetini çıkarır.
-    
-    Args:
-        text: Özetlenecek sohbet metni
-    
-    Returns:
-        str: Özet metin
-    """
-    messages = [
-        {"role": "system", "content": CONVERSATION_SUMMARY_SYSTEM},
-        {"role": "user", "content": text},
-    ]
-    
-    content = await call_groq_api_async(messages, json_mode=True)
-    if content:
-        try:
-            data = json.loads(content)
-            return data.get("summary", "")
-        except json.JSONDecodeError:
-            pass
-    
-    return ""
-
+# decide_rag_storage_async ve summarize_conversation_for_rag_async silindi - Hiç çağrılmıyordu

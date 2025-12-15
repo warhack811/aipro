@@ -17,12 +17,12 @@ import { persist } from 'zustand/middleware'
 
 export type PersonaMode =
     | 'standard'
-    | 'friendly'
+    | 'friend'
     | 'romantic'
-    | 'professional'
-    | 'creative'
-    | 'coder'
     | 'researcher'
+    | 'artist'
+    | 'coder'
+    | 'roleplay'
 
 export type ResponseTone = 'formal' | 'casual' | 'playful' | 'professional'
 export type ResponseLength = 'short' | 'normal' | 'detailed'
@@ -100,12 +100,12 @@ interface SettingsState {
 
 export const PERSONAS: Persona[] = [
     { name: 'standard', displayName: 'Standart', icon: '⚡', description: 'Dengeli ve yardımcı' },
-    { name: 'friendly', displayName: 'Kanka', icon: '😊', description: 'Samimi ve arkadaş canlısı' },
+    { name: 'friend', displayName: 'Kanka', icon: '😊', description: 'Samimi ve arkadaş canlısı' },
     { name: 'romantic', displayName: 'Sevgili', icon: '💕', description: 'Sıcak ve sevecen' },
-    { name: 'professional', displayName: 'Profesyonel', icon: '💼', description: 'Resmi ve iş odaklı' },
-    { name: 'creative', displayName: 'Sanatçı', icon: '🎨', description: 'Yaratıcı ve ilham verici' },
-    { name: 'coder', displayName: 'Yazılımcı', icon: '💻', description: 'Teknik ve kod odaklı' },
     { name: 'researcher', displayName: 'Araştırmacı', icon: '🔬', description: 'Analitik ve detaylı' },
+    { name: 'artist', displayName: 'Sanatçı', icon: '🎨', description: 'Yaratıcı ve ilham verici' },
+    { name: 'coder', displayName: 'Yazılımcı', icon: '💻', description: 'Teknik ve kod odaklı' },
+    { name: 'roleplay', displayName: 'Roleplay', icon: '🎭', description: 'Karakter canlandırma' },
 ]
 
 const DEFAULT_RESPONSE_STYLE: ResponseStyle = {

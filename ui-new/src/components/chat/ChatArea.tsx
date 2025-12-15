@@ -12,7 +12,6 @@ import { chatApi } from '@/api'
 import { MessageList } from './MessageList'
 import { ChatInput } from './ChatInput'
 import { WelcomeScreen } from './WelcomeScreen'
-import { TypingIndicator } from './TypingIndicator'
 import { ScrollToBottomButton } from './ScrollToBottomButton'
 import { ReplyPreview } from './ReplyPreview'
 import { Loader2 } from 'lucide-react'
@@ -145,17 +144,10 @@ export function ChatArea() {
                             </div>
                         </div>
                     ) : (
-                        <>
-                            <MessageList
-                                messages={messages}
-                                onReply={handleReply}
-                            />
-
-                            {/* Typing Indicator */}
-                            {isStreaming && (
-                                <TypingIndicator />
-                            )}
-                        </>
+                        <MessageList
+                            messages={messages}
+                            onReply={handleReply}
+                        />
                     )}
                 </div>
             </div>
@@ -167,27 +159,31 @@ export function ChatArea() {
             />
 
             {/* Floating Image Badge - Shows active image jobs count */}
-            {activeJobCount > 0 && (
-                <div className="fixed bottom-24 right-6 z-40">
-                    <div className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-(--color-primary) text-white shadow-lg">
-                        <span className="text-sm font-medium">{activeJobCount} görsel üretiliyor</span>
+            {
+                activeJobCount > 0 && (
+                    <div className="fixed bottom-24 right-6 z-40">
+                        <div className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-(--color-primary) text-white shadow-lg">
+                            <span className="text-sm font-medium">{activeJobCount} görsel üretiliyor</span>
+                        </div>
                     </div>
-                </div>
-            )}
+                )
+            }
 
             {/* Reply Preview Above Input */}
-            {replyingTo && (
-                <div className="px-4 md:px-8 max-w-(--chat-max-width) mx-auto w-full">
-                    <ReplyPreview
-                        replyTo={replyingTo}
-                        onRemove={clearReply}
-                        isInline={false}
-                    />
-                </div>
-            )}
+            {
+                replyingTo && (
+                    <div className="px-4 md:px-8 max-w-(--chat-max-width) mx-auto w-full">
+                        <ReplyPreview
+                            replyTo={replyingTo}
+                            onRemove={clearReply}
+                            isInline={false}
+                        />
+                    </div>
+                )
+            }
 
             {/* Input Area */}
             <ChatInput replyTo={replyingTo} onClearReply={clearReply} />
-        </div>
+        </div >
     )
 }

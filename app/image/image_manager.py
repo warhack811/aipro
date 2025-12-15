@@ -81,10 +81,20 @@ def request_image_generation(
 
     from app.image.routing import decide_image_job
     from app.memory.conversation import update_message
+    from app.services.user_preferences import get_effective_preferences
+
+    # Kullanıcı tercihlerini al
+    style_prefs = {}
+    if user and hasattr(user, 'id'):
+        try:
+            # Hem response style hem formatting preferences birleştir
+            style_prefs = get_effective_preferences(user_id=user.id, category="style")
+        except Exception as e:
+            logger.warning(f"[IMAGE_MANAGER] Tercihler alınamadı: {e}")
 
     # ImageRouter ile routing karari al
     try:
-        spec = decide_image_job(prompt, user)
+        spec = decide_image_job(prompt, user, style_profile=style_prefs)
         
         # Blocked ise mesajı hata ile güncelle
         if spec.blocked:

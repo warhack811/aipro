@@ -69,9 +69,11 @@ CONTEXT_TRUNCATED_NOTICE = (
 def _get_imports():
     """Import döngüsünü önlemek için lazy import."""
     from app.ai.ollama.gemma_handler import run_local_chat, run_local_chat_stream
+    from app.ai.prompts.compiler import build_system_prompt
     from app.ai.prompts.identity import get_ai_identity
+    from app.auth.permissions import user_can_use_image, user_can_use_internet
     from app.chat.answerer import generate_answer, generate_answer_stream
-    from app.chat.decider import decide_memory_storage_async, run_decider_async
+    from app.chat.decider import decide_memory_storage_async
     from app.chat.search import handle_internet_action
     from app.chat.smart_router import RoutingTarget, ToolIntent, route_message
     from app.config import get_settings
@@ -92,21 +94,18 @@ def _get_imports():
     
     return (
         get_settings, get_logger, feature_enabled, FeatureDisabledError, User,
-        run_decider_async, decide_memory_storage_async, generate_answer, generate_answer_stream,
+        decide_memory_storage_async, generate_answer, generate_answer_stream,
         handle_internet_action, route_message, RoutingTarget, ToolIntent, analyze_message_semantics,
         build_user_context, choose_model_for_request, should_update_summary, generate_and_save_summary,
         enhance_query_for_search, search_memories, add_memory, delete_memory,
         load_messages, append_message, search_documents, run_local_chat, run_local_chat_stream,
-        get_ai_identity, request_image_generation, job_queue
+        get_ai_identity, request_image_generation, job_queue, build_system_prompt, user_can_use_internet, user_can_use_image
     )
 
 
 def _get_conversation_summary():
     """Conversation summary import."""
-    try:
-        from app.memory.conversation import get_conversation_summary_text
-    except ImportError:
-        from app.memory.conversation import get_conversation_summary_text
+    from app.memory.conversation import get_conversation_summary_text
     return get_conversation_summary_text
 
 
@@ -165,7 +164,7 @@ def build_history_budget(
     if not conversation_id:
         return []
 
-    _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, load_messages, _, _, _, _, _, _, _ = _get_imports()
+    _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, load_messages, _, _, _, _, _, _, _, _, _, _ = _get_imports()
     from app.services.context_truncation_manager import context_manager
     
     messages = load_messages(username, conversation_id)
@@ -250,9 +249,9 @@ async def build_enhanced_context(
     4. RAG dokümanları
     """
     (
-        _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _,
+        _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _,
         enhance_query_for_search, search_memories, _, _,
-        _, _, search_documents, _, _, _, _, _
+        _, _, search_documents, _, _, _, _, _, _, _, _
     ) = _get_imports()
     
     get_conversation_summary_text = _get_conversation_summary()
@@ -441,15 +440,43 @@ async def build_image_prompt(user_message: str, style_profile: Optional[Dict[str
     # Stil ekle (sadece izin verilmişse)
     if style_profile:
         extras = []
-        # "highly detailed" sadece kullanıcı "detaylı" dediyse ekle
+        
+        # 1. Detay Seviyesi
         if style_profile.get("detail_level") == "long":
             detail_keywords = ["detay", "detail", "ayrıntı", "ayrinti"]
             if any(kw in user_message.lower() for kw in detail_keywords):
-                extras.append("detailed")
+                extras.append("highly detailed")
+                extras.append("intricate details")
+        
+        # 2. Görsel Stil (Image Style)
+        img_style = style_profile.get("image_style", "natural")
+        if img_style == "photorealistic":
+            extras.extend(["photorealistic", "8k", "raw photo", "cinematic lighting"])
+        elif img_style == "anime":
+            extras.extend(["anime style", "studio ghibli style", "vibrant colors"])
+        elif img_style == "digital_art":
+            extras.extend(["digital art", "concept art", "trending on artstation"])
+        elif img_style == "oil_painting":
+            extras.extend(["oil painting", "canvas texture", "classic art style"])
+        elif img_style == "3d_render":
+            extras.extend(["3d render", "unreal engine 5", "octane render"])
+            
+        # 3. Işıklandırma (Lighting) - Eğer varsa
+        lighting = style_profile.get("image_lighting")
+        if lighting == "cinematic":
+            extras.append("dramatic cinematographic lighting")
+        elif lighting == "studio":
+            extras.append("studio lighting")
+        elif lighting == "natural":
+            extras.append("soft natural lighting")
+
         if style_profile.get("caution_level") == "high":
             extras.append("balanced framing")
+            
         if extras:
-            prompt = f"{prompt}, {'; '.join(extras)}"
+            # Tekrarları önle
+            unique_extras = list(dict.fromkeys(extras))
+            prompt = f"{prompt}, {', '.join(unique_extras)}"
 
     logger.info(
         f"[IMAGE_PROMPT] raw_prompt=False, style_guard=True | "
@@ -470,6 +497,7 @@ async def process_chat_message(
     conversation_id: Optional[str] = None,
     requested_model: Optional[str] = None,
     stream: bool = False,
+    style_profile: Optional[Dict[str, str]] = None,
 ) -> Union[Tuple[str, Any], AsyncGenerator[str, None]]:
     """
     Ana sohbet işlemcisi.
@@ -489,16 +517,58 @@ async def process_chat_message(
     """
     (
         get_settings, get_logger, feature_enabled, FeatureDisabledError, User,
-        run_decider_async, decide_memory_storage_async, generate_answer, generate_answer_stream,
+        decide_memory_storage_async, generate_answer, generate_answer_stream,
         handle_internet_action, route_message, RoutingTarget, ToolIntent, analyze_message_semantics,
         build_user_context, choose_model_for_request, should_update_summary, generate_and_save_summary,
         enhance_query_for_search, search_memories, add_memory, delete_memory,
         load_messages, append_message, search_documents, run_local_chat, run_local_chat_stream,
-        get_ai_identity, request_image_generation, job_queue
+        get_ai_identity, request_image_generation, job_queue, build_system_prompt, user_can_use_internet, user_can_use_image
     ) = _get_imports()
     
     logger = get_logger(__name__)
     settings = get_settings()
+
+    # --- STYLE ADAPTATION LAYER ---
+    # Frontend (client.ts) verilerini Compiler (compiler.py) formatına çevir
+    if style_profile:
+        # 1. Length Mapping (short/normal/detailed -> short/medium/long)
+        len_val = style_profile.get("length", "normal")
+        len_map = {"short": "short", "normal": "medium", "detailed": "long"}
+        style_profile["detail_level"] = len_map.get(len_val, "medium")
+
+        # 2. Tone Mapping
+        # Frontend: casual, playful, professional, formal
+        # Compiler expects:
+        #   - tone: friendly, humorous, serious, empathetic, neutral
+        #   - formality: low, medium, high
+        frontend_tone = style_profile.get("tone", "casual")
+        
+        tone_map = {
+            "casual": "friendly",
+            "playful": "humorous",
+            "professional": "serious", # Professional -> Serious tone
+            "formal": "serious"        # Formal -> Serious tone
+        }
+        style_profile["tone"] = tone_map.get(frontend_tone, "neutral")
+
+        formality_map = {
+            "casual": "low",
+            "playful": "low",
+            "professional": "high",
+            "formal": "high"
+        }
+        style_profile["formality"] = formality_map.get(frontend_tone, "medium")
+
+        # 3. Emoji Mapping
+        # Frontend: none, low, medium, high
+        # Compiler: use_emoji = True | False | None
+        emoji_lvl = style_profile.get("emoji_level", "medium")
+        if emoji_lvl == "none":
+            style_profile["use_emoji"] = False
+        elif emoji_lvl in ["medium", "high"]:
+            style_profile["use_emoji"] = True
+        else:
+            style_profile["use_emoji"] = None  # low -> nötr
 
     # 1. Feature Flag Kontrolü
     if not feature_enabled("chat", True):
@@ -513,6 +583,9 @@ async def process_chat_message(
     )
     memory_blocks = user_context.get("memory_blocks", {})
     memory_hint = build_memory_hint(memory_blocks)
+    
+    # Stil profilini al - answerer'a iletmek için
+    style_profile = user_context.get("style_profile", {})
 
     # 3. SmartRouter ile Yönlendirme Kararı
     # Kullanıcının aktif persona'sını al (DB'den)
@@ -543,22 +616,23 @@ async def process_chat_message(
     
     # Routing hedefine göre action belirle
     action = "GROQ_REPLY"
-    analysis: Dict[str, Any] = {"intent": "chat"}
+    analysis: Dict[str, Any] = semantic_dict or {"intent": "chat"}  # Semantic'ten al
     decision: Dict[str, Any] = {}
     
     if routing_decision.target == RoutingTarget.IMAGE:
         action = "IMAGE"
     elif routing_decision.target == RoutingTarget.INTERNET:
         action = "INTERNET"
-        # Internet için decider'dan ek bilgi al
-        decision = await run_decider_async(message)
-        analysis = decision.get("analysis", analysis)
+        # YENİ: Sadece sorgu üretimi için özel fonksiyon kullan
+        from app.chat.decider import build_search_queries_async
+        queries = await build_search_queries_async(message, semantic_dict)
+        decision = {"internet": {"queries": queries}}
+        # analysis zaten semantic_dict'ten geliyor (üstte set edildi)
     elif routing_decision.target == RoutingTarget.LOCAL:
         action = "LOCAL_CHAT"
     else:
-        # GROQ - router kararına güven, decider'ı bypass et
+        # GROQ - router kararına güven
         action = "GROQ_REPLY"
-        # analysis zaten semantic analizden geldi
 
     # A) GÖRSEL ÜRETİM
     # YENİ YAKLAŞIM: Mesajı SYNC oluştur, job'u async başlat
@@ -633,22 +707,50 @@ async def process_chat_message(
             (local_history[-1].get("content") or "").strip() == (message or "").strip()):
             local_history = local_history[:-1]
 
+        # SYSTEM PROMPT COMPILATION FOR LOCAL (Bela)
+        # Bela için optimize edilmiş (hafif ve sansürsüz) prompt kullanıyoruz.
+        compiled_system_prompt = build_system_prompt(
+            user=user,
+            persona_name=active_persona,
+            toggles={
+                "web": user_can_use_internet(user),
+                "image": user_can_use_image(user)
+            },
+            style_profile=style_profile,
+            optimized_for_local=True  # <--- KRITIK: Lite Mode Aktif
+        )
+
         if stream:
             async def local_stream_wrapper():
                 async for chunk in run_local_chat_stream(
-                    username, message, analysis, history=local_history, memory_hint=full_context
+                    username, message, analysis, history=local_history, memory_hint=full_context,
+                    system_prompt=compiled_system_prompt
                 ):
                     yield chunk
             return local_stream_wrapper()
 
         res = await run_local_chat(
-            username, message, analysis, history=local_history, memory_hint=full_context
+            username, message, analysis, history=local_history, memory_hint=full_context,
+            system_prompt=compiled_system_prompt
         )
         return f"[BELA] {res}", semantic
 
     # D) GROQ REPLY (Varsayılan)
     full_context_str, relevant_memories = await build_enhanced_context(username, message, conversation_id)
     full_context = full_context_str or ""
+    
+    # SYSTEM PROMPT COMPILATION (Mimarinin Kalbi)
+    # Compiler artik style_profile verisini de isliyor
+    compiled_system_prompt = build_system_prompt(
+        user=user,
+        persona_name=active_persona,
+        toggles={
+            "web": user_can_use_internet(user),
+            "image": user_can_use_image(user)
+        },
+        style_profile=style_profile
+    )
+    logger.debug(f"[PROCESSOR] System prompt compiled. Length: {len(compiled_system_prompt)}")
 
     raw_history = build_history_budget(username, conversation_id, token_budget=HISTORY_TOKEN_BUDGET_GROQ)
     if (raw_history and raw_history[-1].get("role") == "user" and
@@ -667,6 +769,8 @@ async def process_chat_message(
             try:
                 async for chunk in generate_answer_stream(
                     message=message, analysis=analysis, context=full_context, history=groq_history,
+                    style_profile=style_profile,
+                    system_prompt=compiled_system_prompt
                 ):
                     buffer.append(chunk)
                     yield chunk
@@ -710,6 +814,8 @@ async def process_chat_message(
     # NON-STREAMING
     final_answer = await generate_answer(
         message=message, analysis=analysis, context=full_context, history=groq_history,
+        style_profile=style_profile,
+        system_prompt=compiled_system_prompt  # Compiled prompt'u manual override olarak geciyoruz
     )
 
     # Hafıza kayıt

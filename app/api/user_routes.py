@@ -101,6 +101,8 @@ class ChatRequest(BaseModel):
     conversation_id: Optional[str] = None
     model: Optional[str] = None
     stream: bool = False
+    # Style preferences: {tone: str, length: str, emoji_level: str}
+    style_profile: Optional[Dict[str, str]] = None
 
 class ConversationSummaryOut(BaseModel):
     id: str
@@ -214,7 +216,8 @@ async def chat(
                 force_local=payload.force_local,
                 conversation_id=conv_id,
                 requested_model=requested_model,
-                stream=True
+                stream=True,
+                style_profile=payload.style_profile
             )
             
             # Streaming olmayan (ör. image/internet/local) yanıtlar için güvenli fallback
@@ -258,16 +261,11 @@ async def chat(
                 engine=engine, action=action, forced=payload.force_local, 
                 persona=persona_applied, model=payload.model or "default"
             )
-            if engine == "local":
-                save_text = full_reply.strip()
-                if not save_text.startswith("[BELA]"):
-                    save_text = f"[BELA] {save_text}"
-            else:
-                save_text = f"[GROQ] {full_reply}"
-            # MEMORY FIX: Duplicate engellemek için buradan kaldırdık.
+            # Prefix'siz kaydet - model history'de bunları görüp taklit ediyordu
+            save_text = full_reply.strip()
             
             conv_append(username=username, conv_id=conv_id, role="bot", text=save_text, extra_metadata=meta)
-            limiter.consume_usage(user_id, full_reply)
+            limiter.consume_usage(user_id, engine=engine)
 
         return StreamingResponse(
             stream_and_save(),
@@ -285,7 +283,8 @@ async def chat(
                 force_local=payload.force_local,
                 conversation_id=conv_id,
                 requested_model=requested_model,
-                stream=False
+                stream=False,
+                style_profile=payload.style_profile
             )
             # Normal modda (reply, semantic) tuple döner
             # Type annotation: Union[Tuple[str, Any], AsyncGenerator[str, None]]
@@ -307,18 +306,24 @@ async def chat(
             logger.error(f'[CHAT] process_chat_message hata: {e}', exc_info=True)
             return {"ok": False, "error": "internal_error", "message": "Bir hata oluştu."}
 
+        # Engine tipi belirleme (artık prefix yerine request parametrelerine göre)
+        if payload.force_local or requested_model == "bela":
+            engine = "local"
+            action = "LOCAL_CHAT"
+        elif "[NET]" in reply or "[INTERNET]" in reply:
+            engine = "internet"
+            action = "INTERNET"
+        elif "[IMAGE" in reply or "[FLUX]" in reply:
+            engine = "image"
+            action = "IMAGE"
+        else:
+            engine = "groq"
+            action = "GROQ_REPLY"
+
         try:
-            limiter.consume_usage(user_id, reply)
+            limiter.consume_usage(user_id, engine=engine)
         except Exception as e:
             logger.debug(f"[CHAT] Usage limit consume failed: {e}")
-
-        engine = "unknown"; action = "UNKNOWN"
-        if reply.startswith("[BELA]"): engine = "local"; action = "LOCAL_CHAT"
-        elif reply.startswith("[NET]"): engine = "internet"; action = "INTERNET"
-        elif reply.startswith("[GROQ]"): engine = "groq"; action = "GROQ_REPLY"
-        elif reply.startswith("[IMAGE]"): engine = "image"; action = "IMAGE"
-        elif reply.startswith("[IMAGE_PENDING]"): engine = "image"; action = "IMAGE_PENDING"
-        # MEMORY FIX: Duplicate engellemek için buradan kaldırdık.
 
         meta = _build_message_metadata(
             engine=engine, action=action, forced=payload.force_local, 

@@ -99,6 +99,11 @@ export const chatApi = {
         forceLocal?: boolean
         requestedModel?: string | null
         stream?: boolean
+        styleProfile?: {
+            tone?: string
+            length?: string
+            emojiLevel?: string
+        }
     }): Promise<Response> {
         const response = await fetch(`${API_BASE}/user/chat`, {
             method: 'POST',
@@ -110,6 +115,12 @@ export const chatApi = {
                 force_local: params.forceLocal || false,
                 requested_model: params.requestedModel,
                 stream: params.stream ?? true,
+                // Map frontend style to backend format
+                style_profile: params.styleProfile ? {
+                    tone: params.styleProfile.tone,
+                    length: params.styleProfile.length,
+                    emoji_level: params.styleProfile.emojiLevel
+                } : null,
             }),
         })
 
