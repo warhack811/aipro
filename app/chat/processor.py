@@ -75,7 +75,8 @@ def _get_imports():
     from app.chat.answerer import generate_answer, generate_answer_stream
     from app.chat.decider import decide_memory_storage_async
     from app.chat.search import handle_internet_action
-    from app.chat.smart_router import RoutingTarget, ToolIntent, route_message
+    from app.chat.smart_router import RoutingTarget, ToolIntent
+    from app.chat.orchestrator_adapter import route_message_with_orchestrator_tasks as route_message
     from app.config import get_settings
     from app.core.exceptions import FeatureDisabledError
     from app.core.feature_flags import feature_enabled
