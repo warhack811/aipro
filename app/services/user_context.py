@@ -12,6 +12,7 @@ from app.services.semantic_classifier import analyze_message_semantics
 
 logger = get_logger(__name__)
 
+
 # Yeni yardımcı: herhangi bir nesneyi güvenli şekilde dict'e çevirir
 def _to_mapping(obj: Any) -> Optional[Dict]:
     try:
@@ -21,6 +22,7 @@ def _to_mapping(obj: Any) -> Optional[Dict]:
     except Exception as e:
         logger.debug(f"[USER_CONTEXT] _to_mapping conversion failed: {e}")
         return None
+
 
 async def build_user_context(
     username: str,

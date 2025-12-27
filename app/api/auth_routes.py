@@ -14,10 +14,10 @@ router = APIRouter(tags=["auth"])
 async def get_current_user_info(request: Request):
     """Oturum açmış kullanıcının bilgilerini döner."""
     from app.auth.dependencies import get_current_user
-    
+
     try:
         user = await get_current_user(request)
-        
+
         return {
             "id": str(user.id),
             "username": user.username,
@@ -30,7 +30,7 @@ async def get_current_user_info(request: Request):
                 "reducedMotion": False,
                 "soundEnabled": True,
                 "notificationsEnabled": True,
-                "activePersona": getattr(user, "active_persona", None)
+                "activePersona": getattr(user, "active_persona", None),
             },
             "permissions": {
                 "canUseInternet": user.permissions.get("can_use_internet", True),
@@ -39,7 +39,7 @@ async def get_current_user_info(request: Request):
                 "dailyInternetLimit": user.limits.get("daily_internet", 100),
                 "dailyImageLimit": user.limits.get("daily_image", 50),
                 "censorshipLevel": user.permissions.get("censorship_level", 0),
-                "isBanned": user.is_banned
+                "isBanned": user.is_banned,
             },
             "createdAt": user.created_at.isoformat() if hasattr(user, "created_at") and user.created_at else None,
         }

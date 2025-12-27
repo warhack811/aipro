@@ -17,13 +17,14 @@ from typing import Any, Dict, Optional
 @dataclass
 class MockUser:
     """Test icin mock User sinifi."""
+
     id: int = 1
     username: str = "test_user"
     bela_unlocked: bool = False
     is_banned: bool = False
     selected_model: Optional[str] = None
     permissions: Optional[Dict[str, Any]] = None
-    
+
     def __post_init__(self):
         if self.permissions is None:
             self.permissions = {}
@@ -32,14 +33,14 @@ class MockUser:
 def run_tests():
     """Tum test senaryolarini calistirir."""
     from app.chat.smart_router import RoutingTarget, SmartRouter, ToolIntent
-    
+
     router = SmartRouter()
     results = []
-    
+
     print("=" * 60)
     print("SMART ROUTER TEST SENARYOLARI")
     print("=" * 60)
-    
+
     # TEST 1: resim ciz -> IMAGE
     print("\nTEST 1: 'resim ciz' -> IMAGE")
     user = MockUser(permissions={"can_use_image": True})
@@ -49,7 +50,7 @@ def run_tests():
     print(f"  Target: {d.target.value}")
     print(f"  Reasons: {d.reason_codes}")
     print(f"  Result: {'PASS' if passed else 'FAIL'}")
-    
+
     # TEST 2: hava durumu -> INTERNET
     print("\nTEST 2: 'hava durumu' -> INTERNET")
     user = MockUser(permissions={"can_use_internet": True})
@@ -59,7 +60,7 @@ def run_tests():
     print(f"  Target: {d.target.value}")
     print(f"  Reasons: {d.reason_codes}")
     print(f"  Result: {'PASS' if passed else 'FAIL'}")
-    
+
     # TEST 3: bela + unlocked -> LOCAL
     print("\nTEST 3: requested_model=bela + bela_unlocked=True -> LOCAL")
     user = MockUser(bela_unlocked=True)
@@ -69,7 +70,7 @@ def run_tests():
     print(f"  Target: {d.target.value}")
     print(f"  Reasons: {d.reason_codes}")
     print(f"  Result: {'PASS' if passed else 'FAIL'}")
-    
+
     # TEST 4: bela + locked -> GROQ
     print("\nTEST 4: requested_model=bela + bela_unlocked=False -> GROQ")
     user = MockUser(bela_unlocked=False)
@@ -79,7 +80,7 @@ def run_tests():
     print(f"  Target: {d.target.value}")
     print(f"  Reasons: {d.reason_codes}")
     print(f"  Result: {'PASS' if passed else 'FAIL'}")
-    
+
     # TEST 5: strict + nsfw image -> BLOCKED
     print("\nTEST 5: censorship_level=2 + nsfw image -> BLOCKED")
     user = MockUser(permissions={"can_use_image": True, "censorship_level": 2})
@@ -90,7 +91,7 @@ def run_tests():
     print(f"  Blocked: {d.blocked}")
     print(f"  Reasons: {d.reason_codes}")
     print(f"  Result: {'PASS' if passed else 'FAIL'}")
-    
+
     # TEST 6: unrestricted + nsfw image -> IMAGE
     print("\nTEST 6: censorship_level=0 + nsfw image -> IMAGE (allowed)")
     user = MockUser(permissions={"can_use_image": True, "censorship_level": 0})
@@ -101,7 +102,7 @@ def run_tests():
     print(f"  Blocked: {d.blocked}")
     print(f"  Reasons: {d.reason_codes}")
     print(f"  Result: {'PASS' if passed else 'FAIL'}")
-    
+
     # TEST 7: roleplay -> LOCAL
     print("\nTEST 7: roleplay icerik -> LOCAL")
     user = MockUser(bela_unlocked=True, permissions={"censorship_level": 1})
@@ -112,7 +113,7 @@ def run_tests():
     print(f"  Tool Intent: {d.tool_intent.value}")
     print(f"  Reasons: {d.reason_codes}")
     print(f"  Result: {'PASS' if passed else 'FAIL'}")
-    
+
     # TEST 8: normal sohbet -> GROQ
     print("\nTEST 8: normal sohbet -> GROQ")
     user = MockUser(bela_unlocked=True, permissions={"censorship_level": 1})
@@ -122,21 +123,21 @@ def run_tests():
     print(f"  Target: {d.target.value}")
     print(f"  Reasons: {d.reason_codes}")
     print(f"  Result: {'PASS' if passed else 'FAIL'}")
-    
+
     # OZET
     print("\n" + "=" * 60)
     print("TEST SONUCLARI")
     print("=" * 60)
-    
+
     total = len(results)
     passed_count = sum(1 for _, p in results if p)
-    
+
     for name, p in results:
         status = "PASS" if p else "FAIL"
         print(f"  [{status}] {name}")
-    
+
     print(f"\nToplam: {total}, Gecen: {passed_count}, Kalan: {total - passed_count}")
-    
+
     if passed_count == total:
         print("\nTUM TESTLER BASARILI!")
         return 0

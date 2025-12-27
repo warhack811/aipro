@@ -2,6 +2,7 @@
 import sys
 from pathlib import Path
 
+
 def test_smart_router_script_runs():
     repo_root = Path(__file__).resolve().parents[1]
     script = repo_root / "tests" / "test_smart_router.py"

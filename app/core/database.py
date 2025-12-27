@@ -25,9 +25,9 @@ Mimari:
 
 import logging
 
-# ----------------------------------------------------------------------------- 
+# -----------------------------------------------------------------------------
 # ChromaDB TELEMETRY KAPATMA (import ÖNCESİ)
-# ----------------------------------------------------------------------------- 
+# -----------------------------------------------------------------------------
 # ChromaDB telemetry modülü import anında aktif oluyor. Log spam ve
 # "capture() takes 1 positional argument but 3 were given" hatalarını önlemek
 # için telemetry'yi import öncesi kapatıyoruz.
@@ -48,6 +48,7 @@ os.environ.setdefault("CHROMA_TELEMETRY_IMPLEMENTATION", "none")
 try:
     import chromadb
     from chromadb.config import Settings as ChromaSettings
+
     CHROMADB_AVAILABLE = True
     if TYPE_CHECKING:
         from chromadb import PersistentClient
@@ -71,6 +72,7 @@ _chroma_client: Optional[object] = None
 # YAPILANDIRMA YARDIMCILARI
 # =============================================================================
 
+
 def _get_settings():
     """
     Ayarları güvenli şekilde yükler.
@@ -82,11 +84,13 @@ def _get_settings():
     """
     try:
         from app.config import get_settings
+
         return get_settings()
     except ImportError:
         # Eski import yolu (geçiş dönemi uyumluluğu)
         try:
             from app.config import get_settings
+
             return get_settings()
         except ImportError:
             logger.warning("[DB] Config yüklenemedi, varsayılan değerler kullanılacak")
@@ -125,6 +129,7 @@ def get_db_url() -> str:
 # SQLITE VERITABANI
 # =============================================================================
 
+
 def _init_sqlite_engine() -> Engine:
     """
     SQLite engine'i oluşturur ve yapılandırır.
@@ -160,8 +165,8 @@ def _init_sqlite_engine() -> Engine:
     def set_sqlite_pragma(dbapi_connection, _connection_record):
         """Her yeni bağlantıda SQLite optimizasyonlarını uygula."""
         cursor = dbapi_connection.cursor()
-        cursor.execute("PRAGMA journal_mode=WAL")   # Performans: Write-Ahead Logging
-        cursor.execute("PRAGMA foreign_keys=ON")    # Bütünlük: Foreign key kontrolü
+        cursor.execute("PRAGMA journal_mode=WAL")  # Performans: Write-Ahead Logging
+        cursor.execute("PRAGMA foreign_keys=ON")  # Bütünlük: Foreign key kontrolü
         cursor.execute("PRAGMA busy_timeout=30000")  # 30s lock timeout (milliseconds)
         cursor.execute("PRAGMA synchronous=NORMAL")  # Performance vs safety balance
         cursor.execute("PRAGMA cache_size=-64000")  # 64MB cache
@@ -275,6 +280,7 @@ def init_database_with_defaults() -> None:
     # 3. Varsayılan config'leri yükle
     try:
         from app.core.config_seed import seed_all_configs
+
         results = seed_all_configs(force=False)
 
         total = sum(results.values())
@@ -311,6 +317,7 @@ def get_session() -> Generator[Session, None, None]:
 # CHROMADB VEKTÖR VERİTABANI
 # =============================================================================
 
+
 def get_chroma_persist_dir() -> str:
     """
     ChromaDB veri dizinini döndürür.
@@ -343,10 +350,7 @@ def get_chroma_client():
     global _chroma_client
 
     if not CHROMADB_AVAILABLE:
-        raise ImportError(
-            "chromadb kütüphanesi yüklü değil! "
-            "Yüklemek için: pip install chromadb"
-        )
+        raise ImportError("chromadb kütüphanesi yüklü değil! " "Yüklemek için: pip install chromadb")
 
     if _chroma_client is None:
         persist_dir = get_chroma_persist_dir()
@@ -356,6 +360,7 @@ def get_chroma_client():
             # Telemetry'yi kapat (log spam'ini önlemek için)
             # Environment variable ile telemetry'yi kapat
             import os
+
             os.environ["ANONYMIZED_TELEMETRY"] = "False"
 
             if ChromaSettings:
@@ -390,8 +395,7 @@ def get_memories_collection():
     """
     client = get_chroma_client()
     return client.get_or_create_collection(  # type: ignore[attr-defined]
-        name="memories",
-        metadata={"hnsw:space": "cosine"}
+        name="memories", metadata={"hnsw:space": "cosine"}
     )
 
 
@@ -411,7 +415,5 @@ def get_rag_collection():
     """
     client = get_chroma_client()
     return client.get_or_create_collection(  # type: ignore[attr-defined]
-        name="rag_docs",
-        metadata={"hnsw:space": "cosine"}
+        name="rag_docs", metadata={"hnsw:space": "cosine"}
     )
-

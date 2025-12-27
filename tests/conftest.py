@@ -20,6 +20,7 @@ sys.path.insert(0, str(project_root))
 def app_settings():
     """Test için uygulama ayarlarını döndürür."""
     from app.config import get_settings
+
     return get_settings()
 
 
@@ -27,7 +28,7 @@ def app_settings():
 def test_client():
     """
     FastAPI test client'ı.
-    
+
     Kullanım:
         def test_health(test_client):
             response = test_client.get("/health")
@@ -36,7 +37,7 @@ def test_client():
     from fastapi.testclient import TestClient
 
     from main import app
-    
+
     with TestClient(app) as client:
         yield client
 
@@ -51,10 +52,3 @@ def sample_user_message():
 def sample_code_message():
     """Test için kod içeren mesaj."""
     return "Python'da liste oluşturma:\n```python\nmy_list = [1, 2, 3]\n```"
-
-
-
-
-
-
-

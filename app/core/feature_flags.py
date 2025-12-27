@@ -7,11 +7,11 @@ Admin panel üzerinden veya programatik olarak özellikler kontrol edilebilir.
 
 Kullanım:
     from app.core.feature_flags import feature_enabled, set_feature_flag
-    
+
     # Özellik açık mı kontrol et
     if feature_enabled("image_generation"):
         process_image_request()
-    
+
     # Özelliği kapat
     set_feature_flag("image_generation", False)
 
@@ -49,10 +49,11 @@ _loaded: bool = False
 # DAHİLİ FONKSİYONLAR
 # =============================================================================
 
+
 def _load_flags() -> None:
     """
     JSON dosyasından feature flag'leri yükler ve cache'ler.
-    
+
     Dosya yoksa veya okunamazsa, tüm özellikler varsayılan (True) kabul edilir.
     """
     global _flags_cache, _loaded
@@ -81,10 +82,7 @@ def _save_flags() -> None:
     """Cache'deki flag'leri dosyaya kaydeder."""
     try:
         FLAGS_PATH.parent.mkdir(parents=True, exist_ok=True)
-        FLAGS_PATH.write_text(
-            json.dumps(_flags_cache, ensure_ascii=False, indent=2),
-            encoding="utf-8"
-        )
+        FLAGS_PATH.write_text(json.dumps(_flags_cache, ensure_ascii=False, indent=2), encoding="utf-8")
         logger.info(f"[FLAGS] Değişiklikler kaydedildi: {FLAGS_PATH}")
     except Exception as e:
         logger.error(f"[FLAGS] Dosya yazma hatası: {e}")
@@ -94,21 +92,22 @@ def _save_flags() -> None:
 # PUBLIC API
 # =============================================================================
 
+
 def feature_enabled(key: str, default: bool = True) -> bool:
     """
     Bir özelliğin açık olup olmadığını kontrol eder.
-    
+
     Args:
         key: Özellik anahtarı (ör: "image_generation", "chat", "bela_mode")
         default: Anahtar tanımlı değilse kullanılacak varsayılan değer
-    
+
     Returns:
         bool: Özellik açık (True) veya kapalı (False)
-    
+
     Example:
         >>> if feature_enabled("chat"):
         ...     process_chat()
-        >>> 
+        >>>
         >>> if feature_enabled("experimental_feature", default=False):
         ...     try_experimental()
     """
@@ -120,37 +119,37 @@ def feature_enabled(key: str, default: bool = True) -> bool:
 def set_feature_flag(key: str, value: bool) -> None:
     """
     Bir özelliğin durumunu değiştirir.
-    
+
     Değişiklik hem belleğe hem de diske kaydedilir.
-    
+
     Args:
         key: Özellik anahtarı
         value: Yeni durum (True: açık, False: kapalı)
-    
+
     Example:
         >>> set_feature_flag("image_generation", False)  # Görsel üretimini kapat
         >>> set_feature_flag("image_generation", True)   # Tekrar aç
     """
     global _flags_cache
-    
+
     if not _loaded:
         _load_flags()
 
     old_value = _flags_cache.get(key)
     _flags_cache[key] = value
-    
+
     _save_flags()
-    
+
     logger.info(f"[FLAGS] '{key}' değiştirildi: {old_value} → {value}")
 
 
 def get_all_flags() -> Dict[str, bool]:
     """
     Tüm tanımlı flag'leri döndürür.
-    
+
     Returns:
         Dict[str, bool]: Tüm flag'lerin kopyası
-    
+
     Example:
         >>> flags = get_all_flags()
         >>> print(flags)
@@ -164,7 +163,7 @@ def get_all_flags() -> Dict[str, bool]:
 def reload_flags() -> None:
     """
     Flag'leri diskten yeniden yükler.
-    
+
     Dosya harici olarak değiştirildiyse cache'i güncellemek için kullanılır.
     """
     global _loaded
@@ -186,10 +185,3 @@ internet            - İnternet araması
 bela_mode           - Yerel model (Ollama) kullanımı
 groq_enabled        - Groq API kullanımı
 """
-
-
-
-
-
-
-

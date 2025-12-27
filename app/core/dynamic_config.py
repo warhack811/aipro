@@ -46,12 +46,13 @@ from sqlmodel import Session, select
 logger = logging.getLogger(__name__)
 
 # Generic type for type hints
-T = TypeVar('T')
+T = TypeVar("T")
 
 
 # =============================================================================
 # CACHE IMPLEMENTATION
 # =============================================================================
+
 
 class ConfigCache:
     """
@@ -153,6 +154,7 @@ class ConfigCache:
 # DYNAMIC CONFIG SERVICE
 # =============================================================================
 
+
 class DynamicConfigService:
     """
     Dinamik yapılandırma yönetim servisi.
@@ -176,6 +178,7 @@ class DynamicConfigService:
     def _get_session(self):
         """Database session lazy import."""
         from app.core.database import get_session
+
         return get_session
 
     def _get_models(self):
@@ -190,15 +193,16 @@ class DynamicConfigService:
             ThemeConfig,
             UITextConfig,
         )
+
         return {
-            'SystemConfig': SystemConfig,
-            'ModelConfig': ModelConfig,
-            'APIConfig': APIConfig,
-            'ThemeConfig': ThemeConfig,
-            'PersonaConfig': PersonaConfig,
-            'ImageGenConfig': ImageGenConfig,
-            'UITextConfig': UITextConfig,
-            'ConfigValueType': ConfigValueType,
+            "SystemConfig": SystemConfig,
+            "ModelConfig": ModelConfig,
+            "APIConfig": APIConfig,
+            "ThemeConfig": ThemeConfig,
+            "PersonaConfig": PersonaConfig,
+            "ImageGenConfig": ImageGenConfig,
+            "UITextConfig": UITextConfig,
+            "ConfigValueType": ConfigValueType,
         }
 
     # -------------------------------------------------------------------------
@@ -270,12 +274,7 @@ class DynamicConfigService:
     # SYSTEM CONFIG (Key-Value)
     # -------------------------------------------------------------------------
 
-    def get(
-        self, 
-        key: str, 
-        default: T = None,
-        use_cache: bool = True
-    ) -> Union[T, Any]:
+    def get(self, key: str, default: T = None, use_cache: bool = True) -> Union[T, Any]:
         """
         Yapılandırma değerini okur.
 
@@ -300,14 +299,12 @@ class DynamicConfigService:
 
         # DB'den oku
         models = self._get_models()
-        SystemConfig = models['SystemConfig']
+        SystemConfig = models["SystemConfig"]
         get_session = self._get_session()
 
         try:
             with get_session() as session:
-                config = session.exec(
-                    select(SystemConfig).where(SystemConfig.key == key)
-                ).first()
+                config = session.exec(select(SystemConfig).where(SystemConfig.key == key)).first()
 
                 if config is None:
                     return default
@@ -354,14 +351,12 @@ class DynamicConfigService:
         # Cache'de olmayanları DB'den al
         if uncached_keys:
             models = self._get_models()
-            SystemConfig = models['SystemConfig']
+            SystemConfig = models["SystemConfig"]
             get_session = self._get_session()
 
             try:
                 with get_session() as session:
-                    configs = session.exec(
-                        select(SystemConfig).where(SystemConfig.key.in_(uncached_keys))
-                    ).all()
+                    configs = session.exec(select(SystemConfig).where(SystemConfig.key.in_(uncached_keys))).all()
 
                     for config in configs:
                         value = self._convert_value(config.value, config.value_type)
@@ -394,22 +389,20 @@ class DynamicConfigService:
                 return cached
 
         models = self._get_models()
-        SystemConfig = models['SystemConfig']
+        SystemConfig = models["SystemConfig"]
         get_session = self._get_session()
 
         result = {}
 
         try:
             with get_session() as session:
-                configs = session.exec(
-                    select(SystemConfig).where(SystemConfig.category == category)
-                ).all()
+                configs = session.exec(select(SystemConfig).where(SystemConfig.category == category)).all()
 
                 for config in configs:
                     # Key'den category prefix'ini kaldır
                     short_key = config.key
                     if short_key.startswith(f"{category}."):
-                        short_key = short_key[len(category) + 1:]
+                        short_key = short_key[len(category) + 1 :]
 
                     result[short_key] = self._convert_value(config.value, config.value_type)
 
@@ -423,13 +416,13 @@ class DynamicConfigService:
             return {}
 
     def set(
-        self, 
-        key: str, 
+        self,
+        key: str,
         value: Any,
         value_type: Optional[str] = None,
         category: Optional[str] = None,
         description: Optional[str] = None,
-        updated_by: Optional[str] = None
+        updated_by: Optional[str] = None,
     ) -> bool:
         """
         Yapılandırma değerini yazar/günceller.
@@ -446,7 +439,7 @@ class DynamicConfigService:
             bool: Başarılı mı
         """
         models = self._get_models()
-        SystemConfig = models['SystemConfig']
+        SystemConfig = models["SystemConfig"]
         get_session = self._get_session()
 
         # Tip algılama
@@ -460,9 +453,7 @@ class DynamicConfigService:
         try:
             with get_session() as session:
                 # Mevcut kayıt var mı?
-                config = session.exec(
-                    select(SystemConfig).where(SystemConfig.key == key)
-                ).first()
+                config = session.exec(select(SystemConfig).where(SystemConfig.key == key)).first()
 
                 serialized = self._serialize_value(value)
 
@@ -504,14 +495,12 @@ class DynamicConfigService:
     def delete(self, key: str) -> bool:
         """Config kaydını siler."""
         models = self._get_models()
-        SystemConfig = models['SystemConfig']
+        SystemConfig = models["SystemConfig"]
         get_session = self._get_session()
 
         try:
             with get_session() as session:
-                config = session.exec(
-                    select(SystemConfig).where(SystemConfig.key == key)
-                ).first()
+                config = session.exec(select(SystemConfig).where(SystemConfig.key == key)).first()
 
                 if config:
                     category = config.category
@@ -551,24 +540,18 @@ class DynamicConfigService:
             return cached
 
         models = self._get_models()
-        ModelConfig = models['ModelConfig']
+        ModelConfig = models["ModelConfig"]
         get_session = self._get_session()
 
         try:
             with get_session() as session:
-                query = select(ModelConfig).where(
-                    ModelConfig.purpose == purpose,
-                    ModelConfig.is_active == True
-                )
+                query = select(ModelConfig).where(ModelConfig.purpose == purpose, ModelConfig.is_active == True)
 
                 if provider:
                     query = query.where(ModelConfig.provider == provider)
 
                 # Öncelik ve default sıralaması
-                query = query.order_by(
-                    ModelConfig.is_default.desc(),
-                    ModelConfig.priority.desc()
-                )
+                query = query.order_by(ModelConfig.is_default.desc(), ModelConfig.priority.desc())
 
                 config = session.exec(query).first()
 
@@ -593,7 +576,7 @@ class DynamicConfigService:
     def get_all_models(self, active_only: bool = True) -> List[Dict[str, Any]]:
         """Tüm model yapılandırmalarını döndürür."""
         models = self._get_models()
-        ModelConfig = models['ModelConfig']
+        ModelConfig = models["ModelConfig"]
         get_session = self._get_session()
 
         try:
@@ -637,23 +620,19 @@ class DynamicConfigService:
             return cached
 
         models = self._get_models()
-        ThemeConfig = models['ThemeConfig']
+        ThemeConfig = models["ThemeConfig"]
         get_session = self._get_session()
 
         try:
             with get_session() as session:
                 theme = session.exec(
-                    select(ThemeConfig).where(
-                        ThemeConfig.is_active == True,
-                        ThemeConfig.is_default == True
-                    )
+                    select(ThemeConfig).where(ThemeConfig.is_active == True, ThemeConfig.is_default == True)
                 ).first()
 
                 if not theme:
                     # Default yoksa ilk aktifi al
                     theme = session.exec(
-                        select(ThemeConfig).where(ThemeConfig.is_active == True)
-                        .order_by(ThemeConfig.sort_order)
+                        select(ThemeConfig).where(ThemeConfig.is_active == True).order_by(ThemeConfig.sort_order)
                     ).first()
 
                 if theme:
@@ -676,7 +655,7 @@ class DynamicConfigService:
     def get_all_themes(self, active_only: bool = True) -> List[Dict[str, Any]]:
         """Tüm temaları döndürür."""
         models = self._get_models()
-        ThemeConfig = models['ThemeConfig']
+        ThemeConfig = models["ThemeConfig"]
         get_session = self._get_session()
 
         try:
@@ -715,16 +694,13 @@ class DynamicConfigService:
             return cached
 
         models = self._get_models()
-        PersonaConfig = models['PersonaConfig']
+        PersonaConfig = models["PersonaConfig"]
         get_session = self._get_session()
 
         try:
             with get_session() as session:
                 persona = session.exec(
-                    select(PersonaConfig).where(
-                        PersonaConfig.name == name,
-                        PersonaConfig.is_active == True
-                    )
+                    select(PersonaConfig).where(PersonaConfig.name == name, PersonaConfig.is_active == True)
                 ).first()
 
                 if persona:
@@ -754,7 +730,7 @@ class DynamicConfigService:
     def get_all_personas(self, active_only: bool = True) -> List[Dict[str, Any]]:
         """Tüm personaları döndürür."""
         models = self._get_models()
-        PersonaConfig = models['PersonaConfig']
+        PersonaConfig = models["PersonaConfig"]
         get_session = self._get_session()
 
         try:
@@ -795,16 +771,13 @@ class DynamicConfigService:
             return cached
 
         models = self._get_models()
-        UITextConfig = models['UITextConfig']
+        UITextConfig = models["UITextConfig"]
         get_session = self._get_session()
 
         try:
             with get_session() as session:
                 text = session.exec(
-                    select(UITextConfig).where(
-                        UITextConfig.key == key,
-                        UITextConfig.locale == locale
-                    )
+                    select(UITextConfig).where(UITextConfig.key == key, UITextConfig.locale == locale)
                 ).first()
 
                 if text:
@@ -852,6 +825,7 @@ config_service = DynamicConfigService(cache_ttl=60)
 # HELPER FUNCTIONS
 # =============================================================================
 
+
 def get_config(key: str, default: Any = None) -> Any:
     """
     Kısayol fonksiyon - config değeri okur.
@@ -882,10 +856,3 @@ def set_config(key: str, value: Any, updated_by: str = "system") -> bool:
         Başarılı mı
     """
     return config_service.set(key, value, updated_by=updated_by)
-
-
-
-
-
-
-

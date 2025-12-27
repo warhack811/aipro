@@ -1,5 +1,3 @@
-
-
 from __future__ import annotations
 
 from datetime import datetime
@@ -14,6 +12,7 @@ from app.core.models import Feedback, User
 
 logger = get_logger(__name__)
 
+
 def add_feedback(
     username: str,
     conversation_id: str,
@@ -24,14 +23,14 @@ def add_feedback(
     feedback = feedback.lower().strip()
     if feedback not in ("like", "dislike"):
         raise ValueError("feedback 'like' veya 'dislike' olmalı.")
-    
+
     user = get_user_by_username(username)
     if not user:
         raise ValueError(f"Kullanıcı bulunamadı: {username}")
-    
+
     if not user.id:
         raise ValueError(f"Kullanıcı ID'si geçersiz: {username}")
-    
+
     with get_session() as session:
         fb = Feedback(
             user_id=user.id,
@@ -45,10 +44,11 @@ def add_feedback(
         logger.info(f"[FEEDBACK] user={username} type={feedback}")
         return fb
 
+
 def list_all_feedback(limit_per_user: int = 200) -> List[dict]:
     """Tüm feedback kayıtlarını döner (Admin için)"""
     from sqlmodel import col, desc
-    
+
     with get_session() as session:
         stmt = (
             select(Feedback, User)
@@ -57,14 +57,16 @@ def list_all_feedback(limit_per_user: int = 200) -> List[dict]:
             .limit(limit_per_user)
         )
         results = session.exec(stmt).all()
-        
+
         items = []
         for fb, user in results:
-            items.append({
-                "username": user.username,
-                "conversation_id": fb.conversation_id or "",
-                "message": fb.message_content,
-                "feedback": fb.feedback_type,
-                "created_at": fb.created_at.isoformat(),
-            })
+            items.append(
+                {
+                    "username": user.username,
+                    "conversation_id": fb.conversation_id or "",
+                    "message": fb.message_content,
+                    "feedback": fb.feedback_type,
+                    "created_at": fb.created_at.isoformat(),
+                }
+            )
         return items

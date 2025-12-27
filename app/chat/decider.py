@@ -11,10 +11,10 @@ Sorumluluklar:
 
 Kullanım:
     from app.chat.decider import call_groq_api_async, build_search_queries_async
-    
+
     # Groq API çağrısı
     response = await call_groq_api_async(messages, model="llama-3.3-70b")
-    
+
     # İnternet araması için sorgu üretimi
     queries = await build_search_queries_async("Dolar kuru nedir?")
 """
@@ -46,16 +46,18 @@ DEFAULT_GROQ_TIMEOUT = 15.0
 # LAZY IMPORTS & API KEY YÖNETİMİ
 # =============================================================================
 
+
 def _get_settings():
     """Ayarları lazy import ile yükler."""
     from app.config import get_settings
+
     return get_settings()
 
 
 def _get_available_keys() -> List[str]:
     """
     Tüm geçerli Groq API anahtarlarını döndürür.
-    
+
     Boş olmayan anahtarlar rotasyon için sırayla denenir.
     """
     settings = _get_settings()
@@ -68,10 +70,10 @@ def _get_available_keys() -> List[str]:
     return [k for k in keys if k]
 
 
-
 # =============================================================================
 # GROQ API FONKSİYONLARI
 # =============================================================================
+
 
 async def call_groq_api_async(
     messages: List[Dict[str, str]],
@@ -82,23 +84,23 @@ async def call_groq_api_async(
 ) -> Optional[str]:
     """
     Groq Chat API çağrısı (async, anahtar rotasyonlu).
-    
+
     Tüm anahtarlar sırayla denenir. 429 (rate limit) durumunda
     otomatik olarak sonraki anahtara geçilir.
-    
+
     Args:
         messages: OpenAI formatında mesaj listesi
         model: Kullanılacak model (varsayılan: GROQ_DECIDER_MODEL)
         json_mode: JSON çıktı modu
         temperature: Yaratıcılık seviyesi (0.0-1.0)
         timeout: İstek zaman aşımı
-    
+
     Returns:
         str veya None: API yanıtı veya hata durumunda None
     """
     settings = _get_settings()
     available_keys = _get_available_keys()
-    
+
     if not available_keys:
         logger.error("[GROQ] Hiçbir API anahtarı tanımlı değil!")
         return None
@@ -120,11 +122,7 @@ async def call_groq_api_async(
                 resp = await client.post(GROQ_API_URL, headers=headers, json=payload)
                 resp.raise_for_status()
                 data = resp.json()
-                content = (
-                    data.get("choices", [{}])[0]
-                    .get("message", {})
-                    .get("content")
-                )
+                content = data.get("choices", [{}])[0].get("message", {}).get("content")
                 if content:
                     logger.info(f"[GROQ] Anahtar {index+1} başarılı")
                     return content
@@ -159,7 +157,7 @@ async def call_groq_api_safe_async(
 ) -> tuple[Optional[str], Optional[str]]:
     """
     Retry mekanizmalı güvenli Groq API çağrısı.
-    
+
     Args:
         messages: Mesaj listesi
         model: Model adı
@@ -167,13 +165,13 @@ async def call_groq_api_safe_async(
         temperature: Sıcaklık
         timeout: Zaman aşımı
         max_retries: Maksimum deneme sayısı
-    
+
     Returns:
         tuple: (content, error_str) - İkisinden biri None olur
     """
     settings = _get_settings()
     model = model or settings.GROQ_DECIDER_MODEL
-    
+
     last_error: Optional[str] = None
     for attempt in range(max_retries):
         content = await call_groq_api_async(
@@ -186,7 +184,7 @@ async def call_groq_api_safe_async(
         if content:
             return content, None
         last_error = "empty_response"
-    
+
     return None, last_error
 
 
@@ -198,20 +196,20 @@ async def call_groq_api_stream_async(
 ) -> AsyncGenerator[str, None]:
     """
     Streaming Groq API çağrısı.
-    
+
     Args:
         messages: Mesaj listesi
         model: Model adı
         temperature: Sıcaklık
         timeout: Zaman aşımı
-    
+
     Yields:
         str: Yanıt parçaları
     """
     settings = _get_settings()
     available_keys = _get_available_keys()
     model = model or settings.GROQ_DECIDER_MODEL
-    
+
     if not available_keys:
         logger.error("[GROQ_STREAM] Hiçbir API anahtarı tanımlı değil!")
         yield "[ERROR] No API keys available."
@@ -238,17 +236,17 @@ async def call_groq_api_stream_async(
 
                     resp.raise_for_status()
                     logger.info(f"[GROQ_STREAM] Anahtar {index+1} başarılı")
-                    
+
                     # ✅ FIX: Use aiter_lines() to respect UTF-8 and line boundaries
                     async for line in resp.aiter_lines():
                         if not line:
                             continue
-                        
+
                         if line.startswith("data: "):
                             data_str = line[6:]  # len("data: ") = 6
                             if data_str == "[DONE]":
                                 return
-                            
+
                             try:
                                 data = json.loads(data_str)
                                 delta = data.get("choices", [{}])[0].get("delta", {})
@@ -257,10 +255,12 @@ async def call_groq_api_stream_async(
                                     yield content
                             except json.JSONDecodeError as e:
                                 # Log but don't drop - should never happen with aiter_lines()
-                                logger.warning(f"[GROQ_STREAM] JSON parse error (line intact): {e} | Line: {line[:100]}")
+                                logger.warning(
+                                    f"[GROQ_STREAM] JSON parse error (line intact): {e} | Line: {line[:100]}"
+                                )
                                 continue
                     return
-        
+
         except httpx.HTTPStatusError as exc:
             if exc.response.status_code == 429:
                 key_exhausted = True
@@ -366,47 +366,44 @@ Output JSON: {"queries": [{"id": "q1", "query": "..."}, {"id": "q2", "query": ".
 """
 
 
-async def build_search_queries_async(
-    message: str,
-    semantic: Optional[Dict[str, Any]] = None
-) -> List[Dict[str, str]]:
+async def build_search_queries_async(message: str, semantic: Optional[Dict[str, Any]] = None) -> List[Dict[str, str]]:
     """
     INTERNET akışı için arama sorguları üretir.
-    
+
     Özellikler:
     - SmartRouter'dan bağımsız çalışır
     - Sadece sorgu oluşturmaya odaklanır
     - Semantic analiz sonuçlarını kullanabilir
-    
+
     Args:
         message: Kullanıcı mesajı
         semantic: Semantic analiz sonuçları (opsiyonel)
-    
+
     Returns:
         List[Dict]: [{"id": "q1", "query": "..."}]
     """
     # Domain bazlı basit kontrol
     domain = semantic.get("domain", "general") if semantic else "general"
     text_lower = message.lower()
-    
+
     # 1. Hızlı template kontrolü (LLM çağrısı gerekmez)
     if domain == "finance" or any(kw in text_lower for kw in ["dolar", "euro", "altın", "kur"]):
         for currency in ["dolar", "euro", "altın", "sterlin"]:
             if currency in text_lower:
                 return [{"id": "q1", "query": f"{currency} TL kuru bugün güncel"}]
-    
+
     if domain == "weather" or "hava" in text_lower:
         # Şehir çıkarımı
         cities = ["istanbul", "ankara", "izmir", "bursa", "antalya", "trabzon", "adana"]
         city = next((c for c in cities if c in text_lower), "türkiye")
         return [{"id": "q1", "query": f"{city} hava durumu"}]
-    
+
     # 2. LLM ile akıllı sorgu üretimi
     llm_messages = [
         {"role": "system", "content": QUERY_BUILDER_PROMPT},
         {"role": "user", "content": message},
     ]
-    
+
     content = await call_groq_api_async(llm_messages, json_mode=True, temperature=0.2)
     if content:
         try:
@@ -417,32 +414,30 @@ async def build_search_queries_async(
                 return queries
         except json.JSONDecodeError:
             logger.warning("[QUERY_BUILDER] JSON parse hatası, fallback'e geçiliyor")
-    
+
     # 3. Fallback: Ham mesajı sorgu olarak kullan
     return [{"id": "q1", "query": message}]
 
 
 async def decide_memory_storage_async(
-    message: str,
-    answer: str,
-    existing_memories: Optional[List[Dict[str, Any]]] = None
+    message: str, answer: str, existing_memories: Optional[List[Dict[str, Any]]] = None
 ) -> Dict[str, Any]:
     """
     Hafıza kayıt kararını LLM'e sorar.
-    
+
     Conflict detection: Mevcut hafızalarla çelişki varsa
     eski kayıtları invalidate eder.
-    
+
     Args:
         message: Kullanıcı mesajı
         answer: Asistan yanıtı
         existing_memories: Mevcut ilgili hafızalar
-    
+
     Returns:
         Dict: {store, memory, importance, category, invalidate}
     """
     existing_memories = existing_memories if existing_memories is not None else []
-    
+
     # Mevcut hafızaları context olarak ekle
     memory_context = ""
     if existing_memories:
@@ -453,19 +448,19 @@ async def decide_memory_storage_async(
             memory_context += f"- ID: {mid} | Text: {mtext}\n"
 
     user_content = f"Kullanıcı: {message}\nAsistan: {answer}{memory_context}"
-    
+
     messages = [
         {"role": "system", "content": MEMORY_DECIDER_SYSTEM_PROMPT},
         {"role": "user", "content": user_content},
     ]
-    
+
     content = await call_groq_api_async(messages, json_mode=True, temperature=0.2)
     if content:
         try:
             return json.loads(content)
         except json.JSONDecodeError:
             pass
-    
+
     return {"store": False}
 
 

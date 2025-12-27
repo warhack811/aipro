@@ -11,10 +11,12 @@ from app.config import get_settings
 logger = logging.getLogger(__name__)
 settings = get_settings()
 
+
 class ModelState(str, Enum):
     GEMMA = "gemma"
     FLUX = "flux"
     UNKNOWN = "unknown"
+
 
 class GPUManager:
     """
@@ -22,6 +24,7 @@ class GPUManager:
     Görevi: Chat ve Image servisleri arasındaki geçişi koordine etmek.
     Race Condition'ı önlemek için 'Async Lock' kullanır.
     """
+
     _instance = None
     _lock = asyncio.Lock()
     _current_state = ModelState.GEMMA
@@ -48,10 +51,10 @@ class GPUManager:
                 return
 
             logger.warning("[GPU_WARDEN] Chat isteği geldi, Flux -> Gemma geçişi başlatılıyor...")
-            
+
             # 1. Flux/Forge ile işimiz bitti mi? (Şimdilik sert geçiş yapıyoruz)
             # İleride buraya 'Kuyruk boş mu?' kontrolü eklenebilir.
-            
+
             # 2. Gemma'yı Yükle (Ollama'ya boş istek atarak warm-up yap)
             try:
                 # Basit bir keep-alive isteği
@@ -74,10 +77,10 @@ class GPUManager:
                 return
 
             logger.warning("[GPU_WARDEN] Resim isteği geldi, Gemma -> Flux geçişi başlatılıyor...")
-            
+
             # 1. Gemma'yı Unload Et
             await cls._unload_ollama()
-            
+
             # 2. State güncelle
             cls._current_state = ModelState.FLUX
             logger.info("[GPU_WARDEN] Geçiş tamamlandı: FLUX modundayız.")
@@ -87,7 +90,7 @@ class GPUManager:
         """Ollama API'sine keep_alive=0 göndererek VRAM'i boşaltır."""
         url = f"{settings.OLLAMA_BASE_URL}/api/generate"
         payload = {"model": settings.OLLAMA_GEMMA_MODEL, "keep_alive": 0}
-        
+
         try:
             async with httpx.AsyncClient(timeout=5) as client:
                 await client.post(url, json=payload)
@@ -100,10 +103,10 @@ class GPUManager:
         """Ollama'ya çok kısa bir istek atarak modeli VRAM'e yüklemesini sağlar."""
         url = f"{settings.OLLAMA_BASE_URL}/api/generate"
         # Cevap üretmesine gerek yok, sadece yüklesin diye boş prompt
-        payload = {"model": settings.OLLAMA_GEMMA_MODEL, "prompt": "", "keep_alive": "5m"} 
-        
+        payload = {"model": settings.OLLAMA_GEMMA_MODEL, "prompt": "", "keep_alive": "5m"}
+
         try:
             async with httpx.AsyncClient(timeout=10) as client:
                 await client.post(url, json=payload)
         except Exception:
-            pass # Hata beklenir (boş prompt), önemli olan modelin yüklenmesi
+            pass  # Hata beklenir (boş prompt), önemli olan modelin yüklenmesi

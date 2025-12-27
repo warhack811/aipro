@@ -19,7 +19,7 @@ Kurallar:
 
 Kullanim:
     from app.ai.prompts.compiler import build_system_prompt
-    
+
     prompt = build_system_prompt(
         user=user_obj,
         persona_name="romantic",
@@ -205,19 +205,20 @@ GUVENLIK: Serbest Mod
 # HELPER FUNCTIONS
 # =============================================================================
 
+
 def _get_persona_prompt(persona_name: str) -> str:
     """
     DB'den persona system_prompt_template'ini alir.
-    
+
     Args:
         persona_name: Persona adi
-    
+
     Returns:
         str: Persona prompt veya bos string
     """
     try:
         from app.core.dynamic_config import config_service
-        
+
         persona = config_service.get_persona(persona_name)
         if persona:
             template = persona.get("system_prompt_template", "")
@@ -225,26 +226,26 @@ def _get_persona_prompt(persona_name: str) -> str:
                 return f"\nPERSONA ({persona.get('display_name', persona_name)}):\n{template}\n"
     except Exception as e:
         logger.warning(f"[PROMPT_COMPILER] Persona prompt alinamadi: {e}")
-    
+
     return ""
 
 
 def _get_user_prefs_prompt(user: Optional["User"], style_profile: Optional[Dict[str, Any]] = None) -> str:
     """
     Kullanici tercihlerinden (Style Profile) prompt olusturur.
-    
+
     KRITIK: Her stil degeri icin MUTLAKA bir talimat eklenmeli.
     Bos string donmemeli, aksi halde model kendi varsayilanina doner.
-    
+
     Args:
         user: User nesnesi (Legacy fallback icin)
         style_profile: Dinamik stil profili (Oncelikli)
-    
+
     Returns:
         str: User prefs prompt
     """
     prefs_parts = []
-    
+
     if style_profile:
         # =====================================================================
         # TON (Zorunlu - Her zaman bir talimat uretmeli)
@@ -258,7 +259,7 @@ def _get_user_prefs_prompt(user: Optional["User"], style_profile: Optional[Dict[
             "neutral": "Dogal ve dengeli bir ton kullan. Ne cok resmi ne cok samimi ol.",
         }
         prefs_parts.append(f"- Ton: {tone_map.get(tone, tone_map['neutral'])}")
-        
+
         # =====================================================================
         # EMOJİ (Zorunlu - True/False/None hepsi icin talimat)
         # =====================================================================
@@ -269,7 +270,7 @@ def _get_user_prefs_prompt(user: Optional["User"], style_profile: Optional[Dict[
             prefs_parts.append("- Emoji: Asla emoji kullanma, sadece duz metin.")
         else:
             prefs_parts.append("- Emoji: Cok gerekmedikce emoji kullanma, sadık ol.")
-        
+
         # =====================================================================
         # UZUNLUK / DETAY (Zorunlu)
         # =====================================================================
@@ -280,7 +281,7 @@ def _get_user_prefs_prompt(user: Optional["User"], style_profile: Optional[Dict[
             "long": "Detayli aciklama yap, ornekler ver, konuyu derinlemesine anlat.",
         }
         prefs_parts.append(f"- Uzunluk: {detail_map.get(detail, detail_map['medium'])}")
-        
+
         # =====================================================================
         # RESMYET / HITAP (Zorunlu)
         # =====================================================================
@@ -291,43 +292,43 @@ def _get_user_prefs_prompt(user: Optional["User"], style_profile: Optional[Dict[
             "high": "Resmi ve saygili bir dil kullan. 'Siz' diye hitap et.",
         }
         prefs_parts.append(f"- Hitap: {formality_map.get(formality, formality_map['medium'])}")
-        
+
         # =====================================================================
         # DUYGUSAL DESTEK (Opsiyonel ama varsa ekle)
         # =====================================================================
         emotional = style_profile.get("emotional_support")
         if emotional is True:
             prefs_parts.append("- Duygusal Destek: Kullanici zor bir donemde olabilir. Anlayisli ve destekleyici ol.")
-    
+
     # -------------------------------------------------------------------------
     # LEGACY FALLBACK (Style profile yoksa)
     # -------------------------------------------------------------------------
     elif user:
         perms = getattr(user, "permissions", {}) or {}
-        
+
         tone = perms.get("preferred_tone")
         if tone:
             prefs_parts.append(f"- Tercih edilen ton: {tone}")
         else:
             prefs_parts.append("- Ton: Dogal ve samimi ol.")
-        
+
         emoji_pref = perms.get("use_emoji")
         if emoji_pref is not None:
             if emoji_pref:
                 prefs_parts.append("- Emoji kullanabilirsin")
             else:
                 prefs_parts.append("- Emoji kullanma")
-        
+
         length_pref = perms.get("response_length")
         if length_pref:
             prefs_parts.append(f"- Yanit uzunlugu: {length_pref}")
-    
+
     # -------------------------------------------------------------------------
     # SONUC (Her zaman bir sey donmeli)
     # -------------------------------------------------------------------------
     if prefs_parts:
         return "\n### KULLANICI TERCIHLERI (BU TALIMATLARA MUTLAKA UY!):\n" + "\n".join(prefs_parts) + "\n"
-    
+
     # Fallback: Hicbir veri yoksa bile temel talimat ver
     return "\n### KULLANICI TERCIHLERI:\n- Dogal, samimi Turkce kullan.\n- Gereksiz uzatma yapma.\n"
 
@@ -335,45 +336,45 @@ def _get_user_prefs_prompt(user: Optional["User"], style_profile: Optional[Dict[
 def _get_toggle_context(toggles: Optional[Dict[str, bool]]) -> str:
     """
     Toggle durumlarindan context olusturur.
-    
+
     Args:
         toggles: {"web": bool, "image": bool}
-    
+
     Returns:
         str: Toggle context
     """
     if not toggles:
         return ""
-    
+
     parts = []
-    
+
     if toggles.get("web", True):
         parts.append(TOGGLE_WEB_ENABLED.strip())
     else:
         parts.append(TOGGLE_WEB_DISABLED.strip())
-    
+
     if toggles.get("image", True):
         parts.append(TOGGLE_IMAGE_ENABLED.strip())
     else:
         parts.append(TOGGLE_IMAGE_DISABLED.strip())
-    
+
     return "\n" + "\n".join(parts) + "\n"
 
 
 def _get_safety_context(user: Optional["User"]) -> str:
     """
     Censorship level'a gore safety context olusturur.
-    
+
     Args:
         user: User nesnesi
-    
+
     Returns:
         str: Safety context
     """
     from app.auth.permissions import get_censorship_level
-    
+
     level = get_censorship_level(user)
-    
+
     if level == 0:  # UNRESTRICTED
         return SAFETY_UNRESTRICTED.strip()
     elif level == 2:  # STRICT
@@ -409,6 +410,7 @@ TEMEL KURALLAR:
 # MAIN FUNCTION
 # =============================================================================
 
+
 def build_system_prompt(
     user: Optional["User"] = None,
     persona_name: str = "standard",
@@ -418,101 +420,100 @@ def build_system_prompt(
 ) -> str:
     """
     Yanitlama modeli icin system prompt'u derler.
-    
+
     Args:
         user: User nesnesi
         persona_name: Aktif persona adi
         toggles: {"web": bool, "image": bool}
         style_profile: Kullanici stil ve tercih profili
         optimized_for_local: True ise hafif/sansursuz prompt uretir (Bela icin)
-    
+
     Returns:
         str: Derlenmiş system prompt
     """
     parts = []
-    
+
     if optimized_for_local:
         # --- LITE MODE (Bela / Yerel) ---
         # Sadece kimlik, persona ve kullanıcı tercihleri.
         # Ağır markdown kuralları, güvenlik ve output contract YOK.
         parts.append(CORE_PROMPT_LITE.strip())
-        
+
         # Persona (Önemli: Karakter korunsun)
         persona_prompt = _get_persona_prompt(persona_name)
         if persona_prompt:
             parts.append(persona_prompt.strip())
-            
+
         # User Prefs (Sadece stil, ton)
         user_prefs = _get_user_prefs_prompt(user, style_profile)
         if user_prefs:
             parts.append(user_prefs.strip())
-            
+
         # Toggle (Web/Image) - Minimal bilgi
         toggle_ctx = _get_toggle_context(toggles)
         if toggle_ctx:
             parts.append(toggle_ctx.strip())
-            
+
         # Safety: ASLA EKLEME (Uncensored)
-        
+
     else:
         # --- PRO MODE (Groq / Bulut) ---
         # Tam teşekküllü profesyonel yapı
-        
+
         # 1. Core Prompt (sabit)
         parts.append(CORE_PROMPT.strip())
-        
+
         # 1.5 Output Contract (profesyonel format kuralları)
         parts.append(OUTPUT_CONTRACT_PROFESSIONAL.strip())
-        
+
         # 2. Persona Prompt
         persona_prompt = _get_persona_prompt(persona_name)
         if persona_prompt:
             parts.append(persona_prompt.strip())
-        
+
         # 3. User Prefs
         user_prefs = _get_user_prefs_prompt(user, style_profile)
         if user_prefs:
             parts.append(user_prefs.strip())
-        
+
         # 4. Toggle Context
         toggle_ctx = _get_toggle_context(toggles)
         if toggle_ctx:
             parts.append(toggle_ctx.strip())
-        
+
         # 5. Safety Context
         safety_ctx = _get_safety_context(user)
         if safety_ctx:
             parts.append(safety_ctx.strip())
-    
+
     final_prompt = "\n\n".join(parts)
-    
-    logger.debug(f"[PROMPT_COMPILER] Prompt derlendi: persona={persona_name}, local={optimized_for_local}, len={len(final_prompt)}")
-    
+
+    logger.debug(
+        f"[PROMPT_COMPILER] Prompt derlendi: persona={persona_name}, local={optimized_for_local}, len={len(final_prompt)}"
+    )
+
     return final_prompt
 
 
 def get_persona_initial_message(persona_name: str) -> Optional[str]:
     """
     Persona'nin initial_message'ini dondurur.
-    
+
     NOT: Bu sadece YENi sohbet baslarken kullanilmali!
-    
+
     Args:
         persona_name: Persona adi
-    
+
     Returns:
         str veya None: Ilk mesaj
     """
     try:
         from app.core.dynamic_config import config_service
-        
+
         persona = config_service.get_persona(persona_name)
         if persona:
             return persona.get("initial_message")
     except Exception as e:
         logger.warning(f"[PROMPT_COMPILER] Initial message alinamadi: {e}")
-    
+
     return None
-
-
-

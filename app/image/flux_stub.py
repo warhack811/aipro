@@ -28,7 +28,7 @@ IMAGES_ROOT.mkdir(parents=True, exist_ok=True)
 PLACEHOLDER_IMAGES = {
     "error": "/images/placeholders/error.png",
     "timeout": "/images/placeholders/timeout.png",
-    "maintenance": "/images/placeholders/maintenance.png"
+    "maintenance": "/images/placeholders/maintenance.png",
 }
 
 
@@ -60,13 +60,13 @@ async def generate_image_via_forge(prompt: str, job, checkpoint_name: Optional[s
     """
     Stable Diffusion WebUI Forge üzerinden resim üretir.
     Circuit breaker ve retry mekanizması ile korunmuştur.
-    
+
     Args:
         prompt: Görsel üretim prompt'u
         job: ImageJob nesnesi
         checkpoint_name: Kullanılacak checkpoint (.safetensors dosya adı)
                         None ise config'ten alınır
-    
+
     Returns:
         str: Image URL veya placeholder image path
     """
@@ -74,45 +74,45 @@ async def generate_image_via_forge(prompt: str, job, checkpoint_name: Optional[s
     if not forge_circuit_breaker.can_attempt():
         logger.warning("[FLUX] Circuit OPEN - placeholder image döndürülüyor")
         return PLACEHOLDER_IMAGES["maintenance"]
-    
+
     # Retry with exponential backoff (3 deneme)
     max_retries = 3
     last_error = None
-    
+
     for attempt in range(max_retries):
         try:
             result = await _generate_image_internal(prompt, job, checkpoint_name)
-            
+
             # Başarılı - circuit breaker'a bildir
             forge_circuit_breaker.record_success()
             return result
-            
+
         except asyncio.TimeoutError as e:
             last_error = e
             logger.warning(f"[FLUX] Attempt {attempt+1}/{max_retries} - Timeout")
-            
+
             if attempt < max_retries - 1:
                 # Exponential backoff: 1s, 2s, 4s
-                delay = 2 ** attempt
+                delay = 2**attempt
                 logger.info(f"[FLUX] {delay}s bekleyip tekrar deneniyor...")
                 await asyncio.sleep(delay)
             else:
                 # Son deneme de başarısız
                 forge_circuit_breaker.record_failure(e)
                 return PLACEHOLDER_IMAGES["timeout"]
-                
+
         except Exception as e:
             last_error = e
             logger.error(f"[FLUX] Attempt {attempt+1}/{max_retries} - Error: {e}")
-            
+
             if attempt < max_retries - 1:
-                delay = 2 ** attempt
+                delay = 2**attempt
                 await asyncio.sleep(delay)
             else:
                 # Tüm denemeler başarısız
                 forge_circuit_breaker.record_failure(e)
                 return PLACEHOLDER_IMAGES["error"]
-    
+
     # Buraya ulaşılmamalı ama güvenlik için
     return PLACEHOLDER_IMAGES["error"]
 
@@ -122,10 +122,10 @@ async def _generate_image_internal(prompt: str, job, checkpoint_name: Optional[s
     Internal image generation (retry loop tarafından çağrılır).
     """
     url = _build_forge_url()
-    
+
     # Checkpoint adını belirle
     final_checkpoint = checkpoint_name or settings.FORGE_FLUX_CHECKPOINT
-    
+
     logger.info(f"[FLUX] Forge txt2img endpoint: {url}")
     logger.info(f"[FLUX] Model checkpoint: {final_checkpoint}")
 
@@ -142,9 +142,7 @@ async def _generate_image_internal(prompt: str, job, checkpoint_name: Optional[s
         "sampler_name": "Euler",
         "scheduler": "Simple",
         "distilled_cfg_scale": 3.5,
-        "override_settings": {
-            "sd_model_checkpoint": final_checkpoint
-        },
+        "override_settings": {"sd_model_checkpoint": final_checkpoint},
     }
 
     # GPU'yu Flux için hazırla
@@ -168,16 +166,14 @@ async def _generate_image_internal(prompt: str, job, checkpoint_name: Optional[s
         # İlk başta minimum bir progress gönder (frontend barı görebilsin)
         job.progress = 1
         update_pending_job(job.job_id, progress=job.progress)
-        
+
         # Sadece metadata güncelle - içerik [IMAGE_PENDING] olarak kalmalı
         # Frontend WebSocket'ten progress alıyor, mesaj içeriğini değiştirmeye gerek yok
         if job.message_id:
             update_message(
-                job.message_id,
-                None,  # İçerik değişmesin
-                {"status": "processing", "progress": job.progress}
+                job.message_id, None, {"status": "processing", "progress": job.progress}  # İçerik değişmesin
             )
-        
+
         await send_image_progress(
             username=job.username,
             conversation_id=job.conversation_id,
@@ -196,15 +192,13 @@ async def _generate_image_internal(prompt: str, job, checkpoint_name: Optional[s
 
             job.progress = current
             update_pending_job(job.job_id, progress=job.progress)
-            
+
             # Her 10%'te bir metadata güncelle (içerik değişmesin)
             if job.message_id and job.progress % 10 == 0:
                 update_message(
-                    job.message_id,
-                    None,  # İçerik değişmesin
-                    {"status": "processing", "progress": job.progress}
+                    job.message_id, None, {"status": "processing", "progress": job.progress}  # İçerik değişmesin
                 )
-            
+
             await send_image_progress(
                 username=job.username,
                 conversation_id=job.conversation_id,
@@ -223,9 +217,7 @@ async def _generate_image_internal(prompt: str, job, checkpoint_name: Optional[s
         try:
             resp.raise_for_status()
         except requests.Timeout:
-            raise ImageGenerationError(
-                f"Forge isteği zaman aşımına uğradı ({settings.FORGE_TIMEOUT}s)."
-            )
+            raise ImageGenerationError(f"Forge isteği zaman aşımına uğradı ({settings.FORGE_TIMEOUT}s).")
         except Exception as e:
             logger.error(f"[FLUX] Forge HTTP hatası: {e}")
             raise ImageGenerationError(f"Forge HTTP hatası: {e}")

@@ -100,12 +100,14 @@ def set_user_preference(
 
             logger.info(
                 "[PREF] set_user_preference: user_id=%s key=%s value=%s",
-                user_id, key, value,
+                user_id,
+                key,
+                value,
             )
 
             return new_pref
 
-        except Exception as exc: 
+        except Exception as exc:
             db.rollback()
             logger.error("[PREF] set_user_preference hatası: %s", exc)
             raise
@@ -141,7 +143,7 @@ def deactivate_user_preference(
                 db.commit()
             return affected
 
-        except Exception as exc: 
+        except Exception as exc:
             db.rollback()
             logger.error("[PREF] deactivate_user_preference hatası: %s", exc)
             raise
@@ -175,6 +177,7 @@ def get_effective_preferences(
 
 # --- Modernize edilmiş stil çıkarımı ve birleştirme (son tanımlar geçerlidir) ---
 
+
 def _infer_style_v2(message: str, semantic: Any) -> Dict[str, Any]:
     defaults = {
         "tone": "neutral",
@@ -187,7 +190,7 @@ def _infer_style_v2(message: str, semantic: Any) -> Dict[str, Any]:
     try:
         lowered = (message or "").lower()
         words = lowered.split()
-        getter = (semantic or {})
+        getter = semantic or {}
         if isinstance(semantic, dict):
             s_get = semantic.get
         else:
@@ -272,15 +275,16 @@ def merge_style_preferences(user_prefs: Dict[str, Any], inferred: Dict[str, Any]
 
 # --- Response Formatting Preferences (YENİ) ---
 
+
 def get_user_formatting_preferences(user_id: int) -> Dict[str, Any]:
     """
     Kullanıcının response formatting tercihlerini döndürür.
-    
+
     Returns:
         Format ayarları dictionary'si (response_processor için)
     """
     prefs = get_effective_preferences(user_id, category="formatting")
-    
+
     # Varsayılan değerler
     defaults = {
         "format_level": "rich",  # minimal, normal, rich
@@ -292,19 +296,26 @@ def get_user_formatting_preferences(user_id: int) -> Dict[str, Any]:
         "callout_boxes": True,
         "turkish_optimization": True,
     }
-    
+
     # Kullanıcı tercihlerini uygula
     result = defaults.copy()
-    
+
     if "format_level" in prefs:
         result["format_level"] = prefs["format_level"]
-    
+
     # Boolean değerleri parse et
-    for key in ["enable_markdown", "enable_code_enhancement", "enable_beautification",
-                "enable_data_formatting", "add_emojis", "callout_boxes", "turkish_optimization"]:
+    for key in [
+        "enable_markdown",
+        "enable_code_enhancement",
+        "enable_beautification",
+        "enable_data_formatting",
+        "add_emojis",
+        "callout_boxes",
+        "turkish_optimization",
+    ]:
         if key in prefs:
             result[key] = str(prefs[key]).lower() in ("true", "1", "yes")
-    
+
     logger.debug(f"[FORMATTING_PREFS] User {user_id}: {result}")
     return result
 
@@ -316,12 +327,12 @@ def set_user_formatting_preference(
 ) -> UserPreference:
     """
     Kullanıcının bir formatting tercihini ayarlar.
-    
+
     Args:
         user_id: Kullanıcı ID
         key: Tercih anahtarı (format_level, add_emojis, vb.)
         value: Tercih değeri
-    
+
     Returns:
         Oluşturulan UserPreference
     """
@@ -332,5 +343,3 @@ def set_user_formatting_preference(
         category="formatting",
         source="explicit",
     )
-
-

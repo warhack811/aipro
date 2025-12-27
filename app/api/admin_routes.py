@@ -76,16 +76,16 @@ class AdminInviteOut(BaseModel):
 
 
 class AdminCreateInvite(BaseModel):
-    note: Optional[str] = Field(
-        None,
-        description="Şimdilik sadece log için."
-    )
+    note: Optional[str] = Field(None, description="Şimdilik sadece log için.")
+
+
 class IdentityUpdate(BaseModel):
     display_name: Optional[str] = None
     developer_name: Optional[str] = None
     product_family: Optional[str] = None
     short_intro: Optional[str] = None
     forbid_provider_mention: Optional[bool] = None
+
 
 class AdminMessageLogItem(BaseModel):
     username: str
@@ -108,6 +108,7 @@ class SummarySettingsUpdate(BaseModel):
 
 # ESKİ _require_admin FONKSİYONU KALDIRILDI.
 # ARTIK HER YERDE get_current_admin_user KULLANILIYOR.
+
 
 # -------------------------------------------------------------------
 # 1) Admin Bilgisi
@@ -239,9 +240,10 @@ async def admin_summary(
         unused_invites=unused_invites,
     )
 
+
 @router.get("/summary-settings", response_model=ConversationSummarySettings)
 async def admin_get_summary_settings(
-    current_admin: User = Depends(get_current_admin_user), # Dependency eklendi
+    current_admin: User = Depends(get_current_admin_user),  # Dependency eklendi
 ):
     """Sohbet özeti sistemi için geçerli global ayarları döner."""
     return get_summary_settings()
@@ -250,7 +252,7 @@ async def admin_get_summary_settings(
 @router.put("/summary-settings", response_model=ConversationSummarySettings)
 async def admin_update_summary_settings(
     body: SummarySettingsUpdate,
-    current_admin: User = Depends(get_current_admin_user), # Dependency eklendi
+    current_admin: User = Depends(get_current_admin_user),  # Dependency eklendi
 ):
     """Sohbet özeti ayarlarını günceller."""
     updated = update_summary_settings(
@@ -261,10 +263,12 @@ async def admin_update_summary_settings(
     )
     return updated
 
+
 # -------------------------------------------------------------------
 # 5) Loglar ve Mesaj Geçmişi
 # -------------------------------------------------------------------
-LOG_FILE = Path("logs") / "mami.log" # logger.py'daki dosya adıyla eşleşmeli
+LOG_FILE = Path("logs") / "mami.log"  # logger.py'daki dosya adıyla eşleşmeli
+
 
 @router.get("/logs/tail")
 async def admin_logs_tail(
@@ -279,7 +283,8 @@ async def admin_logs_tail(
             try:
                 content = fallback_log.read_text(encoding="utf-8", errors="ignore").splitlines()
                 return {"ok": True, "lines": content[-lines:]}
-            except: pass
+            except:
+                pass
         return {"ok": True, "lines": ["Log dosyası henüz oluşmadı."]}
 
     try:
@@ -312,7 +317,7 @@ async def admin_list_feedback(
     items = list_all_feedback(limit_per_user=limit_per_user)
     return [
         AdminFeedbackOut(
-            username=it["username"], # Dict dönüyor
+            username=it["username"],  # Dict dönüyor
             conversation_id=it["conversation_id"],
             message=it["message"],
             feedback=it["feedback"],
@@ -321,6 +326,7 @@ async def admin_list_feedback(
         for it in items
     ]
 
+
 @router.get("/usage/messages", response_model=List[AdminMessageLogItem])
 async def admin_list_messages(
     limit: int = Query(100, ge=1, le=1000),
@@ -328,7 +334,7 @@ async def admin_list_messages(
 ) -> List[AdminMessageLogItem]:
     """Son bot mesajlarını ve metadata bilgilerini listeler."""
     from sqlmodel import col, desc
-    
+
     with get_session() as session:
         stmt = (
             select(Message, Conversation, User)
@@ -360,9 +366,10 @@ async def admin_list_messages(
 
         return items
 
+
 @router.get("/ai-identity", response_model=AIIdentityConfig)
 async def admin_get_ai_identity(
-    current_admin: User = Depends(get_current_admin_user), # Dependency eklendi
+    current_admin: User = Depends(get_current_admin_user),  # Dependency eklendi
 ):
     """Mevcut AI kimlik ayarlarını döner."""
     return get_ai_identity()
@@ -371,7 +378,7 @@ async def admin_get_ai_identity(
 @router.put("/ai-identity", response_model=AIIdentityConfig)
 async def admin_update_ai_identity(
     body: IdentityUpdate,
-    current_admin: User = Depends(get_current_admin_user), # Dependency eklendi
+    current_admin: User = Depends(get_current_admin_user),  # Dependency eklendi
 ):
     """AI kimlik ayarlarını günceller."""
     updated = update_ai_identity(

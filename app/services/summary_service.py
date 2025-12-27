@@ -11,6 +11,7 @@ from app.core.summary_config import get_summary_settings
 
 logger = logging.getLogger(__name__)
 
+
 async def should_update_summary(conversation_id: str) -> bool:
     """
     Özetin güncellenmesi gerekip gerekmediğini kontrol eder.
@@ -22,31 +23,34 @@ async def should_update_summary(conversation_id: str) -> bool:
 
     with get_session() as session:
         # Toplam mesaj sayısı
-        total = session.exec(select(func.count()).select_from(Message).where(Message.conversation_id == conversation_id)).one()
+        total = session.exec(
+            select(func.count()).select_from(Message).where(Message.conversation_id == conversation_id)
+        ).one()
         if total < config.summary_first_threshold:
             return False
 
         summary = session.get(ConversationSummary, conversation_id)
-        
+
         # Özet hiç oluşturulmamışsa, oluştur
         if not summary:
             logger.info(f"[SUMMARY] İlk özet tetiklendi: {conversation_id} ({total} mesaj)")
             return True
-        
+
         # last_message_id veya message_count bazlı kontrol
         new_messages_since_update = total - summary.message_count_at_update
-        
+
         if new_messages_since_update >= config.summary_update_step:
             logger.info(f"[SUMMARY] Güncelleme tetiklendi: {conversation_id} ({new_messages_since_update} yeni mesaj)")
             return True
-            
+
         return False
+
 
 async def generate_and_save_summary(conversation_id: str) -> None:
     """
     Sohbet özetini oluşturur ve kaydeder.
     Progressive summarization: Eski mesajlar özetlenir, yeniler bağlama eklenir.
-    
+
     Args:
         conversation_id: Özet oluşturulacak sohbet ID'si
     """
@@ -56,15 +60,15 @@ async def generate_and_save_summary(conversation_id: str) -> None:
 
     with get_session() as session:
         summary_rec = session.get(ConversationSummary, conversation_id)
-        
+
         # Toplam mesaj sayısını al
         total_messages = session.exec(
             select(func.count()).select_from(Message).where(Message.conversation_id == conversation_id)
         ).one()
-        
+
         # Hangi mesajları alacağız?
         query = select(Message).where(Message.conversation_id == conversation_id).order_by(asc(Message.id))
-        
+
         if summary_rec and summary_rec.message_count_at_update > 0:
             # Incremental: Sadece özetten sonraki mesajları al
             # message_count_at_update kullanarak skip yapıyoruz
@@ -108,12 +112,9 @@ FORMAT:
 SADECE ÖZETİ YAZ, başka açıklama ekleme."""
 
         new_summary, _ = await call_groq_api_safe_async(
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_content}
-            ],
+            messages=[{"role": "system", "content": system_prompt}, {"role": "user", "content": user_content}],
             temperature=0.15,  # Daha deterministik
-            max_retries=2
+            max_retries=2,
         )
 
         if not new_summary:
@@ -133,11 +134,13 @@ SADECE ÖZETİ YAZ, başka açıklama ekleme."""
                 summary=new_summary,
                 last_message_id=last_message_id,
                 updated_at=datetime.utcnow(),
-                message_count_at_update=total_messages
+                message_count_at_update=total_messages,
             )
-        
+
         session.add(summary_rec)
         session.commit()
-        logger.info(f"[SUMMARY] {'Güncellendi' if summary_rec else 'Oluşturuldu'}: {conversation_id} ({total_messages} mesaj)")
+        logger.info(
+            f"[SUMMARY] {'Güncellendi' if summary_rec else 'Oluşturuldu'}: {conversation_id} ({total_messages} mesaj)"
+        )
 
         logger.info(f"[SUMMARY] {'Güncellendi' if summary_rec.conversation_id else 'Oluşturuldu'}: {conversation_id}")

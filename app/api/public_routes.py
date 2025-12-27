@@ -19,21 +19,25 @@ router = APIRouter(tags=["public"])
 # Sabitler
 SESSION_COOKIE_NAME = "session_token"
 SESSION_MAX_AGE_LONG = 30 * 24 * 60 * 60  # 30 gün (Remember Me)
-SESSION_MAX_AGE_SHORT = 24 * 60 * 60      # 1 gün (Standart)
+SESSION_MAX_AGE_SHORT = 24 * 60 * 60  # 1 gün (Standart)
 
 # --- ŞEMALAR ---
+
 
 class RegisterRequest(BaseModel):
     invite_code: str = Field(..., min_length=3, description="Sisteme kayıt için zorunlu davet kodu")
     username: str = Field(..., min_length=3, max_length=32)
     password: str = Field(..., min_length=5, max_length=128)
 
+
 class LoginRequest(BaseModel):
     username: str = Field(..., min_length=3, max_length=32)
     password: str = Field(..., min_length=5, max_length=128)
     remember_me: bool = Field(default=False)
 
+
 # --- ENDPOINTS ---
+
 
 @router.get("/ping")
 async def ping():
@@ -55,10 +59,7 @@ async def register_with_invite(payload: RegisterRequest):
 
     # 2. Kullanıcı Oluşturma (Argon2 ile hashleme)
     try:
-        user = user_manager.create_user(
-            username=payload.username, 
-            password=payload.password
-        )
+        user = user_manager.create_user(username=payload.username, password=payload.password)
     except ValueError as ve:
         # Username çakışması vb.
         raise HTTPException(
@@ -78,9 +79,9 @@ async def register_with_invite(payload: RegisterRequest):
     except Exception as e:
         logger.error(f"[AUTH] Davet kodu işaretleme hatası: {e}")
         # Kullanıcı oluştu ama invite düşmedi, kritik değil.
-        
+
     logger.info(f"[AUTH] Yeni kullanıcı kayıt oldu: {user.username}")
-    
+
     return {
         "ok": True,
         "message": f"Hoş geldin {payload.username}! Kaydın başarıyla oluşturuldu.",
@@ -116,11 +117,7 @@ async def login(payload: LoginRequest, response: Response, request: Request):
     user_agent = request.headers.get("user-agent")
 
     try:
-        session = session_service.create_session(
-            user=user,
-            user_agent=user_agent,
-            ip_address=client_ip
-        )
+        session = session_service.create_session(user=user, user_agent=user_agent, ip_address=client_ip)
     except Exception as e:
         logger.error(f"[AUTH] Session oluşturma hatası: {e}")
         raise HTTPException(
@@ -130,14 +127,14 @@ async def login(payload: LoginRequest, response: Response, request: Request):
 
     # 3. Cookie Ayarlama
     max_age = SESSION_MAX_AGE_LONG if payload.remember_me else SESSION_MAX_AGE_SHORT
-    
+
     response.set_cookie(
         key=SESSION_COOKIE_NAME,
-        value=session.id,       # Session Token (UUID/Hex)
+        value=session.id,  # Session Token (UUID/Hex)
         max_age=max_age,
-        httponly=True,          # Javascript erişemez (XSS koruması)
-        samesite="lax",         # CSRF koruması
-        secure=False,           # Prod'da True olmalı
+        httponly=True,  # Javascript erişemez (XSS koruması)
+        samesite="lax",  # CSRF koruması
+        secure=False,  # Prod'da True olmalı
     )
 
     # 4. Beni Hatırla tokeni ayarla (opsiyonel)
@@ -149,44 +146,29 @@ async def login(payload: LoginRequest, response: Response, request: Request):
             max_age=SESSION_MAX_AGE_LONG,
             httponly=True,
             samesite="lax",
-            secure=False
+            secure=False,
         )
 
     logger.info(f"[AUTH] Giriş başarılı: {user.username} (Remember: {payload.remember_me})")
 
-    return {
-        "ok": True,
-        "message": "Giriş başarılı.",
-        "username": user.username,
-        "role": user.role
-    }
-
-
+    return {"ok": True, "message": "Giriş başarılı.", "username": user.username, "role": user.role}
 
 
 @router.post("/logout")
 async def logout(request: Request, response: Response):
     """Oturumu sunucu tarafında sonlandırır ve cookie'yi temizler."""
     token = request.cookies.get(SESSION_COOKIE_NAME)
-    
+
     if token:
         session_service.invalidate_session(token)
-    
+
     # Tarayıcı tarafında cookie'yi sil
-    response.delete_cookie(
-        key=SESSION_COOKIE_NAME, 
-        httponly=True, 
-        samesite="lax"
-    )
-    
+    response.delete_cookie(key=SESSION_COOKIE_NAME, httponly=True, samesite="lax")
+
     # Beni Hatırla tokenini de sil
     remember_token = request.cookies.get(remember_manager.REMEMBER_COOKIE_NAME)
     if remember_token:
         remember_manager.invalidate_token(remember_token)
-        response.delete_cookie(
-            key=remember_manager.REMEMBER_COOKIE_NAME,
-            httponly=True,
-            samesite="lax"
-        )
-        
+        response.delete_cookie(key=remember_manager.REMEMBER_COOKIE_NAME, httponly=True, samesite="lax")
+
     return {"ok": True, "message": "Çıkış yapıldı."}

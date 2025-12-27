@@ -24,6 +24,7 @@ connected: Dict[Any, str] = {}
 
 class ImageJobStatus(str, Enum):
     """Görsel üretim iş durumları."""
+
     QUEUED = "queued"
     PROCESSING = "processing"
     COMPLETE = "complete"
@@ -45,7 +46,7 @@ async def send_image_progress(
 ) -> int:
     """
     Görsel üretim ilerlemesini WebSocket üzerinden gönderir.
-    
+
     Args:
         username: Kullanıcı adı
         conversation_id: Sohbet ID'si
@@ -57,7 +58,7 @@ async def send_image_progress(
         image_url: Tamamlanmış görsel URL'i
         error: Hata mesajı (error durumunda)
         estimated_seconds: Tahmini kalan süre (saniye)
-    
+
     Returns:
         int: Gönderilen istemci sayısı
     """
@@ -71,25 +72,25 @@ async def send_image_progress(
         "queue_position": queue_position,
         "username": username,
     }
-    
+
     # Message ID (frontend mesaj güncelleme için)
     if message_id is not None:
         payload["message_id"] = message_id
-    
+
     # Opsiyonel alanlar
     if prompt:
         # Prompt'u kısalt (max 100 karakter)
         payload["prompt"] = prompt[:100] + "..." if len(prompt) > 100 else prompt
-    
+
     if image_url:
         payload["image_url"] = image_url
-    
+
     if error:
         payload["error"] = error
-    
+
     if estimated_seconds is not None:
         payload["estimated_seconds"] = estimated_seconds
-    
+
     # Tüm bağlı kullanıcılara gönder
     sent_count = 0
     for ws in list(connected.keys()):
@@ -98,20 +99,21 @@ async def send_image_progress(
             sent_count += 1
         except Exception as e:
             logger.debug(f"[WS_SENDER] Failed to send: {e}")
-    
+
     # Loglama
     log_msg = f"[WS_SENDER] Job {job_id[:8]} | {status.value} | {progress}%"
     if sent_count > 0:
         logger.info(f"{log_msg} → {sent_count} clients")
     else:
         logger.warning(f"{log_msg} → No clients connected!")
-    
+
     return sent_count
 
 
 # ═══════════════════════════════════════════════════════════════════════════
 # BACKWARD COMPATIBILITY - Eski fonksiyon (deprecated)
 # ═══════════════════════════════════════════════════════════════════════════
+
 
 async def send_progress(
     username: str,
@@ -134,7 +136,7 @@ async def send_progress(
         status = ImageJobStatus.PROCESSING
     else:
         status = ImageJobStatus.QUEUED
-    
+
     await send_image_progress(
         username=username,
         conversation_id=conv_id,
@@ -152,14 +154,15 @@ async def send_progress(
 # GENEL BİLDİRİMLER
 # ═══════════════════════════════════════════════════════════════════════════
 
+
 async def send_to_user(username: str, message: Dict[str, Any]) -> int:
     """
     Belirli bir kullanıcıya WebSocket mesajı gönderir.
-    
+
     Args:
         username: Hedef kullanıcı adı
         message: Gönderilecek JSON mesajı
-    
+
     Returns:
         int: Gönderilen mesaj sayısı
     """
@@ -171,7 +174,7 @@ async def send_to_user(username: str, message: Dict[str, Any]) -> int:
                 sent_count += 1
             except Exception as e:
                 logger.debug(f"[WS] Failed to send message to user: {e}")
-    
+
     return sent_count
 
 
@@ -183,13 +186,13 @@ async def send_notification(
 ) -> int:
     """
     Kullanıcıya bildirim gönderir.
-    
+
     Args:
         username: Hedef kullanıcı adı
         title: Bildirim başlığı
         message: Bildirim mesajı
         notification_type: Bildirim tipi
-    
+
     Returns:
         int: Gönderilen mesaj sayısı
     """
@@ -199,19 +202,19 @@ async def send_notification(
             "type": notification_type,
             "title": title,
             "message": message,
-        }
+        },
     }
-    
+
     return await send_to_user(username, payload)
 
 
 async def broadcast(message: Dict[str, Any]) -> int:
     """
     Tüm bağlı kullanıcılara mesaj gönderir.
-    
+
     Args:
         message: Gönderilecek JSON mesajı
-    
+
     Returns:
         int: Gönderilen mesaj sayısı
     """
@@ -222,5 +225,5 @@ async def broadcast(message: Dict[str, Any]) -> int:
             sent_count += 1
         except Exception as e:
             logger.debug(f"[WS] Failed to broadcast: {e}")
-    
+
     return sent_count

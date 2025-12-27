@@ -38,6 +38,7 @@ router = APIRouter(tags=["user"])
 # PDF Kütüphanesi Kontrolü
 try:
     import PyPDF2
+
     PDF_AVAILABLE = True
 except ImportError:
     PDF_AVAILABLE = False
@@ -48,6 +49,7 @@ UPLOAD_ROOT.mkdir(parents=True, exist_ok=True)
 
 
 # --- YARDIMCI FONKSİYONLAR ---
+
 
 def chunk_text(text: str, chunk_size: int = 1200, overlap: int = 200) -> List[str]:
     """Metni parçalar halinde böler."""
@@ -71,10 +73,10 @@ def extract_text_from_pdf(file_path: Path) -> str:
     """PDF dosyasından basit metin çıkarma."""
     if not PDF_AVAILABLE:
         raise ImportError("PyPDF2 kütüphanesi yüklü değil.")
-    
+
     # PyPDF2'yi kullanabilmek için import kontrolü
     import PyPDF2 as pdf_module
-    
+
     text_parts = []
     with file_path.open("rb") as f:
         reader = pdf_module.PdfReader(f)
@@ -83,6 +85,7 @@ def extract_text_from_pdf(file_path: Path) -> str:
             if t.strip():
                 text_parts.append(t)
     return "\n".join(text_parts)
+
 
 def _build_message_metadata(engine: str, action: str, forced: bool, persona: bool, model: str) -> Dict[str, Any]:
     return {
@@ -93,7 +96,9 @@ def _build_message_metadata(engine: str, action: str, forced: bool, persona: boo
         "model": model,
     }
 
+
 # --- ŞEMALAR ---
+
 
 class ChatRequest(BaseModel):
     message: str = Field(..., min_length=1, max_length=10000)
@@ -104,11 +109,13 @@ class ChatRequest(BaseModel):
     # Style preferences: {tone: str, length: str, emoji_level: str}
     style_profile: Optional[Dict[str, str]] = None
 
+
 class ConversationSummaryOut(BaseModel):
     id: str
     title: Optional[str]
     created_at: Any
     updated_at: Any
+
 
 class MessageOut(BaseModel):
     id: int  # ← Backend message ID (frontend eşleştirmesi için)
@@ -116,6 +123,7 @@ class MessageOut(BaseModel):
     text: str
     time: Any
     extra_metadata: Optional[Dict[str, Any]] = None
+
 
 class MemoryItemOut(BaseModel):
     id: str  # Index yerine ID (str)
@@ -125,17 +133,20 @@ class MemoryItemOut(BaseModel):
     tags: Optional[List[str]] = None
     category: Optional[str] = "genel"
 
+
 class MemoryCreateIn(BaseModel):
     text: str = Field(..., min_length=1, max_length=500)
     importance: float = 0.5
     tags: Optional[List[str]] = None
     category: Optional[str] = "genel"
 
+
 class MemoryUpdateIn(BaseModel):
     text: str = Field(..., min_length=1, max_length=500)
     importance: Optional[float] = None
     tags: Optional[List[str]] = None
     category: Optional[str] = "genel"
+
 
 class UserImageOut(BaseModel):
     index: int
@@ -144,15 +155,18 @@ class UserImageOut(BaseModel):
     created_at: Any
     conversation_id: Optional[str] = None
 
+
 class FeedbackIn(BaseModel):
     conversation_id: Optional[str] = None
     message: str = Field(..., min_length=1, max_length=5000)
     feedback: str = Field(..., pattern="^(like|dislike)$")
 
+
 class UserPreferenceIn(BaseModel):
     key: str = Field(..., min_length=1, max_length=64)
     value: str = Field(..., min_length=1)
     category: Optional[str] = "system"
+
 
 class UserPreferenceOut(BaseModel):
     key: str
@@ -162,17 +176,16 @@ class UserPreferenceOut(BaseModel):
     is_active: bool
     updated_at: Any
 
+
 class UserPreferencesListOut(BaseModel):
     preferences: Dict[str, str]
 
 
 # --- ENDPOINTS ---
 
+
 @router.post("/chat")
-async def chat(
-    payload: ChatRequest,
-    user: User = Depends(get_current_active_user)
-):
+async def chat(payload: ChatRequest, user: User = Depends(get_current_active_user)):
     """Kullanici ile sohbet endpoint'i. Stream destekler."""
     if user.id is None:
         raise HTTPException(status_code=400, detail="Geçersiz kullanıcı")
@@ -189,15 +202,16 @@ async def chat(
     conv_append(username=username, conv_id=conv_id, role="user", text=payload.message)
 
     persona_applied = user_preferences.get_effective_preferences(user_id) != {}
-    
+
     # PERSONA BAZLI MODEL ROUTING
     # Eğer kullanıcı model belirtmediyse, aktif persona'ya bakarak otomatik belirle
     requested_model = payload.model
     if not requested_model:
         from app.core.dynamic_config import config_service
+
         active_persona_name = user.active_persona or "standard"
         active_persona = config_service.get_persona(active_persona_name)
-        
+
         if active_persona and active_persona.get("requires_uncensored", False):
             # Persona sansürsüz model gerektiriyorsa otomatik "bela" set et
             requested_model = "bela"
@@ -205,7 +219,7 @@ async def chat(
 
     # --- STREAMING AKTİFSE ---
     if payload.stream:
-        
+
         async def stream_and_save():
             full_reply = ""
             # process_chat_message stream modunda bir generator döndürür
@@ -217,9 +231,9 @@ async def chat(
                 conversation_id=conv_id,
                 requested_model=requested_model,
                 stream=True,
-                style_profile=payload.style_profile
+                style_profile=payload.style_profile,
             )
-            
+
             # Streaming olmayan (ör. image/internet/local) yanıtlar için güvenli fallback
             if isinstance(result_generator, tuple) and len(result_generator) >= 2:
                 # Tuple döndü (non-stream mode): (reply, semantic)
@@ -249,29 +263,30 @@ async def chat(
                 full_reply = str(result_generator or "")
                 if full_reply:
                     yield full_reply
-            
+
             # Stream bittikten sonra tam cevabı ve metadatayı kaydet
             logger.info(f"[CHAT_STREAM_END] User: {username}, Full reply length: {len(full_reply)}")
-            
+
             # Metadata ve kullanım limiti
-            engine = "groq"; action = "GROQ_REPLY"
+            engine = "groq"
+            action = "GROQ_REPLY"
             if full_reply.startswith("[BELA]") or payload.force_local:
-                engine = "local"; action = "LOCAL_CHAT"
+                engine = "local"
+                action = "LOCAL_CHAT"
             meta = _build_message_metadata(
-                engine=engine, action=action, forced=payload.force_local, 
-                persona=persona_applied, model=payload.model or "default"
+                engine=engine,
+                action=action,
+                forced=payload.force_local,
+                persona=persona_applied,
+                model=payload.model or "default",
             )
             # Prefix'siz kaydet - model history'de bunları görüp taklit ediyordu
             save_text = full_reply.strip()
-            
+
             conv_append(username=username, conv_id=conv_id, role="bot", text=save_text, extra_metadata=meta)
             limiter.consume_usage(user_id, engine=engine)
 
-        return StreamingResponse(
-            stream_and_save(),
-            media_type="text/plain",
-            headers={"X-Conversation-ID": conv_id}
-        )
+        return StreamingResponse(stream_and_save(), media_type="text/plain", headers={"X-Conversation-ID": conv_id})
 
     # --- STREAMING KAPALIYSA (NORMAL YANIT) ---
     else:
@@ -284,11 +299,11 @@ async def chat(
                 conversation_id=conv_id,
                 requested_model=requested_model,
                 stream=False,
-                style_profile=payload.style_profile
+                style_profile=payload.style_profile,
             )
             # Normal modda (reply, semantic) tuple döner
             # Type annotation: Union[Tuple[str, Any], AsyncGenerator[str, None]]
-            
+
             # Runtime type guard ile explicit casting
             if hasattr(result, "__aiter__"):
                 # AsyncGenerator döndü (stream=False olmasına rağmen)
@@ -303,7 +318,7 @@ async def chat(
                 tuple_result = cast(Tuple[str, Any], result)
                 reply, semantic = tuple_result
         except Exception as e:
-            logger.error(f'[CHAT] process_chat_message hata: {e}', exc_info=True)
+            logger.error(f"[CHAT] process_chat_message hata: {e}", exc_info=True)
             return {"ok": False, "error": "internal_error", "message": "Bir hata oluştu."}
 
         # Engine tipi belirleme (artık prefix yerine request parametrelerine göre)
@@ -326,8 +341,11 @@ async def chat(
             logger.debug(f"[CHAT] Usage limit consume failed: {e}")
 
         meta = _build_message_metadata(
-            engine=engine, action=action, forced=payload.force_local, 
-            persona=persona_applied, model=payload.model or "default"
+            engine=engine,
+            action=action,
+            forced=payload.force_local,
+            persona=persona_applied,
+            model=payload.model or "default",
         )
         conv_append(username=username, conv_id=conv_id, role="bot", text=reply, extra_metadata=meta)
 
@@ -352,14 +370,14 @@ async def chat(
             },
         }
 
+
 @router.get("/conversations", response_model=List[ConversationSummaryOut])
 async def get_conversations(user: User = Depends(get_current_active_user)):
     convs = conv_list(username=user.username)
     return [
-        ConversationSummaryOut(
-            id=c.id, title=c.title, created_at=c.created_at, updated_at=c.updated_at
-        ) for c in convs
+        ConversationSummaryOut(id=c.id, title=c.title, created_at=c.created_at, updated_at=c.updated_at) for c in convs
     ]
+
 
 @router.get("/conversations/{conversation_id}", response_model=List[MessageOut])
 async def get_conversation_messages(conversation_id: str, user: User = Depends(get_current_active_user)):
@@ -371,23 +389,26 @@ async def get_conversation_messages(conversation_id: str, user: User = Depends(g
             text=m.content if hasattr(m, "content") else m.text,
             time=m.created_at if hasattr(m, "created_at") else m.time,
             extra_metadata=m.extra_metadata if hasattr(m, "extra_metadata") else None,
-        ) for m in msgs
+        )
+        for m in msgs
     ]
+
 
 @router.delete("/conversations/{conversation_id}")
 async def delete_conversation_endpoint(conversation_id: str, user: User = Depends(get_current_active_user)):
     conv_delete(username=user.username, conv_id=conversation_id)
     return {"ok": True}
 
+
 @router.post("/upload")
 async def upload_document(
     file: UploadFile = File(...),
     conversation_id: Optional[str] = Form(None),
-    user: User = Depends(get_current_active_user)
+    user: User = Depends(get_current_active_user),
 ):
     if not file.filename:
         raise HTTPException(status_code=400, detail="Dosya adı bulunamadı.")
-    
+
     filename = file.filename
     ext = filename.rsplit(".", 1)[-1].lower() if "." in filename else ""
     if ext not in ("pdf", "txt"):
@@ -395,10 +416,10 @@ async def upload_document(
 
     user_dir = UPLOAD_ROOT / user.username
     user_dir.mkdir(parents=True, exist_ok=True)
-    
+
     safe_name = filename.replace("/", "_").replace("\\", "_")
     dest_path = user_dir / safe_name
-    
+
     content = await file.read()
     with dest_path.open("wb") as out:
         out.write(content)
@@ -434,6 +455,7 @@ async def upload_document(
 
     return {"ok": True, "filename": filename, "chunks": len(chunks)}
 
+
 @router.get("/image/status")
 async def check_image_status(user: User = Depends(get_current_active_user)):
     status = job_queue.get_queue_status()
@@ -450,7 +472,7 @@ async def get_job_status_endpoint(job_id: str, user: User = Depends(get_current_
     Sayfa yenilendiğinde pending job'ların durumunu öğrenmek için kullanılır.
     """
     from app.image.pending_state import get_job_status
-    
+
     job = get_job_status(job_id)
     if not job:
         # Job tamamlanmış veya hiç olmamış olabilir
@@ -459,19 +481,13 @@ async def get_job_status_endpoint(job_id: str, user: User = Depends(get_current_
             "status": "unknown",
             "progress": 0,
             "queue_position": 0,
-            "message": "Job bulunamadı - tamamlanmış veya geçersiz olabilir"
+            "message": "Job bulunamadı - tamamlanmış veya geçersiz olabilir",
         }
-    
+
     # Sadece bu kullanıcıya ait job'ları göster
     if job.get("username") != user.username:
-        return {
-            "job_id": job_id,
-            "status": "unknown",
-            "progress": 0,
-            "queue_position": 0,
-            "message": "Erişim izni yok"
-        }
-    
+        return {"job_id": job_id, "status": "unknown", "progress": 0, "queue_position": 0, "message": "Erişim izni yok"}
+
     return {
         "job_id": job_id,
         "status": "processing" if job.get("progress", 0) > 0 else "queued",
@@ -488,23 +504,25 @@ async def cancel_job_endpoint(job_id: str, user: User = Depends(get_current_acti
     Sadece kuyrukta bekleyen işler iptal edilebilir.
     """
     success = await job_queue.cancel_job(job_id, user.username)
-    
+
     if success:
         # Mesajı da güncelle
         from app.image.pending_state import get_job_status
         from app.memory.conversation import update_message
-        
+
         job = get_job_status(job_id)
         if job:
             # Burada message_id yok, pending_state'te tutmuyoruz
             # WebSocket zaten cancelled durumunu gönderdi
             pass
-        
+
         return {"success": True, "message": "Job iptal edildi"}
-    
+
     return {"success": False, "message": "Job bulunamadı veya zaten işleniyor"}
 
+
 # --- HAFIZA (MEMORY) ENDPOINTS ---
+
 
 @router.get("/memories", response_model=List[MemoryItemOut])
 async def list_user_memories(user: User = Depends(get_current_active_user)):
@@ -512,15 +530,18 @@ async def list_user_memories(user: User = Depends(get_current_active_user)):
     result = []
     for it in items:
         safe_id = it.id if it.id else "unknown"
-        result.append(MemoryItemOut(
-            id=safe_id,
-            text=it.text,
-            created_at=it.created_at,
-            importance=it.importance,
-            tags=it.tags,
-            category=it.topic or "genel",
-        ))
+        result.append(
+            MemoryItemOut(
+                id=safe_id,
+                text=it.text,
+                created_at=it.created_at,
+                importance=it.importance,
+                tags=it.tags,
+                category=it.topic or "genel",
+            )
+        )
     return result
+
 
 @router.post("/memories", response_model=MemoryItemOut)
 async def create_user_memory(body: MemoryCreateIn, user: User = Depends(get_current_active_user)):
@@ -537,8 +558,9 @@ async def create_user_memory(body: MemoryCreateIn, user: User = Depends(get_curr
         created_at=item.created_at,
         importance=item.importance,
         tags=item.tags,
-        category=item.topic or "genel"
+        category=item.topic or "genel",
     )
+
 
 @router.delete("/memories/all-delete")
 async def delete_all_user_memories(user: User = Depends(get_current_active_user)):
@@ -552,6 +574,7 @@ async def delete_all_user_memories(user: User = Depends(get_current_active_user)
         if ok:
             deleted += 1
     return {"ok": True, "deleted": deleted}
+
 
 @router.put("/memories/{memory_id}", response_model=MemoryItemOut)
 async def update_user_memory(body: MemoryUpdateIn, memory_id: str, user: User = Depends(get_current_active_user)):
@@ -570,8 +593,9 @@ async def update_user_memory(body: MemoryUpdateIn, memory_id: str, user: User = 
         created_at=item.created_at,
         importance=item.importance,
         tags=item.tags,
-        category=item.topic or "genel"
+        category=item.topic or "genel",
     )
+
 
 @router.delete("/memories/{memory_id}")
 async def delete_user_memory_endpoint(memory_id: str, user: User = Depends(get_current_active_user)):
@@ -580,7 +604,9 @@ async def delete_user_memory_endpoint(memory_id: str, user: User = Depends(get_c
         raise HTTPException(status_code=404, detail="Silinemedi.")
     return {"ok": True}
 
+
 # --- DİĞER ---
+
 
 @router.post("/feedback")
 async def submit_feedback(body: FeedbackIn, user: User = Depends(get_current_active_user)):
@@ -592,9 +618,11 @@ async def submit_feedback(body: FeedbackIn, user: User = Depends(get_current_act
     )
     return {"ok": True}
 
+
 @router.get("/images", response_model=List[UserImageOut])
 async def list_user_images(limit: int = 50, user: User = Depends(get_current_active_user)):
     from sqlmodel import col, select
+
     with get_session() as session:
         stmt = (
             select(Message)
@@ -611,15 +639,19 @@ async def list_user_images(limit: int = 50, user: User = Depends(get_current_act
             if "IMAGE_PATH:" in msg.content:
                 image_url = msg.content.split("IMAGE_PATH:")[1].strip().split()[0]
                 meta = msg.extra_metadata or {}
-                result.append(UserImageOut(
-                    index=idx,
-                    image_url=image_url,
-                    prompt=meta.get("prompt", "") or "Görsel",
-                    created_at=msg.created_at,
-                    conversation_id=msg.conversation_id
-                ))
-            if len(result) >= limit: break
+                result.append(
+                    UserImageOut(
+                        index=idx,
+                        image_url=image_url,
+                        prompt=meta.get("prompt", "") or "Görsel",
+                        created_at=msg.created_at,
+                        conversation_id=msg.conversation_id,
+                    )
+                )
+            if len(result) >= limit:
+                break
         return result
+
 
 @router.get("/preferences", response_model=UserPreferencesListOut)
 async def get_my_preferences(category: Optional[str] = None, user: User = Depends(get_current_active_user)):
@@ -629,21 +661,24 @@ async def get_my_preferences(category: Optional[str] = None, user: User = Depend
     prefs = user_preferences.get_effective_preferences(user_id=user.id, category=category)
     return {"preferences": prefs}
 
+
 @router.post("/preferences", response_model=UserPreferenceOut)
 async def set_my_preference(body: UserPreferenceIn, user: User = Depends(get_current_active_user)):
     # user.id None kontrolü - aktif kullanıcı için olmamalı ama tip güvenliği için
     if user.id is None:
         raise HTTPException(status_code=400, detail="Geçersiz kullanıcı ID")
-    
+
     # category None ise varsayılan değer ata
     category = body.category if body.category else "system"
-    
-    pref = user_preferences.set_user_preference(
-        user_id=user.id, key=body.key, value=body.value, category=category
-    )
+
+    pref = user_preferences.set_user_preference(user_id=user.id, key=body.key, value=body.value, category=category)
     return UserPreferenceOut(
-        key=pref.key, value=pref.value, category=pref.category,
-        source=pref.source, is_active=pref.is_active, updated_at=pref.updated_at,
+        key=pref.key,
+        value=pref.value,
+        category=pref.category,
+        source=pref.source,
+        is_active=pref.is_active,
+        updated_at=pref.updated_at,
     )
 
 
@@ -651,8 +686,10 @@ async def set_my_preference(body: UserPreferenceIn, user: User = Depends(get_cur
 # PERSONA / MOD SİSTEMİ API
 # =============================================================================
 
+
 class PersonaOut(BaseModel):
     """Persona çıktı modeli."""
+
     name: str
     display_name: str
     description: Optional[str] = None
@@ -663,17 +700,20 @@ class PersonaOut(BaseModel):
 
 class PersonaListOut(BaseModel):
     """Persona listesi çıktı modeli."""
+
     personas: List[PersonaOut]
     active_persona: str
 
 
 class PersonaSelectIn(BaseModel):
     """Persona seçim giriş modeli."""
+
     persona: str = Field(..., description="Seçilecek persona adı (ör: standard, lover, roleplay)")
 
 
 class PersonaSelectOut(BaseModel):
     """Persona seçim çıktı modeli."""
+
     success: bool
     active_persona: str
     message: str
@@ -683,53 +723,52 @@ class PersonaSelectOut(BaseModel):
 async def list_personas(user: User = Depends(get_current_active_user)):
     """
     Kullanılabilir persona/mod listesini döndürür.
-    
+
     Returns:
         PersonaListOut: Persona listesi ve aktif persona
     """
     from app.auth.permissions import user_can_use_local
     from app.core.dynamic_config import config_service
-    
+
     all_personas = config_service.get_all_personas()
     can_use_local = user_can_use_local(user)
-    
+
     result = []
     for p in all_personas:
         # requires_uncensored persona'ları sadece local izni olanlar görebilir
         if p.get("requires_uncensored") and not can_use_local:
             continue
-        
+
         if not p.get("is_active", True):
             continue
-            
-        result.append(PersonaOut(
-            name=p.get("name", ""),
-            display_name=p.get("display_name", p.get("name", "")),
-            description=p.get("description"),
-            requires_uncensored=p.get("requires_uncensored", False),
-            is_active=p.get("is_active", True),
-            initial_message=p.get("initial_message"),
-        ))
-    
-    return PersonaListOut(
-        personas=result,
-        active_persona=user.active_persona or "standard"
-    )
+
+        result.append(
+            PersonaOut(
+                name=p.get("name", ""),
+                display_name=p.get("display_name", p.get("name", "")),
+                description=p.get("description"),
+                requires_uncensored=p.get("requires_uncensored", False),
+                is_active=p.get("is_active", True),
+                initial_message=p.get("initial_message"),
+            )
+        )
+
+    return PersonaListOut(personas=result, active_persona=user.active_persona or "standard")
 
 
 @router.get("/personas/active")
 async def get_active_persona(user: User = Depends(get_current_active_user)):
     """
     Kullanıcının aktif persona/modunu döndürür.
-    
+
     Returns:
         dict: Aktif persona bilgisi
     """
     from app.core.dynamic_config import config_service
-    
+
     active_name = user.active_persona or "standard"
     persona = config_service.get_persona(active_name)
-    
+
     if persona:
         return {
             "active_persona": active_name,
@@ -737,7 +776,7 @@ async def get_active_persona(user: User = Depends(get_current_active_user)):
             "requires_uncensored": persona.get("requires_uncensored", False),
             "initial_message": persona.get("initial_message"),
         }
-    
+
     return {
         "active_persona": "standard",
         "display_name": "Standart",
@@ -750,15 +789,15 @@ async def get_active_persona(user: User = Depends(get_current_active_user)):
 async def select_persona(body: PersonaSelectIn, user: User = Depends(get_current_active_user)):
     """
     Kullanıcının aktif persona/modunu değiştirir.
-    
+
     İş kuralları:
         - Persona bulunamazsa 404
         - requires_uncensored=True ise user_can_use_local kontrolü → 403
         - Başarılıysa DB'de users.active_persona güncellenir
-    
+
     Args:
         body: Seçilecek persona adı
-    
+
     Returns:
         PersonaSelectOut: Seçim sonucu
     """
@@ -766,32 +805,25 @@ async def select_persona(body: PersonaSelectIn, user: User = Depends(get_current
 
     from app.auth.permissions import user_can_use_local
     from app.core.dynamic_config import config_service
-    
+
     persona_name = body.persona.lower().strip()
-    
+
     # 1. Persona'nın var olup olmadığını kontrol et
     persona = config_service.get_persona(persona_name)
     if not persona:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Persona bulunamadı: {persona_name}"
-        )
-    
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Persona bulunamadı: {persona_name}")
+
     # 2. Aktif değilse hata
     if not persona.get("is_active", True):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Bu persona aktif değil: {persona_name}"
-        )
-    
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"Bu persona aktif değil: {persona_name}")
+
     # 3. requires_uncensored kontrolü
     if persona.get("requires_uncensored", False):
         if not user_can_use_local(user):
             raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="Bu modu kullanmak için yerel model izniniz gerekiyor."
+                status_code=status.HTTP_403_FORBIDDEN, detail="Bu modu kullanmak için yerel model izniniz gerekiyor."
             )
-    
+
     # 4. DB'de güncelle
     with get_session() as session:
         db_user = session.get(User, user.id)
@@ -800,9 +832,9 @@ async def select_persona(body: PersonaSelectIn, user: User = Depends(get_current
             session.add(db_user)
             session.commit()
             logger.info(f"[PERSONA] User {user.username} persona değiştirdi: {persona_name}")
-    
+
     return PersonaSelectOut(
         success=True,
         active_persona=persona_name,
-        message=f"Mod değiştirildi: {persona.get('display_name', persona_name)}"
+        message=f"Mod değiştirildi: {persona.get('display_name', persona_name)}",
     )

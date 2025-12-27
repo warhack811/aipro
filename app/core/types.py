@@ -7,10 +7,10 @@ TYPE_CHECKING bloklarında kullanılmak üzere Protocol ve TypedDict tanımları
 
 Kullanım:
     from typing import TYPE_CHECKING
-    
+
     if TYPE_CHECKING:
         from app.core.types import UserLike, SettingsLike
-    
+
     def process_user(user: UserLike) -> dict[str, Any]:
         return {"id": user.id, "name": user.username}
 """
@@ -23,11 +23,13 @@ from typing_extensions import TypedDict
 # USER PROTOCOLS
 # ============================================================================
 
+
 class UserLike(Protocol):
     """User model interface for type checking.
-    
+
     Duck typing interface that matches app.core.models.User
     """
+
     id: Optional[int]
     username: str
     email: Optional[str]
@@ -40,6 +42,7 @@ class UserLike(Protocol):
 
 class UserPreferenceLike(Protocol):
     """UserPreference model interface."""
+
     user_id: int
     key: str
     value: str
@@ -51,25 +54,27 @@ class UserPreferenceLike(Protocol):
 # SETTINGS PROTOCOLS
 # ============================================================================
 
+
 class SettingsLike(Protocol):
     """Settings interface for type checking.
-    
+
     Duck typing interface that matches app.config.Settings
     """
+
     APP_NAME: str
     DEBUG: bool
     SECRET_KEY: str
-    
+
     # Database
     DATABASE_URL: Optional[str]
     CHROMA_PERSIST_DIR: str
-    
+
     # Groq API
     GROQ_API_KEY: str
     GROQ_DECIDER_MODEL: str
     GROQ_ANSWER_MODEL: str
     GROQ_FAST_MODEL: str
-    
+
     # Methods
     def get_cors_origins_list(self) -> list[str]: ...
     def get_groq_api_keys(self) -> list[str]: ...
@@ -79,8 +84,10 @@ class SettingsLike(Protocol):
 # MESSAGE & CONVERSATION PROTOCOLS
 # ============================================================================
 
+
 class MessageLike(Protocol):
     """Message model interface."""
+
     id: Optional[int]
     conversation_id: str
     role: str
@@ -89,6 +96,7 @@ class MessageLike(Protocol):
 
 class ConversationLike(Protocol):
     """Conversation model interface."""
+
     id: str
     user_id: int
     title: Optional[str]
@@ -100,8 +108,10 @@ class ConversationLike(Protocol):
 # SEMANTIC ANALYSIS TYPES
 # ============================================================================
 
+
 class SemanticAnalysisDict(TypedDict, total=False):
     """Semantic analysis result dictionary."""
+
     intent_type: str
     domain: str
     should_use_internet: bool
@@ -113,6 +123,7 @@ class SemanticAnalysisDict(TypedDict, total=False):
 
 class SemanticAnalysisLike(Protocol):
     """Semantic analysis result interface."""
+
     intent_type: str
     domain: str
     should_use_internet: bool
@@ -126,8 +137,10 @@ class SemanticAnalysisLike(Protocol):
 # ROUTING & DECISION TYPES
 # ============================================================================
 
+
 class RoutingDecisionDict(TypedDict, total=False):
     """Routing decision dictionary."""
+
     target: str
     tool_intent: Optional[str]
     reason: str
@@ -140,8 +153,10 @@ class RoutingDecisionDict(TypedDict, total=False):
 # MEMORY TYPES
 # ============================================================================
 
+
 class MemoryRecordDict(TypedDict, total=False):
     """Memory record dictionary."""
+
     id: str
     user_id: int
     text: str
@@ -161,8 +176,10 @@ class MemoryRecordDict(TypedDict, total=False):
 # CONTEXT TYPES
 # ============================================================================
 
+
 class UserContextDict(TypedDict, total=False):
     """User context dictionary."""
+
     recent_context: Optional[str]
     conversation_summary: Optional[str]
     relevant_memories: list[Any]
@@ -175,8 +192,10 @@ class UserContextDict(TypedDict, total=False):
 # IMAGE GENERATION TYPES
 # ============================================================================
 
+
 class ImageJobSpecDict(TypedDict, total=False):
     """Image job specification dictionary."""
+
     prompt: str
     checkpoint: str
     variant: str

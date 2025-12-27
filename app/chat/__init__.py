@@ -17,10 +17,3 @@ Akış:
     3. Processor uygun servisi çağırır (Groq, Ollama, Image, Internet)
     4. Yanıt formatlanır ve döndürülür
 """
-
-
-
-
-
-
-

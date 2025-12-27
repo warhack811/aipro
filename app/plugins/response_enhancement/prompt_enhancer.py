@@ -4,6 +4,7 @@ Prompt Enhancer - Gelişmiş Prompt Mühendisliği
 
 Model'e daha iyi formatlama talimatları vererek cevap kalitesini artırır.
 """
+
 import logging
 from typing import Any, Dict, Optional
 
@@ -13,14 +14,14 @@ logger = logging.getLogger(__name__)
 class PromptEnhancer:
     """
     System prompt'lara profesyonel formatlama talimatları ekler.
-    
+
     Büyük chatbot'ların (ChatGPT, Claude, Gemini) kullandığı teknikleri uygular:
     - Yapılandırılmış cevap formatı
     - Görsel zenginlik (emoji, tablo, liste)
     - Kod bloğu standartları
     - Kalite kontrol kuralları
     """
-    
+
     FORMATTING_INSTRUCTIONS = """
 
 📝 **CEVAP FORMATI VE KALİTE KURALLARI:**
@@ -102,50 +103,46 @@ Kod altında önemli noktaları açıkla.
     def __init__(self):
         self.enabled = True
         logger.info("[PROMPT_ENHANCER] Initialized")
-    
-    def enhance(
-        self,
-        base_prompt: str,
-        context: Optional[Dict[str, Any]] = None
-    ) -> str:
+
+    def enhance(self, base_prompt: str, context: Optional[Dict[str, Any]] = None) -> str:
         """
         Base prompt'a formatlama talimatları ekle.
-        
+
         Args:
             base_prompt: Orijinal system prompt
             context: Bağlam bilgisi
-            
+
         Returns:
             Zenginleştirilmiş prompt
         """
         if not self.enabled:
             return base_prompt
-        
+
         context = context or {}
         user_message = context.get("user_message", "")
-        
+
         # Temel formatlama talimatları
         enhanced = base_prompt + self.FORMATTING_INSTRUCTIONS
-        
+
         # Kullanıcı mesajına göre özel format ekle
         if user_message:
             msg_lower = user_message.lower()
-            
+
             # Karşılaştırma sorusu
-            if any(x in msg_lower for x in ['karşılaştır', 'fark', 'hangisi', 'vs', 'versus']):
+            if any(x in msg_lower for x in ["karşılaştır", "fark", "hangisi", "vs", "versus"]):
                 enhanced += self.COMPARISON_FORMAT
-            
+
             # Adım adım soru
-            elif any(x in msg_lower for x in ['nasıl', 'adım adım', 'kurulum', 'yap']):
+            elif any(x in msg_lower for x in ["nasıl", "adım adım", "kurulum", "yap"]):
                 enhanced += self.STEP_FORMAT
-            
+
             # Kod sorusu
-            elif any(x in msg_lower for x in ['kod', 'code', 'örnek', 'fonksiyon']):
+            elif any(x in msg_lower for x in ["kod", "code", "örnek", "fonksiyon"]):
                 enhanced += self.CODE_FORMAT
-        
+
         logger.debug(f"[PROMPT_ENHANCER] Enhanced prompt length: {len(enhanced)}")
         return enhanced
-    
+
     def get_quality_rules(self) -> str:
         """Kalite kurallarını döndür (test amaçlı)"""
         return self.FORMATTING_INSTRUCTIONS

@@ -7,6 +7,7 @@ from app.core.feature_flags import feature_enabled
 
 router = APIRouter()
 
+
 @router.get("/health")
 async def health():
     """Basit sağlık endpoint'i."""

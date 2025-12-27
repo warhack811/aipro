@@ -11,11 +11,11 @@ Bu modül, AI asistanın kimlik bilgilerini ve marka tutarlılığını yönetir
 
 Kullanım:
     from app.ai.prompts.identity import get_ai_identity, enforce_model_identity
-    
+
     # Kimlik bilgilerini al
     identity = get_ai_identity()
     print(identity.display_name)  # "Mami AI"
-    
+
     # Yanıtta sağlayıcı isimlerini gizle
     clean_text = enforce_model_identity("groq", response_text)
 """
@@ -36,19 +36,34 @@ logger = logging.getLogger(__name__)
 
 # Modelin kendi kimliğini gizlemesi için anahtar kelimeler
 PROVIDER_KEYWORDS = [
-    "google", "google ai", "google deepmind", "openai", "meta", "microsoft",
-    "anthropic", "mistral", "groq", "gemma", "gpt", "chatgpt", "bard", "llama",
-    "dil modeli", "language model", "yapay zeka modeli", "ai model", "large language model"
+    "google",
+    "google ai",
+    "google deepmind",
+    "openai",
+    "meta",
+    "microsoft",
+    "anthropic",
+    "mistral",
+    "groq",
+    "gemma",
+    "gpt",
+    "chatgpt",
+    "bard",
+    "llama",
+    "dil modeli",
+    "language model",
+    "yapay zeka modeli",
+    "ai model",
+    "large language model",
 ]
 
-IDENTITY_CONTEXT_WORDS = [
-    "dil modeli", "yapay zeka", "model", "asistan", "assistant", "program", "bot"
-]
+IDENTITY_CONTEXT_WORDS = ["dil modeli", "yapay zeka", "model", "asistan", "assistant", "program", "bot"]
 
 
 # =============================================================================
 # LAZY IMPORTS
 # =============================================================================
+
 
 def _get_imports():
     """Import döngüsünü önlemek için lazy import."""
@@ -71,18 +86,19 @@ def _get_default_identity():
 # KİMLİK FONKSİYONLARI
 # =============================================================================
 
+
 def get_ai_identity():
     """
     DB'den kimlik ayarlarını okur.
-    
+
     Yoksa varsayılan kimliği oluşturur ve kaydeder.
-    
+
     Returns:
         AIIdentityConfig: Kimlik yapılandırması
     """
     get_session, AIIdentityConfig = _get_imports()
     default_identity = _get_default_identity()
-    
+
     with get_session() as session:
         try:
             config = session.get(AIIdentityConfig, 1)
@@ -107,26 +123,26 @@ def update_ai_identity(
 ):
     """
     AI kimlik ayarlarını günceller.
-    
+
     Args:
         display_name: Görünen ad
         developer_name: Geliştirici adı
         product_family: Ürün ailesi
         short_intro: Kısa tanıtım
         forbid_provider_mention: Sağlayıcı ismini gizle
-    
+
     Returns:
         AIIdentityConfig: Güncellenmiş kimlik
     """
     get_session, AIIdentityConfig = _get_imports()
     default_identity = _get_default_identity()
-    
+
     with get_session() as session:
         config = session.get(AIIdentityConfig, 1)
         if not config:
             config = default_identity
             session.add(config)
-        
+
         # Değerleri güncelle
         if display_name is not None:
             config.display_name = display_name
@@ -138,7 +154,7 @@ def update_ai_identity(
             config.short_intro = short_intro
         if forbid_provider_mention is not None:
             config.forbid_provider_mention = forbid_provider_mention
-        
+
         config.updated_at = datetime.utcnow()
 
         session.add(config)
@@ -151,17 +167,17 @@ def update_ai_identity(
 def enforce_model_identity(_engine_key: str, text: str) -> str:
     """
     Model yanıtındaki sağlayıcı isimlerini projenin kimliğiyle değiştirir.
-    
+
     Google, OpenAI, Meta vb. referansları temizler ve
     projenin kendi kimlik bilgileriyle değiştirir.
-    
+
     Args:
         engine_key: Kullanılan motor (groq, local vb.)
         text: İşlenecek yanıt metni
-    
+
     Returns:
         str: Temizlenmiş metin
-    
+
     Example:
         >>> text = "Ben Google tarafından geliştirilen bir dil modeliyim."
         >>> clean = enforce_model_identity("groq", text)
@@ -195,7 +211,7 @@ def enforce_model_identity(_engine_key: str, text: str) -> str:
         s_strip = s.strip()
         if not s_strip:
             continue
-        
+
         s_lower = s_strip.lower()
 
         has_provider = any(k in s_lower for k in PROVIDER_KEYWORDS)
@@ -213,10 +229,3 @@ def enforce_model_identity(_engine_key: str, text: str) -> str:
         return text
 
     return " ".join(cleaned_sentences)
-
-
-
-
-
-
-

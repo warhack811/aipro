@@ -33,18 +33,13 @@ async def run_suite(base_url: str, suite_path: str) -> Dict[str, Any]:
                 resp = await client.chat(
                     turn["message"],
                     conversation_id=conv_id,
-                    model=model_id,          # model optional olsa da, evalde sabitliyoruz
-                    force_local=force_local  # local path zorlamak için
+                    model=model_id,  # model optional olsa da, evalde sabitliyoruz
+                    force_local=force_local,  # local path zorlamak için
                 )
                 last_text = resp.text
                 total_latency += resp.latency_ms
 
-            metrics = judge_case(
-                case=case,
-                model_output=last_text,
-                latency_ms=total_latency,
-                meta={}
-            )
+            metrics = judge_case(case=case, model_output=last_text, latency_ms=total_latency, meta={})
 
             passed = (
                 metrics.hallucination_flag == 0
@@ -54,21 +49,23 @@ async def run_suite(base_url: str, suite_path: str) -> Dict[str, Any]:
                 and metrics.search_quality == 1
             )
 
-            results.append({
-                "model": model_id,
-                "force_local": force_local,
-                "case_id": case["id"],
-                "conversation_id": conv_id,
-                "passed": passed,
-                "metrics": metrics.to_dict(),
-                "output_preview": last_text[:500]
-            })
+            results.append(
+                {
+                    "model": model_id,
+                    "force_local": force_local,
+                    "case_id": case["id"],
+                    "conversation_id": conv_id,
+                    "passed": passed,
+                    "metrics": metrics.to_dict(),
+                    "output_preview": last_text[:500],
+                }
+            )
 
     report = {
         "suite_name": suite.get("suite_name"),
         "ran_at": datetime.utcnow().isoformat() + "Z",
         "base_url": base_url,
-        "results": results
+        "results": results,
     }
     return report
 

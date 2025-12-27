@@ -2,6 +2,7 @@
 Query Enhancement Service
 Kullanıcı sorgularını memory ve RAG araması için zenginleştirir.
 """
+
 from __future__ import annotations
 
 import logging
@@ -39,42 +40,43 @@ async def enhance_query_for_search(
 ) -> List[str]:
     """
     Kullanıcı mesajından çoklu arama sorguları üretir.
-    
+
     Args:
         user_message: Kullanıcının orijinal mesajı
         max_queries: Maksimum sorgu sayısı
-        
+
     Returns:
         List of search queries (orijinal mesaj dahil)
     """
     # Orijinal mesajı her zaman dahil et
     queries = [user_message.strip()]
-    
+
     # Çok kısa mesajlar için LLM çağırma
     if len(user_message.strip()) < 10:
         return queries
-    
+
     try:
         messages = [
             {"role": "system", "content": QUERY_ENHANCE_PROMPT},
             {"role": "user", "content": user_message},
         ]
-        
+
         # Hızlı model kullan
-        fast_model = getattr(settings, 'GROQ_FAST_MODEL', settings.GROQ_DECIDER_MODEL)
-        
+        fast_model = getattr(settings, "GROQ_FAST_MODEL", settings.GROQ_DECIDER_MODEL)
+
         import json
+
         content = await call_groq_api_async(
             messages=messages,
             json_mode=True,
             temperature=0.3,
             model=fast_model,
         )
-        
+
         if content:
             data = json.loads(content)
             additional = data.get("queries", [])
-            
+
             # Orijinal mesajı tekrar ekleme
             for q in additional:
                 # q bazen list olabiliyor, string'e çevir
@@ -87,12 +89,12 @@ async def enhance_query_for_search(
                     queries.append(q)
                     if len(queries) >= max_queries + 1:  # +1 for original
                         break
-            
+
             logger.debug(f"[QUERY_ENHANCE] {user_message[:50]} -> {queries}")
-            
+
     except Exception as e:
         logger.warning(f"[QUERY_ENHANCE] Hata (fallback to original): {e}")
-    
+
     return queries
 
 
@@ -103,28 +105,28 @@ async def search_with_enhanced_queries(
 ) -> List:
     """
     Birden fazla sorgu ile arama yapar ve sonuçları birleştirir.
-    
+
     Args:
         search_func: Async search function to call
         queries: List of search queries
         **search_kwargs: Additional arguments for search function
-        
+
     Returns:
         Deduplicated list of results
     """
     all_results = []
     seen_ids = set()
-    
+
     for query in queries:
         try:
             results = await search_func(query=query, **search_kwargs)
             for item in results:
-                item_id = getattr(item, 'id', None) or getattr(item, 'text', '')[:50]
+                item_id = getattr(item, "id", None) or getattr(item, "text", "")[:50]
                 if item_id not in seen_ids:
                     seen_ids.add(item_id)
                     all_results.append(item)
         except Exception as e:
             logger.warning(f"[QUERY_ENHANCE] Search error for '{query}': {e}")
             continue
-    
+
     return all_results
