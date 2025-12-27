@@ -9,10 +9,10 @@ Bu modül, kullanıcı başına istek limitlerini yönetir:
 
 Kullanım:
     from app.core.usage_limiter import limiter
-    
+
     # İstek öncesi kontrol (hata fırlatır)
     limiter.check_limits_pre_flight(user_id)
-    
+
     # İstek sonrası kullanım kaydı
     limiter.consume_usage(user_id, reply_content)
 
@@ -39,26 +39,27 @@ logger = logging.getLogger(__name__)
 # =============================================================================
 
 # Günlük limitler
-LIMIT_GROQ_DAILY: int = 500       # Groq API günlük istek limiti
-LIMIT_LOCAL_DAILY: int = 2000     # Yerel model günlük istek limiti
+LIMIT_GROQ_DAILY: int = 500  # Groq API günlük istek limiti
+LIMIT_LOCAL_DAILY: int = 2000  # Yerel model günlük istek limiti
 
 # Spam koruması
-LIMIT_CHAT_PER_MINUTE: int = 30   # Dakikalık maksimum mesaj sayısı
+LIMIT_CHAT_PER_MINUTE: int = 30  # Dakikalık maksimum mesaj sayısı
 
 
 # =============================================================================
 # KULLANIM LİMİTLEYİCİ SINIFI
 # =============================================================================
 
+
 class UsageLimiter:
     """
     Kullanım limitlerini kontrol eden ve sayaçları yöneten servis.
-    
+
     Bu sınıf:
     - İstek öncesi limit kontrolü yapar
     - İstek sonrası kullanımı kaydeder
     - Günlük sayaçları yönetir
-    
+
     Kullanım:
         >>> limiter.check_limits_pre_flight(user_id)  # HTTPException fırlatabilir
         >>> # ... işlem ...
@@ -69,7 +70,7 @@ class UsageLimiter:
     def _get_today_utc() -> date:
         """
         UTC olarak bugünün tarihini döndürür.
-        
+
         Returns:
             date: Bugünün UTC tarihi
         """
@@ -79,7 +80,7 @@ class UsageLimiter:
     def _get_database_imports():
         """
         Veritabanı bağımlılıklarını lazy import eder.
-        
+
         Import döngüsünü önlemek için kullanılır.
         """
         try:
@@ -95,10 +96,10 @@ class UsageLimiter:
     def get_or_create_counter(user_id: int):
         """
         Bugün için kullanıcının sayaç kaydını getirir veya oluşturur.
-        
+
         Args:
             user_id: Kullanıcı ID'si
-        
+
         Returns:
             UsageCounter: Kullanıcının bugünkü sayaç kaydı
         """
@@ -126,17 +127,17 @@ class UsageLimiter:
     def check_limits_pre_flight(user_id: int) -> None:
         """
         İstek işlenmeden ÖNCE limitleri kontrol eder.
-        
+
         Kontroller:
         1. Dakikalık mesaj limiti (spam koruması)
         2. Günlük toplam limit (Groq + Local)
-        
+
         Args:
             user_id: Kullanıcı ID'si
-        
+
         Raises:
             HTTPException: Limit aşıldığında 429 Too Many Requests
-        
+
         Example:
             >>> try:
             ...     limiter.check_limits_pre_flight(user_id)
@@ -144,7 +145,7 @@ class UsageLimiter:
             ...     print(f"Limit aşıldı: {e.detail}")
         """
         get_session, UsageCounter, Message, Conversation = UsageLimiter._get_database_imports()
-        
+
         now = datetime.utcnow()
         one_minute_ago = now - timedelta(minutes=1)
 
@@ -178,8 +179,7 @@ class UsageLimiter:
 
         if counter.total_chat_count >= total_limit:
             logger.warning(
-                f"[LIMITER] Günlük limit aşıldı: user={user_id} "
-                f"count={counter.total_chat_count}/{total_limit}"
+                f"[LIMITER] Günlük limit aşıldı: user={user_id} " f"count={counter.total_chat_count}/{total_limit}"
             )
             raise HTTPException(
                 status_code=status.HTTP_429_TOO_MANY_REQUESTS,
@@ -190,16 +190,16 @@ class UsageLimiter:
     def consume_usage(user_id: int, engine: str = "groq") -> None:
         """
         İşlem tamamlandıktan sonra kullanımı kaydeder.
-        
+
         Engine parametresine göre ilgili sayaç artırılır:
         - "groq": groq_count artırılır
         - "local": local_count artırılır
         - Her durumda total_chat_count artırılır
-        
+
         Args:
             user_id: Kullanıcı ID'si
             engine: Model engine tipi ("groq" veya "local")
-        
+
         Example:
             >>> limiter.consume_usage(user_id, engine="groq")
             >>> limiter.consume_usage(user_id, engine="local")
@@ -243,13 +243,13 @@ class UsageLimiter:
     def get_user_usage(user_id: int) -> dict:
         """
         Kullanıcının bugünkü kullanım istatistiklerini döndürür.
-        
+
         Args:
             user_id: Kullanıcı ID'si
-        
+
         Returns:
             dict: Kullanım istatistikleri
-        
+
         Example:
             >>> usage = limiter.get_user_usage(user_id)
             >>> print(usage)
@@ -262,7 +262,7 @@ class UsageLimiter:
             }
         """
         counter = UsageLimiter.get_or_create_counter(user_id)
-        
+
         return {
             "groq_count": counter.groq_count,
             "local_count": counter.local_count,
@@ -278,10 +278,3 @@ class UsageLimiter:
 
 # Dışarıdan kullanım için tek instance
 limiter = UsageLimiter()
-
-
-
-
-
-
-

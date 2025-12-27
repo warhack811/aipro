@@ -15,9 +15,9 @@ def _build_default_settings() -> ConversationSummarySettings:
     return ConversationSummarySettings(
         id=1,
         summary_enabled=True,
-        summary_first_threshold=6,   # İlk özet 6 mesajdan sonra (önceki: 12)
-        summary_update_step=6,       # Sonraki güncellemeler 6 mesajda bir (önceki: 10)
-        summary_max_messages=60,     # LLM'e gönderilecek maksimum mesaj (önceki: 40)
+        summary_first_threshold=6,  # İlk özet 6 mesajdan sonra (önceki: 12)
+        summary_update_step=6,  # Sonraki güncellemeler 6 mesajda bir (önceki: 10)
+        summary_max_messages=60,  # LLM'e gönderilecek maksimum mesaj (önceki: 40)
     )
 
 
@@ -52,10 +52,14 @@ def update_summary_settings(
             settings = _build_default_settings()
             session.add(settings)
 
-        if enabled is not None: settings.summary_enabled = enabled
-        if first_threshold is not None: settings.summary_first_threshold = first_threshold
-        if update_step is not None: settings.summary_update_step = update_step
-        if max_messages is not None: settings.summary_max_messages = max_messages
+        if enabled is not None:
+            settings.summary_enabled = enabled
+        if first_threshold is not None:
+            settings.summary_first_threshold = first_threshold
+        if update_step is not None:
+            settings.summary_update_step = update_step
+        if max_messages is not None:
+            settings.summary_max_messages = max_messages
 
         settings.updated_at = datetime.utcnow()
 

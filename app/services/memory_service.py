@@ -19,14 +19,15 @@ DEFAULT_TOPIC = "general"
 
 class MemoryRecord(BaseModel):
     """ChromaDB Ã¼zerinde tutulan bir hafÄ±za kaydÄ±nÄ±n uygulama iÃ§i temsili."""
+
     id: str
     user_id: int
     text: str
-    type: str # fact, goal, preference
+    type: str  # fact, goal, preference
     importance: float
     topic: str
     source: str
-    
+
     is_active: bool
     created_at: str
     last_accessed: str
@@ -98,14 +99,15 @@ class MemoryService:
         metadata: Optional[Dict[str, Any]] = None,
     ) -> MemoryRecord:
         """Yeni bir anÄ± ekler."""
-        if not text: raise ValueError("HafÄ±za metni boÅŸ olamaz.")
+        if not text:
+            raise ValueError("HafÄ±za metni boÅŸ olamaz.")
 
         collection = cls._get_collection()
         now = cls._get_current_time()
 
         # --- HYBRID DUPLICATE CHECK (SEMANTIC + TEXT + ENTITY) ---
         from app.services.memory_duplicate_detector import detector
-        
+
         try:
             # Benzer iÃ§erikli aktif bir kayÄ±t var mÄ±?
             # WHERE filter ile native filtering (ChromaDB >=0.4.22)
@@ -113,9 +115,9 @@ class MemoryService:
                 collection.query,
                 query_texts=[text],
                 n_results=10,  # Top-10 semantically similar
-                where={"$and": [{"user_id": user_id}, {"is_active": True}]}  # ChromaDB $and filter
+                where={"$and": [{"user_id": user_id}, {"is_active": True}]},  # ChromaDB $and filter
             )
-            
+
             ids_block = check_res.get("ids") or []
             docs_block = check_res.get("documents") or []
             dists_block = check_res.get("distances") or []
@@ -142,13 +144,12 @@ class MemoryService:
                         existing_text=existing_text,
                         semantic_distance=existing_dist,
                         importance=importance,
-                        use_entity_check=True
+                        use_entity_check=True,
                     )
 
                     if is_dup:
                         logger.info(
-                            f"[MEMORY] Duplicate detected: {reason} | "
-                            f"ID: {doc_id} | dist={existing_dist:.4f}"
+                            f"[MEMORY] Duplicate detected: {reason} | " f"ID: {doc_id} | dist={existing_dist:.4f}"
                         )
 
                         # Mevcut kaydZñ dÇôndÇ¬r
@@ -187,7 +188,8 @@ class MemoryService:
 
         if metadata:
             for k, v in metadata.items():
-                if k not in final_metadata: final_metadata[k] = v if v is not None else "" # None kontrolÃ¼
+                if k not in final_metadata:
+                    final_metadata[k] = v if v is not None else ""  # None kontrolÃ¼
 
         # Chroma iÅŸlemi bloklayÄ±cÄ± olabilir, thread'e atÄ±yoruz
         await asyncio.to_thread(
@@ -200,10 +202,19 @@ class MemoryService:
         logger.info(f"[MEMORY] Yeni kayÄ±t eklendi: {memory_id} (User: {user_id})")
 
         return MemoryRecord(
-            id=memory_id, user_id=user_id, text=text, type=memory_type,
-            importance=float(importance), topic=topic, source=source,
-            is_active=True, created_at=now, last_accessed=now,
-            score=None, vector_similarity=None, metadata=final_metadata,
+            id=memory_id,
+            user_id=user_id,
+            text=text,
+            type=memory_type,
+            importance=float(importance),
+            topic=topic,
+            source=source,
+            is_active=True,
+            created_at=now,
+            last_accessed=now,
+            score=None,
+            vector_similarity=None,
+            metadata=final_metadata,
         )
 
     # -------------------------------------------------------------------------
@@ -227,7 +238,7 @@ class MemoryService:
                 collection.query,
                 query_texts=[query],
                 n_results=fetch_k,  # Sadece gerekli kadar
-                where={"$and": [{"user_id": user_id}, {"is_active": True}]}  # ChromaDB $and filter
+                where={"$and": [{"user_id": user_id}, {"is_active": True}]},  # ChromaDB $and filter
             )
         except Exception as e:
             logger.error(f"[MEMORY] Arama hatasZñ: {e}")
@@ -238,7 +249,8 @@ class MemoryService:
         metas_block = results.get("metadatas") or []
         dists_block = results.get("distances") or []
 
-        if not ids_block or not ids_block[0]: return []
+        if not ids_block or not ids_block[0]:
+            return []
 
         ids: List[Any] = ids_block[0]
         documents: List[Any] = docs_block[0] if docs_block else []
@@ -246,7 +258,8 @@ class MemoryService:
         distances: List[Any] = dists_block[0] if dists_block else []
 
         max_len = min(len(ids), len(documents), len(metadatas), len(distances))
-        if max_len == 0: return []
+        if max_len == 0:
+            return []
 
         scored_memories: List[MemoryRecord] = []
         now = datetime.utcnow()
@@ -267,7 +280,7 @@ class MemoryService:
                 created_raw = cls._to_str(meta.get("created_at"), cls._get_current_time())
                 created_at_dt = datetime.fromisoformat(created_raw)
                 days_old = (now - created_at_dt).days
-                recency = 1.0 / (1.0 + (days_old / 30.0)) # Basit decay formÇ¬lÇ¬
+                recency = 1.0 / (1.0 + (days_old / 30.0))  # Basit decay formÇ¬lÇ¬
             except Exception:
                 created_raw = cls._get_current_time()
                 recency = 0.5
@@ -276,17 +289,25 @@ class MemoryService:
             # Benzerlik %60, Ç-nem %30, Yenilik %10
             final_score = (vector_sim * 0.6) + (importance * 0.3) + (recency * 0.1)
 
-            if final_score < min_relevance: continue
+            if final_score < min_relevance:
+                continue
 
             last_accessed_raw = cls._to_str(meta.get("last_accessed"), created_raw)
 
             record = MemoryRecord(
-                id=cls._to_str(ids[i], ""), user_id=cls._to_int(meta.get("user_id"), user_id), text=cls._to_str(documents[i], ""),
-                type=cls._to_str(meta.get("type"), "fact"), importance=importance,
-                topic=cls._to_str(meta.get("topic"), DEFAULT_TOPIC), source=cls._to_str(meta.get("source"), "chat"),
-                is_active=bool(meta.get("is_active", True)), created_at=created_raw,
-                last_accessed=last_accessed_raw, score=final_score,
-                vector_similarity=vector_sim, metadata=meta,
+                id=cls._to_str(ids[i], ""),
+                user_id=cls._to_int(meta.get("user_id"), user_id),
+                text=cls._to_str(documents[i], ""),
+                type=cls._to_str(meta.get("type"), "fact"),
+                importance=importance,
+                topic=cls._to_str(meta.get("topic"), DEFAULT_TOPIC),
+                source=cls._to_str(meta.get("source"), "chat"),
+                is_active=bool(meta.get("is_active", True)),
+                created_at=created_raw,
+                last_accessed=last_accessed_raw,
+                score=final_score,
+                vector_similarity=vector_sim,
+                metadata=meta,
             )
             scored_memories.append(record)
 
@@ -318,9 +339,7 @@ class MemoryService:
         collection = cls._get_collection()
 
         # where filtresi kullanmZñyoruz (ChromaDB SQLite backend hatasZñ)
-        existing = await asyncio.to_thread(
-            collection.get, ids=[memory_id], include=["metadatas"]
-        )
+        existing = await asyncio.to_thread(collection.get, ids=[memory_id], include=["metadatas"])
 
         if not existing.get("ids"):
             logger.warning(f"[MEMORY] Silinecek kayZñt bulunamadZñ: {memory_id}")
@@ -352,11 +371,7 @@ class MemoryService:
         collection = cls._get_collection()
 
         # where filtresi kullanmZñyoruz (ChromaDB SQLite backend hatasZñ)
-        existing = await asyncio.to_thread(
-            collection.get,
-            ids=[memory_id],
-            include=["metadatas"]
-        )
+        existing = await asyncio.to_thread(collection.get, ids=[memory_id], include=["metadatas"])
         if not existing.get("ids"):
             logger.warning(f"[MEMORY] GÇ¬ncellenecek kayit bulunamadi: {memory_id}")
             return None
@@ -367,7 +382,9 @@ class MemoryService:
         if cls._to_int(current_meta.get("user_id"), -1) != user_id:
             logger.warning(f"[MEMORY] Yetkisiz gÇ¬ncelleme denemesi: {memory_id} (user_id={user_id})")
             return None
-        new_importance = importance if importance is not None else cls._to_float(current_meta.get("importance"), DEFAULT_IMPORTANCE)
+        new_importance = (
+            importance if importance is not None else cls._to_float(current_meta.get("importance"), DEFAULT_IMPORTANCE)
+        )
         new_topic = topic or cls._to_str(current_meta.get("topic"), DEFAULT_TOPIC)
         current_meta["importance"] = float(new_importance)
         current_meta["topic"] = new_topic
@@ -395,4 +412,3 @@ class MemoryService:
             vector_similarity=None,
             metadata=current_meta,
         )
-

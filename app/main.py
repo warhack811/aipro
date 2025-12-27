@@ -61,10 +61,12 @@ logger = get_logger(__name__)
 # USER RESOLVER
 # =============================================================================
 
+
 def _resolve_user_id(username: str):
     """Username -> user_id çözmek için ortak resolver."""
     user = get_user_by_username(username)
     return user.id if user else None
+
 
 # Resolver'ları ayarla
 set_memory_user_resolver(_resolve_user_id)
@@ -117,24 +119,27 @@ app.mount("/images", StaticFiles(directory=str(IMAGES_DIR)), name="images")
 # EXCEPTION HANDLERS
 # =============================================================================
 
+
 @app.exception_handler(MamiException)
 async def mami_exception_handler(request: Request, exc: MamiException):
     """MamiException türündeki hataları yakalar."""
     logger.error(f"[EXCEPTION] {exc.message}")
-    
+
     return JSONResponse(
         status_code=exc.status_code,
         content={
             "ok": False,
             "error": True,
             "message": exc.user_message,
-            "detail": exc.message if settings.DEBUG else None
-        }
+            "detail": exc.message if settings.DEBUG else None,
+        },
     )
+
 
 # =============================================================================
 # LIFECYCLE EVENTS
 # =============================================================================
+
 
 @app.on_event("startup")
 async def on_startup():
@@ -142,25 +147,26 @@ async def on_startup():
     logger.info("=" * 50)
     logger.info("Mami AI v5.0 başlatılıyor...")
     logger.info("=" * 50)
-    
+
     # 1. Veritabanı ve varsayılan config'leri yükle
     init_database_with_defaults()
-    
+
     # 2. Varsayılan admin oluştur
     ensure_default_admin()
-    
+
     # 3. İlk davet kodunu oluştur
     invite = ensure_initial_invite()
     logger.info(f"Test için davet kodu: {invite.code}")
-    
+
     # 4. Bakım görevlerini başlat
     try:
         from app.core.maintenance import start_maintenance_scheduler
+
         start_maintenance_scheduler()
         logger.info("Günlük bakım görevi aktif")
     except ImportError:
         logger.warning("Bakım modülü yüklenemedi")
-    
+
     # 5. Dynamic config cache'i ısıt (opsiyonel, performans için)
     try:
         from app.core.dynamic_config import config_service
@@ -180,9 +186,11 @@ async def on_shutdown():
     """Uygulama kapanırken çalışır."""
     logger.info("Mami AI kapatılıyor...")
 
+
 # =============================================================================
 # TEMEL ENDPOINT'LER
 # =============================================================================
+
 
 @app.get("/health")
 async def health_check():
@@ -194,6 +202,7 @@ async def health_check():
 async def favicon():
     """Favicon için boş yanıt döndür (404 hatasını önlemek için)."""
     from fastapi.responses import Response
+
     return Response(status_code=204)
 
 
@@ -202,6 +211,7 @@ async def favicon():
 async def pwa_icon():
     """PWA icon dosyaları için boş yanıt döndür (404 hatasını önlemek için)."""
     from fastapi.responses import Response
+
     return Response(status_code=204)
 
 
@@ -209,18 +219,18 @@ async def pwa_icon():
 async def root(request: Request):
     """
     Ana sayfa.
-    
+
     Giriş yapmışsa sohbete, yapmamışsa login'e yönlendirir.
     """
     username = get_username_from_request(request)
-    
+
     if username:
         return RedirectResponse(url="/ui/chat.html")
 
     login_html_path = UI_DIR / "login.html"
     if login_html_path.exists():
         return HTMLResponse(content=login_html_path.read_text(encoding="utf-8"))
-    
+
     return HTMLResponse("<h1>Mami AI</h1><p>login.html bulunamadı.</p>")
 
 
@@ -230,27 +240,25 @@ async def root(request: Request):
 
 UI_NEW_DIR = BASE_DIR / "ui-new" / "dist"
 
+
 @app.get("/new-ui/{path:path}", response_class=HTMLResponse)
 async def new_ui(request: Request, path: str = ""):
     """
     Yeni React frontend'i sunar.
-    
+
     - Giriş yapmamış kullanıcıları login'e yönlendirir
     - SPA routing için index.html fallback
     - Static assets (.js, .css, etc.) direkt sunulur
     """
     username = get_username_from_request(request)
-    
+
     # Auth kontrolü
     if not username:
         # API isteği mi? (AJAX)
         if request.headers.get("accept", "").startswith("application/json"):
-            return JSONResponse(
-                status_code=401,
-                content={"ok": False, "error": "Unauthorized", "redirect": "/"}
-            )
+            return JSONResponse(status_code=401, content={"ok": False, "error": "Unauthorized", "redirect": "/"})
         return RedirectResponse(url="/")
-    
+
     # Static asset ise direkt sun
     file_path = UI_NEW_DIR / path
     if path and file_path.exists() and file_path.is_file():
@@ -265,19 +273,18 @@ async def new_ui(request: Request, path: str = ""):
             content_type = "image/png"
         elif path.endswith(".woff2"):
             content_type = "font/woff2"
-        
+
         from fastapi.responses import Response
-        return Response(
-            content=file_path.read_bytes(),
-            media_type=content_type
-        )
-    
+
+        return Response(content=file_path.read_bytes(), media_type=content_type)
+
     # SPA fallback - index.html
     index_path = UI_NEW_DIR / "index.html"
     if index_path.exists():
         return HTMLResponse(content=index_path.read_text(encoding="utf-8"))
-    
+
     return HTMLResponse("<h1>Yeni UI bulunamadı</h1><p>ui-new/dist klasörü mevcut değil.</p>")
+
 
 # =============================================================================
 # WEBSOCKET
@@ -296,7 +303,7 @@ from app.websocket_sender import connected
 async def websocket_endpoint(ws: WebSocket):
     """WebSocket bağlantı endpoint'i - username ile kayıt yapar."""
     await ws.accept()
-    
+
     # Cookie'den session token al ve kullanıcı bul
     username = "anonymous"
     try:
@@ -309,10 +316,10 @@ async def websocket_endpoint(ws: WebSocket):
                 for key, morsel in cookie.items():
                     cookies[key] = morsel.value
                 break
-        
+
         token = cookies.get(SESSION_COOKIE_NAME)
         logger.info(f"[WEBSOCKET] Cookie token: {token[:20] if token else 'None'}...")
-        
+
         if token:
             user = get_user_from_session_token(token)
             if user:
@@ -320,11 +327,13 @@ async def websocket_endpoint(ws: WebSocket):
                 logger.info(f"[WEBSOCKET] User resolved: {username}")
     except Exception as e:
         logger.error(f"[WEBSOCKET] Username alınamadı: {e}")
-    
+
     # Dict olarak kaydet: {ws: username}
     connected[ws] = username
-    logger.info(f"[WEBSOCKET] Yeni bağlantı: {username}, toplam: {len(connected)}, all_users: {list(connected.values())}")
-    
+    logger.info(
+        f"[WEBSOCKET] Yeni bağlantı: {username}, toplam: {len(connected)}, all_users: {list(connected.values())}"
+    )
+
     try:
         while True:
             await ws.receive_text()
@@ -334,6 +343,7 @@ async def websocket_endpoint(ws: WebSocket):
         if ws in connected:
             del connected[ws]
         logger.info(f"[WEBSOCKET] Bağlantı kaldırıldı: {username}, kalan: {len(connected)}")
+
 
 # =============================================================================
 # API ROUTE'LARI
@@ -355,4 +365,3 @@ app.include_router(admin_routes.router, prefix="/api/admin", include_in_schema=F
 app.include_router(system_routes.router, prefix="/api/system", include_in_schema=False)
 
 logger.info("API route'ları yüklendi (v1 + backward compat)")
-

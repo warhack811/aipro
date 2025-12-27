@@ -30,11 +30,7 @@ def remove_pending_job(job_id: str) -> None:
 
 
 def list_pending_jobs_for_user(username: str) -> List[Dict[str, Any]]:
-    return [
-        dict(job)
-        for job in _pending_jobs.values()
-        if job["username"] == username
-    ]
+    return [dict(job) for job in _pending_jobs.values() if job["username"] == username]
 
 
 def get_job_status(job_id: str) -> Optional[Dict[str, Any]]:

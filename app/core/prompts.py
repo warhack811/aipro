@@ -2,6 +2,7 @@
 Merkezi Prompt Yönetimi
 Zaman farkındalığı, persona ve kimlik katmanları burada üretilir.
 """
+
 import locale
 from datetime import datetime
 from typing import Any, Dict, Optional
@@ -100,6 +101,7 @@ def get_groq_system_prompt_tr(
         "- Yatırım/sağlık/hukuk yüksek riskte karar verme; analiz et, riskleri belirt, yönlendir ama son kararı kullanıcıya bırak.\n"
         f"{advice_note}"
     )
+
 
 # get_bela_system_prompt_tr_uncensored silindi
 # Bela artık compiler.py:build_system_prompt(optimized_for_local=True) kullanıyor

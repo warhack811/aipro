@@ -18,7 +18,7 @@ Desteklenen Arama Türleri:
 
 Kullanım:
     from app.chat.search import handle_internet_action
-    
+
     result = await handle_internet_action(
         decision={"internet": {"queries": [...]}},
         username="john",
@@ -51,6 +51,7 @@ Sen uzman bir asistansın. Arama sonuçlarını kullanarak kullanıcıya yanıt 
 # LAZY IMPORTS
 # =============================================================================
 
+
 def _get_imports():
     """Import döngüsünü önlemek için lazy import."""
     from app.chat.answerer import generate_answer
@@ -60,7 +61,7 @@ def _get_imports():
         parse_sports_fixture_result,
         parse_weather_result,
     )
-    
+
     return (
         search_queries_async,
         generate_answer,
@@ -74,6 +75,7 @@ def _get_imports():
 # ANA İŞLEYİCİ
 # =============================================================================
 
+
 async def handle_internet_action(
     decision: Dict[str, Any],
     username: str,
@@ -85,7 +87,7 @@ async def handle_internet_action(
 ) -> str:
     """
     Decider'dan gelen internet aksiyonunu işler.
-    
+
     Args:
         decision: Decider kararı (internet.queries içermeli)
         username: Kullanıcı adı
@@ -94,7 +96,7 @@ async def handle_internet_action(
         conversation_id: Sohbet ID'si
         user: Kullanıcı nesnesi
         user_context: Kullanıcı bağlamı
-    
+
     Returns:
         str: İşlenmiş ve özetlenmiş yanıt
     """
@@ -105,7 +107,7 @@ async def handle_internet_action(
         parse_exchange_rate_result,
         parse_sports_fixture_result,
     ) = _get_imports()
-    
+
     try:
         # 1. Sorguları al
         internet_info = decision.get("internet") or {}
@@ -120,17 +122,15 @@ async def handle_internet_action(
         search_results = await search_queries_async(queries)
 
         # Sonuç kontrolü
-        has_any_result = any(
-            snippets for snippets in search_results.values()
-        )
-        
+        has_any_result = any(snippets for snippets in search_results.values())
+
         if not has_any_result:
             return f"'{original_message}' ile ilgili güncel bir sonuç bulamadım."
 
         # 3. Context oluştur
         context_lines = []
         structured_data = None
-        
+
         # Semantic değer okuyucu (Dict veya Object uyumlu)
         def get_sem_val(key, default=None):
             if isinstance(semantic, dict):
@@ -138,7 +138,7 @@ async def handle_internet_action(
             return getattr(semantic, key, default)
 
         sem_mode = get_sem_val("answer_mode", "web_factual")
-        
+
         # Structured data parsing (hava, döviz, spor)
         if sem_mode == "strict_structured" and queries:
             try:
@@ -170,16 +170,14 @@ async def handle_internet_action(
 
         # Context oluştur
         if structured_data and not structured_data.get("error"):
-            context_lines.append(
-                f"STRUCTURED_DATA_JSON:\n{json.dumps(structured_data, ensure_ascii=False)}"
-            )
+            context_lines.append(f"STRUCTURED_DATA_JSON:\n{json.dumps(structured_data, ensure_ascii=False)}")
         else:
             for q in queries:
                 qid = q.get("id", "?")
                 snippets = search_results.get(qid, [])
                 if not snippets:
                     continue
-                
+
                 context_lines.append(f"--- Sorgu: {q.get('query')} ---")
                 for snip in snippets[:4]:
                     context_lines.append(f"Başlık: {snip.title}\nÖzet: {snip.snippet}\n")
@@ -192,11 +190,13 @@ async def handle_internet_action(
             qid = q.get("id", "?")
             snippets = search_results.get(qid, [])
             for snip in snippets[:3]:  # Max 3 kaynak per sorgu
-                sources.append({
-                    "title": snip.title,
-                    "url": snip.url,
-                    "snippet": snip.snippet,
-                })
+                sources.append(
+                    {
+                        "title": snip.title,
+                        "url": snip.url,
+                        "snippet": snip.snippet,
+                    }
+                )
 
         # 5. Cevap üret
         answer = await generate_answer(
@@ -210,6 +210,7 @@ async def handle_internet_action(
         # 6. Formatter ile kaynakları ekle
         try:
             from app.services.tool_output_formatter import format_web_result
+
             formatted_answer = format_web_result(answer, sources)
             return formatted_answer
         except ImportError:
@@ -220,10 +221,3 @@ async def handle_internet_action(
         error_trace = traceback.format_exc()
         logger.error(f"[INTERNET] Crash: {error_trace}")
         return f"İnternet modülünde teknik bir hata: {str(e)}"
-
-
-
-
-
-
-

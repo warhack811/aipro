@@ -7,14 +7,14 @@ sağlar. Yeni kod smart_router.py kullanmalıdır.
 
 Yeni Kullanım:
     from app.chat.smart_router import route_message, RoutingDecision
-    
+
     decision = route_message(message, user, persona_name)
     if decision.target == RoutingTarget.LOCAL:
         # Local model kullan
 
 Eski Kullanım (hala çalışır):
     from app.services.model_router import choose_model_for_request
-    
+
     provider = choose_model_for_request(user, requested_model, force_local)
 """
 
@@ -37,16 +37,16 @@ def choose_model_for_request(
 ) -> str:
     """
     Kullanıcının yetkisine ve talebine göre model seçer.
-    
+
     Bu fonksiyon geriye uyumluluk için korunmuştur.
     Yeni SmartRouter'a delege eder.
-    
+
     Args:
         user: User nesnesi
         requested_model: İstenen model ("groq" veya "bela")
         force_local: Zorla local model kullan
         semantic: Semantic analiz sonucu
-    
+
     Returns:
         str: "groq" veya "bela"
     """
@@ -60,7 +60,7 @@ def choose_model_for_request(
                 "domain": getattr(semantic, "domain", None),
                 "sensitivity": getattr(semantic, "sensitivity", []),
             }
-        
+
         # Smart router'a delege et
         decision = route_message(
             message="",  # Boş mesaj (sadece user/model bazlı karar)
@@ -70,13 +70,13 @@ def choose_model_for_request(
             force_local=force_local,
             semantic=semantic_dict,
         )
-        
+
         # RoutingTarget'ı eski formata çevir
         if decision.target == RoutingTarget.LOCAL:
             return "bela"
         else:
             return "groq"
-        
+
     except ImportError:
         # Fallback: Eski mantık
         logger.warning("[MODEL_ROUTER] SmartRouter yüklenemedi, fallback kullanılıyor")
@@ -91,11 +91,11 @@ def _legacy_choose_model(
 ) -> str:
     """
     Eski routing mantığı (fallback).
-    
+
     DEPRECATED: Sadece SmartRouter yüklenemezse kullanılır.
     """
     from app.auth.permissions import user_can_use_local
-    
+
     can_local = user_can_use_local(user)
     preferred = (requested_model or getattr(user, "selected_model", None) or "groq").lower()
 

@@ -11,10 +11,3 @@ Modüller:
     - memory: Hafıza yönetimi (/api/v1/memory/*)
     - system: Sistem durumu (/api/v1/system/*)
 """
-
-
-
-
-
-
-

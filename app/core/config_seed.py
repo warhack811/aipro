@@ -7,10 +7,10 @@ Bu modül, dinamik yapılandırma tablolarına varsayılan değerleri yükler.
 
 Kullanım:
     from app.core.config_seed import seed_all_configs
-    
+
     # Tüm varsayılan config'leri yükle
     seed_all_configs()
-    
+
     # Sadece belirli kategorileri yükle
     seed_system_configs()
     seed_model_configs()
@@ -35,6 +35,7 @@ logger = logging.getLogger(__name__)
 # LAZY IMPORTS
 # =============================================================================
 
+
 def _get_imports():
     """Circular import önlemek için lazy import."""
     from app.core.config_models import (
@@ -50,18 +51,19 @@ def _get_imports():
         UITextConfig,
     )
     from app.core.database import get_session
+
     return {
-        'get_session': get_session,
-        'SystemConfig': SystemConfig,
-        'ModelConfig': ModelConfig,
-        'APIConfig': APIConfig,
-        'ThemeConfig': ThemeConfig,
-        'PersonaConfig': PersonaConfig,
-        'ImageGenConfig': ImageGenConfig,
-        'UITextConfig': UITextConfig,
-        'ConfigValueType': ConfigValueType,
-        'ConfigCategory': ConfigCategory,
-        'PersonaModeType': PersonaModeType,
+        "get_session": get_session,
+        "SystemConfig": SystemConfig,
+        "ModelConfig": ModelConfig,
+        "APIConfig": APIConfig,
+        "ThemeConfig": ThemeConfig,
+        "PersonaConfig": PersonaConfig,
+        "ImageGenConfig": ImageGenConfig,
+        "UITextConfig": UITextConfig,
+        "ConfigValueType": ConfigValueType,
+        "ConfigCategory": ConfigCategory,
+        "PersonaModeType": PersonaModeType,
     }
 
 
@@ -71,36 +73,164 @@ def _get_imports():
 
 DEFAULT_SYSTEM_CONFIGS = [
     # Sistem Genel
-    {"key": "system.app_name", "value": "Mami AI Pro", "value_type": "string", "category": "system", "description": "Uygulama adı"},
-    {"key": "system.app_version", "value": "5.0.0", "value_type": "string", "category": "system", "description": "Uygulama versiyonu"},
-    {"key": "system.maintenance_mode", "value": "false", "value_type": "boolean", "category": "system", "description": "Bakım modu aktif mi"},
-    
+    {
+        "key": "system.app_name",
+        "value": "Mami AI Pro",
+        "value_type": "string",
+        "category": "system",
+        "description": "Uygulama adı",
+    },
+    {
+        "key": "system.app_version",
+        "value": "5.0.0",
+        "value_type": "string",
+        "category": "system",
+        "description": "Uygulama versiyonu",
+    },
+    {
+        "key": "system.maintenance_mode",
+        "value": "false",
+        "value_type": "boolean",
+        "category": "system",
+        "description": "Bakım modu aktif mi",
+    },
     # AI Kimlik
-    {"key": "ai.display_name", "value": "Mami", "value_type": "string", "category": "ai", "description": "AI görünen adı"},
-    {"key": "ai.developer_name", "value": "Geliştirici Ekibi", "value_type": "string", "category": "ai", "description": "Geliştirici adı"},
-    {"key": "ai.product_family", "value": "Mami AI Ailesi", "value_type": "string", "category": "ai", "description": "Ürün ailesi"},
-    {"key": "ai.short_intro", "value": "Ben sizin kişisel AI asistanınızım. Her konuda yardımcı olmak için buradayım.", "value_type": "string", "category": "ai", "description": "Kısa tanıtım"},
-    {"key": "ai.forbid_provider_mention", "value": "true", "value_type": "boolean", "category": "ai", "description": "Sağlayıcı ismini gizle"},
-    
+    {
+        "key": "ai.display_name",
+        "value": "Mami",
+        "value_type": "string",
+        "category": "ai",
+        "description": "AI görünen adı",
+    },
+    {
+        "key": "ai.developer_name",
+        "value": "Geliştirici Ekibi",
+        "value_type": "string",
+        "category": "ai",
+        "description": "Geliştirici adı",
+    },
+    {
+        "key": "ai.product_family",
+        "value": "Mami AI Ailesi",
+        "value_type": "string",
+        "category": "ai",
+        "description": "Ürün ailesi",
+    },
+    {
+        "key": "ai.short_intro",
+        "value": "Ben sizin kişisel AI asistanınızım. Her konuda yardımcı olmak için buradayım.",
+        "value_type": "string",
+        "category": "ai",
+        "description": "Kısa tanıtım",
+    },
+    {
+        "key": "ai.forbid_provider_mention",
+        "value": "true",
+        "value_type": "boolean",
+        "category": "ai",
+        "description": "Sağlayıcı ismini gizle",
+    },
     # UI Ayarları
-    {"key": "ui.default_theme", "value": "dark", "value_type": "string", "category": "ui", "description": "Varsayılan tema"},
-    {"key": "ui.enable_animations", "value": "true", "value_type": "boolean", "category": "ui", "description": "Animasyonlar aktif mi"},
-    {"key": "ui.message_timestamp_format", "value": "HH:mm", "value_type": "string", "category": "ui", "description": "Mesaj zaman formatı"},
-    
+    {
+        "key": "ui.default_theme",
+        "value": "dark",
+        "value_type": "string",
+        "category": "ui",
+        "description": "Varsayılan tema",
+    },
+    {
+        "key": "ui.enable_animations",
+        "value": "true",
+        "value_type": "boolean",
+        "category": "ui",
+        "description": "Animasyonlar aktif mi",
+    },
+    {
+        "key": "ui.message_timestamp_format",
+        "value": "HH:mm",
+        "value_type": "string",
+        "category": "ui",
+        "description": "Mesaj zaman formatı",
+    },
     # Feature Flags
-    {"key": "features.enable_image_gen", "value": "true", "value_type": "boolean", "category": "features", "description": "Görsel üretim aktif mi"},
-    {"key": "features.enable_internet_search", "value": "true", "value_type": "boolean", "category": "features", "description": "İnternet araması aktif mi"},
-    {"key": "features.enable_local_model", "value": "true", "value_type": "boolean", "category": "features", "description": "Yerel model aktif mi"},
-    {"key": "features.enable_voice_input", "value": "true", "value_type": "boolean", "category": "features", "description": "Sesli giriş aktif mi"},
-    {"key": "features.enable_file_upload", "value": "true", "value_type": "boolean", "category": "features", "description": "Dosya yükleme aktif mi"},
-    {"key": "features.enable_memory", "value": "true", "value_type": "boolean", "category": "features", "description": "Hafıza sistemi aktif mi"},
-    {"key": "features.enable_proactive", "value": "true", "value_type": "boolean", "category": "features", "description": "Proaktif özellikler aktif mi"},
-    
+    {
+        "key": "features.enable_image_gen",
+        "value": "true",
+        "value_type": "boolean",
+        "category": "features",
+        "description": "Görsel üretim aktif mi",
+    },
+    {
+        "key": "features.enable_internet_search",
+        "value": "true",
+        "value_type": "boolean",
+        "category": "features",
+        "description": "İnternet araması aktif mi",
+    },
+    {
+        "key": "features.enable_local_model",
+        "value": "true",
+        "value_type": "boolean",
+        "category": "features",
+        "description": "Yerel model aktif mi",
+    },
+    {
+        "key": "features.enable_voice_input",
+        "value": "true",
+        "value_type": "boolean",
+        "category": "features",
+        "description": "Sesli giriş aktif mi",
+    },
+    {
+        "key": "features.enable_file_upload",
+        "value": "true",
+        "value_type": "boolean",
+        "category": "features",
+        "description": "Dosya yükleme aktif mi",
+    },
+    {
+        "key": "features.enable_memory",
+        "value": "true",
+        "value_type": "boolean",
+        "category": "features",
+        "description": "Hafıza sistemi aktif mi",
+    },
+    {
+        "key": "features.enable_proactive",
+        "value": "true",
+        "value_type": "boolean",
+        "category": "features",
+        "description": "Proaktif özellikler aktif mi",
+    },
     # Sohbet Ayarları
-    {"key": "chat.max_history_messages", "value": "24", "value_type": "integer", "category": "chat", "description": "Maksimum geçmiş mesaj sayısı"},
-    {"key": "chat.context_char_limit", "value": "8000", "value_type": "integer", "category": "chat", "description": "Maksimum bağlam karakter limiti"},
-    {"key": "chat.auto_summary_threshold", "value": "12", "value_type": "integer", "category": "chat", "description": "Otomatik özet eşiği (mesaj sayısı)"},
-    {"key": "chat.streaming_enabled", "value": "true", "value_type": "boolean", "category": "chat", "description": "Streaming yanıt aktif mi"},
+    {
+        "key": "chat.max_history_messages",
+        "value": "24",
+        "value_type": "integer",
+        "category": "chat",
+        "description": "Maksimum geçmiş mesaj sayısı",
+    },
+    {
+        "key": "chat.context_char_limit",
+        "value": "8000",
+        "value_type": "integer",
+        "category": "chat",
+        "description": "Maksimum bağlam karakter limiti",
+    },
+    {
+        "key": "chat.auto_summary_threshold",
+        "value": "12",
+        "value_type": "integer",
+        "category": "chat",
+        "description": "Otomatik özet eşiği (mesaj sayısı)",
+    },
+    {
+        "key": "chat.streaming_enabled",
+        "value": "true",
+        "value_type": "boolean",
+        "category": "chat",
+        "description": "Streaming yanıt aktif mi",
+    },
 ]
 
 DEFAULT_MODEL_CONFIGS = [
@@ -115,7 +245,7 @@ DEFAULT_MODEL_CONFIGS = [
         "priority": 100,
         "parameters": {"temperature": 0.7, "max_tokens": 4096},
         "capabilities": {"streaming": True, "json_mode": True},
-        "description": "Ana sohbet için kullanılan yüksek kaliteli model"
+        "description": "Ana sohbet için kullanılan yüksek kaliteli model",
     },
     {
         "name": "groq_decider",
@@ -127,7 +257,7 @@ DEFAULT_MODEL_CONFIGS = [
         "priority": 100,
         "parameters": {"temperature": 0.2, "max_tokens": 1024},
         "capabilities": {"streaming": False, "json_mode": True},
-        "description": "Mesaj yönlendirme kararları için"
+        "description": "Mesaj yönlendirme kararları için",
     },
     {
         "name": "groq_fast",
@@ -139,7 +269,7 @@ DEFAULT_MODEL_CONFIGS = [
         "priority": 100,
         "parameters": {"temperature": 0.3, "max_tokens": 2048},
         "capabilities": {"streaming": True, "json_mode": True},
-        "description": "Hızlı işlemler için (semantic, özet)"
+        "description": "Hızlı işlemler için (semantic, özet)",
     },
     {
         "name": "groq_semantic",
@@ -151,7 +281,7 @@ DEFAULT_MODEL_CONFIGS = [
         "priority": 100,
         "parameters": {"temperature": 0.0, "max_tokens": 512},
         "capabilities": {"streaming": False, "json_mode": True},
-        "description": "Semantic analiz için"
+        "description": "Semantic analiz için",
     },
     # --- OLLAMA / LOCAL ---
     {
@@ -164,7 +294,7 @@ DEFAULT_MODEL_CONFIGS = [
         "priority": 100,
         "parameters": {"temperature": 0.7, "num_ctx": 8192, "top_k": 40, "top_p": 0.9, "repeat_penalty": 1.15},
         "capabilities": {"streaming": True, "json_mode": False},
-        "description": "Sansürsüz yerel model (Qwen)"
+        "description": "Sansürsüz yerel model (Qwen)",
     },
 ]
 
@@ -176,7 +306,7 @@ DEFAULT_API_CONFIGS = [
         "timeout": 30,
         "rate_limit": 30,
         "retry_count": 3,
-        "description": "Groq LLM API"
+        "description": "Groq LLM API",
     },
     {
         "name": "ollama",
@@ -185,7 +315,7 @@ DEFAULT_API_CONFIGS = [
         "timeout": 120,
         "rate_limit": 0,
         "retry_count": 2,
-        "description": "Yerel Ollama sunucusu"
+        "description": "Yerel Ollama sunucusu",
     },
     {
         "name": "forge",
@@ -195,7 +325,7 @@ DEFAULT_API_CONFIGS = [
         "rate_limit": 0,
         "retry_count": 1,
         "settings": {"txt2img_path": "/sdapi/v1/txt2img"},
-        "description": "Görsel üretim için Forge/Stable Diffusion WebUI"
+        "description": "Görsel üretim için Forge/Stable Diffusion WebUI",
     },
     {
         "name": "bing_search",
@@ -204,7 +334,7 @@ DEFAULT_API_CONFIGS = [
         "timeout": 10,
         "rate_limit": 100,
         "retry_count": 2,
-        "description": "Bing web araması"
+        "description": "Bing web araması",
     },
     {
         "name": "serper",
@@ -213,7 +343,7 @@ DEFAULT_API_CONFIGS = [
         "timeout": 10,
         "rate_limit": 100,
         "retry_count": 2,
-        "description": "Google arama sonuçları"
+        "description": "Google arama sonuçları",
     },
 ]
 
@@ -235,7 +365,7 @@ DEFAULT_THEME_CONFIGS = [
             "warning": "#f59e0b",
             "error": "#ef4444",
         },
-        "fonts": {"primary": "Inter, sans-serif", "mono": "JetBrains Mono, monospace"}
+        "fonts": {"primary": "Inter, sans-serif", "mono": "JetBrains Mono, monospace"},
     },
     {
         "name": "light",
@@ -253,7 +383,7 @@ DEFAULT_THEME_CONFIGS = [
             "warning": "#f59e0b",
             "error": "#ef4444",
         },
-        "fonts": {"primary": "Inter, sans-serif", "mono": "JetBrains Mono, monospace"}
+        "fonts": {"primary": "Inter, sans-serif", "mono": "JetBrains Mono, monospace"},
     },
     {
         "name": "cosmic",
@@ -271,7 +401,7 @@ DEFAULT_THEME_CONFIGS = [
             "warning": "#fbbf24",
             "error": "#f87171",
         },
-        "fonts": {"primary": "Inter, sans-serif", "mono": "JetBrains Mono, monospace"}
+        "fonts": {"primary": "Inter, sans-serif", "mono": "JetBrains Mono, monospace"},
     },
     {
         "name": "ocean",
@@ -289,7 +419,7 @@ DEFAULT_THEME_CONFIGS = [
             "warning": "#f59e0b",
             "error": "#ef4444",
         },
-        "fonts": {"primary": "Inter, sans-serif", "mono": "JetBrains Mono, monospace"}
+        "fonts": {"primary": "Inter, sans-serif", "mono": "JetBrains Mono, monospace"},
     },
     {
         "name": "sunset",
@@ -307,7 +437,7 @@ DEFAULT_THEME_CONFIGS = [
             "warning": "#fbbf24",
             "error": "#ef4444",
         },
-        "fonts": {"primary": "Inter, sans-serif", "mono": "JetBrains Mono, monospace"}
+        "fonts": {"primary": "Inter, sans-serif", "mono": "JetBrains Mono, monospace"},
     },
     {
         "name": "forest",
@@ -325,7 +455,7 @@ DEFAULT_THEME_CONFIGS = [
             "warning": "#fbbf24",
             "error": "#f87171",
         },
-        "fonts": {"primary": "Inter, sans-serif", "mono": "JetBrains Mono, monospace"}
+        "fonts": {"primary": "Inter, sans-serif", "mono": "JetBrains Mono, monospace"},
     },
 ]
 
@@ -655,7 +785,7 @@ DEFAULT_IMAGE_GEN_CONFIGS = [
             "seed": -1,
         },
         "negative_prompt_template": "low quality, blurry, distorted, deformed, ugly, bad anatomy",
-        "description": "Genel amaçlı varsayılan görsel üretim ayarları"
+        "description": "Genel amaçlı varsayılan görsel üretim ayarları",
     },
 ]
 
@@ -663,17 +793,18 @@ DEFAULT_UI_TEXTS = [
     # Hoşgeldin Mesajları
     {"key": "welcome.title", "value": "Mami AI'ya Hoş Geldiniz", "category": "welcome"},
     {"key": "welcome.subtitle", "value": "Size nasıl yardımcı olabilirim?", "category": "welcome"},
-    {"key": "welcome.new_chat", "value": "Yeni bir sohbet başlatın veya mevcut sohbetlerinize devam edin.", "category": "welcome"},
-    
+    {
+        "key": "welcome.new_chat",
+        "value": "Yeni bir sohbet başlatın veya mevcut sohbetlerinize devam edin.",
+        "category": "welcome",
+    },
     # Hata Mesajları
     {"key": "error.api_failed", "value": "Bir hata oluştu. Lütfen tekrar deneyin.", "category": "error"},
     {"key": "error.network", "value": "Bağlantı hatası. İnternet bağlantınızı kontrol edin.", "category": "error"},
     {"key": "error.rate_limit", "value": "Çok fazla istek gönderdiniz. Lütfen biraz bekleyin.", "category": "error"},
-    
     # Placeholder Metinler
     {"key": "placeholder.message_input", "value": "Mesajınızı yazın...", "category": "placeholder"},
     {"key": "placeholder.search", "value": "Sohbetlerde ara...", "category": "placeholder"},
-    
     # Buton Metinleri
     {"key": "button.send", "value": "Gönder", "category": "button"},
     {"key": "button.cancel", "value": "İptal", "category": "button"},
@@ -688,31 +819,30 @@ DEFAULT_UI_TEXTS = [
 # SEED FONKSİYONLARI
 # =============================================================================
 
+
 def seed_system_configs(force: bool = False) -> int:
     """
     Sistem config'lerini yükler.
-    
+
     Args:
         force: True ise mevcut kayıtların üzerine yazar
-    
+
     Returns:
         int: Eklenen kayıt sayısı
     """
     imports = _get_imports()
-    get_session = imports['get_session']
-    SystemConfig = imports['SystemConfig']
-    
+    get_session = imports["get_session"]
+    SystemConfig = imports["SystemConfig"]
+
     count = 0
-    
+
     with get_session() as session:
         for config_data in DEFAULT_SYSTEM_CONFIGS:
-            existing = session.exec(
-                select(SystemConfig).where(SystemConfig.key == config_data["key"])
-            ).first()
-            
+            existing = session.exec(select(SystemConfig).where(SystemConfig.key == config_data["key"])).first()
+
             if existing and not force:
                 continue
-            
+
             if existing:
                 # Güncelle
                 for key, value in config_data.items():
@@ -724,9 +854,9 @@ def seed_system_configs(force: bool = False) -> int:
                 config.default_value = config_data.get("value")
                 session.add(config)
                 count += 1
-        
+
         session.commit()
-    
+
     logger.info(f"[SEED] {count} sistem config yüklendi")
     return count
 
@@ -734,20 +864,18 @@ def seed_system_configs(force: bool = False) -> int:
 def seed_model_configs(force: bool = False) -> int:
     """Model config'lerini yükler."""
     imports = _get_imports()
-    get_session = imports['get_session']
-    ModelConfig = imports['ModelConfig']
-    
+    get_session = imports["get_session"]
+    ModelConfig = imports["ModelConfig"]
+
     count = 0
-    
+
     with get_session() as session:
         for config_data in DEFAULT_MODEL_CONFIGS:
-            existing = session.exec(
-                select(ModelConfig).where(ModelConfig.name == config_data["name"])
-            ).first()
-            
+            existing = session.exec(select(ModelConfig).where(ModelConfig.name == config_data["name"])).first()
+
             if existing and not force:
                 continue
-            
+
             if existing:
                 for key, value in config_data.items():
                     setattr(existing, key, value)
@@ -756,9 +884,9 @@ def seed_model_configs(force: bool = False) -> int:
                 config = ModelConfig(**config_data)
                 session.add(config)
                 count += 1
-        
+
         session.commit()
-    
+
     logger.info(f"[SEED] {count} model config yüklendi")
     return count
 
@@ -766,20 +894,18 @@ def seed_model_configs(force: bool = False) -> int:
 def seed_api_configs(force: bool = False) -> int:
     """API config'lerini yükler."""
     imports = _get_imports()
-    get_session = imports['get_session']
-    APIConfig = imports['APIConfig']
-    
+    get_session = imports["get_session"]
+    APIConfig = imports["APIConfig"]
+
     count = 0
-    
+
     with get_session() as session:
         for config_data in DEFAULT_API_CONFIGS:
-            existing = session.exec(
-                select(APIConfig).where(APIConfig.name == config_data["name"])
-            ).first()
-            
+            existing = session.exec(select(APIConfig).where(APIConfig.name == config_data["name"])).first()
+
             if existing and not force:
                 continue
-            
+
             if existing:
                 for key, value in config_data.items():
                     setattr(existing, key, value)
@@ -788,9 +914,9 @@ def seed_api_configs(force: bool = False) -> int:
                 config = APIConfig(**config_data)
                 session.add(config)
                 count += 1
-        
+
         session.commit()
-    
+
     logger.info(f"[SEED] {count} API config yüklendi")
     return count
 
@@ -798,20 +924,18 @@ def seed_api_configs(force: bool = False) -> int:
 def seed_theme_configs(force: bool = False) -> int:
     """Tema config'lerini yükler."""
     imports = _get_imports()
-    get_session = imports['get_session']
-    ThemeConfig = imports['ThemeConfig']
-    
+    get_session = imports["get_session"]
+    ThemeConfig = imports["ThemeConfig"]
+
     count = 0
-    
+
     with get_session() as session:
         for config_data in DEFAULT_THEME_CONFIGS:
-            existing = session.exec(
-                select(ThemeConfig).where(ThemeConfig.name == config_data["name"])
-            ).first()
-            
+            existing = session.exec(select(ThemeConfig).where(ThemeConfig.name == config_data["name"])).first()
+
             if existing and not force:
                 continue
-            
+
             if existing:
                 for key, value in config_data.items():
                     setattr(existing, key, value)
@@ -820,9 +944,9 @@ def seed_theme_configs(force: bool = False) -> int:
                 config = ThemeConfig(**config_data)
                 session.add(config)
                 count += 1
-        
+
         session.commit()
-    
+
     logger.info(f"[SEED] {count} tema config yüklendi")
     return count
 
@@ -830,20 +954,18 @@ def seed_theme_configs(force: bool = False) -> int:
 def seed_persona_configs(force: bool = False) -> int:
     """Persona config'lerini yükler."""
     imports = _get_imports()
-    get_session = imports['get_session']
-    PersonaConfig = imports['PersonaConfig']
-    
+    get_session = imports["get_session"]
+    PersonaConfig = imports["PersonaConfig"]
+
     count = 0
-    
+
     with get_session() as session:
         for config_data in DEFAULT_PERSONA_CONFIGS:
-            existing = session.exec(
-                select(PersonaConfig).where(PersonaConfig.name == config_data["name"])
-            ).first()
-            
+            existing = session.exec(select(PersonaConfig).where(PersonaConfig.name == config_data["name"])).first()
+
             if existing and not force:
                 continue
-            
+
             if existing:
                 for key, value in config_data.items():
                     setattr(existing, key, value)
@@ -852,9 +974,9 @@ def seed_persona_configs(force: bool = False) -> int:
                 config = PersonaConfig(**config_data)
                 session.add(config)
                 count += 1
-        
+
         session.commit()
-    
+
     logger.info(f"[SEED] {count} persona config yüklendi")
     return count
 
@@ -862,20 +984,18 @@ def seed_persona_configs(force: bool = False) -> int:
 def seed_image_gen_configs(force: bool = False) -> int:
     """Görsel üretim config'lerini yükler."""
     imports = _get_imports()
-    get_session = imports['get_session']
-    ImageGenConfig = imports['ImageGenConfig']
-    
+    get_session = imports["get_session"]
+    ImageGenConfig = imports["ImageGenConfig"]
+
     count = 0
-    
+
     with get_session() as session:
         for config_data in DEFAULT_IMAGE_GEN_CONFIGS:
-            existing = session.exec(
-                select(ImageGenConfig).where(ImageGenConfig.name == config_data["name"])
-            ).first()
-            
+            existing = session.exec(select(ImageGenConfig).where(ImageGenConfig.name == config_data["name"])).first()
+
             if existing and not force:
                 continue
-            
+
             if existing:
                 for key, value in config_data.items():
                     setattr(existing, key, value)
@@ -884,9 +1004,9 @@ def seed_image_gen_configs(force: bool = False) -> int:
                 config = ImageGenConfig(**config_data)
                 session.add(config)
                 count += 1
-        
+
         session.commit()
-    
+
     logger.info(f"[SEED] {count} görsel üretim config yüklendi")
     return count
 
@@ -894,23 +1014,20 @@ def seed_image_gen_configs(force: bool = False) -> int:
 def seed_ui_texts(force: bool = False) -> int:
     """UI metinlerini yükler."""
     imports = _get_imports()
-    get_session = imports['get_session']
-    UITextConfig = imports['UITextConfig']
-    
+    get_session = imports["get_session"]
+    UITextConfig = imports["UITextConfig"]
+
     count = 0
-    
+
     with get_session() as session:
         for text_data in DEFAULT_UI_TEXTS:
             existing = session.exec(
-                select(UITextConfig).where(
-                    UITextConfig.key == text_data["key"],
-                    UITextConfig.locale == "tr"
-                )
+                select(UITextConfig).where(UITextConfig.key == text_data["key"], UITextConfig.locale == "tr")
             ).first()
-            
+
             if existing and not force:
                 continue
-            
+
             if existing:
                 existing.value = text_data["value"]
                 existing.category = text_data.get("category", "general")
@@ -920,13 +1037,13 @@ def seed_ui_texts(force: bool = False) -> int:
                     key=text_data["key"],
                     value=text_data["value"],
                     category=text_data.get("category", "general"),
-                    locale="tr"
+                    locale="tr",
                 )
                 session.add(config)
                 count += 1
-        
+
         session.commit()
-    
+
     logger.info(f"[SEED] {count} UI text yüklendi")
     return count
 
@@ -934,10 +1051,10 @@ def seed_ui_texts(force: bool = False) -> int:
 def seed_all_configs(force: bool = False) -> Dict[str, int]:
     """
     Tüm varsayılan config'leri yükler.
-    
+
     Args:
         force: True ise mevcut kayıtların üzerine yazar
-    
+
     Returns:
         Dict: Her kategori için eklenen kayıt sayısı
     """
@@ -950,9 +1067,8 @@ def seed_all_configs(force: bool = False) -> Dict[str, int]:
         "image_gen": seed_image_gen_configs(force),
         "ui_texts": seed_ui_texts(force),
     }
-    
+
     total = sum(results.values())
     logger.info(f"[SEED] Toplam {total} config yüklendi")
-    
-    return results
 
+    return results

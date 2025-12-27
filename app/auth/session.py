@@ -12,10 +12,10 @@ Bu modül, kullanıcı oturumlarını (session) yönetir.
 
 Kullanım:
     from app.auth.session import create_session, invalidate_session
-    
+
     # Oturum oluştur
     session = create_session(user, user_agent="Mozilla/5.0...")
-    
+
     # Oturumu sonlandır
     invalidate_session(session.id)
 
@@ -50,6 +50,7 @@ SESSION_DEFAULT_TTL_MINUTES = 60 * 24  # 24 saat
 # LAZY IMPORTS
 # =============================================================================
 
+
 def _get_imports():
     """Import döngüsünü önlemek için lazy import."""
     try:
@@ -64,13 +65,14 @@ def _get_imports():
         from app.core.database import get_session
         from app.core.models import Session, User
         from auth import remember as remember_mgr
-    
+
     return get_session, Session, User, get_user_by_id, SESSION_COOKIE_NAME, remember_mgr
 
 
 # =============================================================================
 # OTURUM YÖNETİMİ
 # =============================================================================
+
 
 def create_session(
     user,
@@ -79,24 +81,24 @@ def create_session(
 ):
     """
     Yeni oturum oluşturur.
-    
+
     Args:
         user: Kullanıcı nesnesi (User model)
         user_agent: Tarayıcı bilgisi (opsiyonel)
         _ip_address: IP adresi (opsiyonel, gelecekte kullanılabilir - şu an kullanılmıyor)
-    
+
     Returns:
         Session: Oluşturulan oturum kaydı
-    
+
     Raises:
         Exception: Veritabanı hatası durumunda
-    
+
     Example:
         >>> session = create_session(user, user_agent=request.headers.get("user-agent"))
         >>> response.set_cookie("session_token", session.id)
     """
     get_session, Session, _, _, _, _ = _get_imports()
-    
+
     token = secrets.token_urlsafe(32)  # 256-bit güvenli token
     now = datetime.utcnow()
     expires_at = now + timedelta(minutes=SESSION_DEFAULT_TTL_MINUTES)
@@ -126,10 +128,10 @@ def create_session(
 def get_session_by_token(token: str):
     """
     Token'a ait geçerli oturumu getirir.
-    
+
     Args:
         token: Oturum token'ı
-    
+
     Returns:
         Session veya None: Geçerli oturum varsa döndürür
     """
@@ -138,7 +140,7 @@ def get_session_by_token(token: str):
 
     get_session, Session, _, _, _, _ = _get_imports()
     now = datetime.utcnow()
-    
+
     with get_session() as db:
         stmt = select(Session).where(
             Session.id == token,
@@ -150,10 +152,10 @@ def get_session_by_token(token: str):
 def invalidate_session(token: str) -> bool:
     """
     Oturumu sonlandırır (Logout).
-    
+
     Args:
         token: Sonlandırılacak oturum token'ı
-    
+
     Returns:
         bool: Başarılı ise True
     """
@@ -181,12 +183,12 @@ def invalidate_session(token: str) -> bool:
 def touch_session(token: str) -> bool:
     """
     Oturum süresini uzatır (keep-alive).
-    
+
     Her istek sonrası çağrılarak oturumun süresini yeniler.
-    
+
     Args:
         token: Oturum token'ı
-    
+
     Returns:
         bool: Başarılı ise True
     """
@@ -195,7 +197,7 @@ def touch_session(token: str) -> bool:
 
     get_session, Session, _, _, _, _ = _get_imports()
     now = datetime.utcnow()
-    
+
     with get_session() as db:
         session_obj = db.get(Session, token)
         if not session_obj:
@@ -220,20 +222,20 @@ def touch_session(token: str) -> bool:
 def get_user_from_session_token(token: str):
     """
     Session token'ından kullanıcıyı çözer.
-    
+
     İşlem: Token → Session → User
-    
+
     Args:
         token: Oturum token'ı
-    
+
     Returns:
         User veya None: Geçerli kullanıcı varsa döndürür
-    
+
     Note:
         Banlı kullanıcıların oturumları otomatik sonlandırılır.
     """
     _, _, _, get_user_by_id, _, _ = _get_imports()
-    
+
     session_obj = get_session_by_token(token)
     if not session_obj:
         return None
@@ -254,12 +256,12 @@ def get_user_from_session_token(token: str):
 def cleanup_expired_sessions(_max_age_minutes: int = 1440) -> int:
     """
     Süresi dolmuş oturumları temizler.
-    
+
     Periyodik bakım görevi olarak çalıştırılmalıdır.
-    
+
     Args:
         _max_age_minutes: Maksimum oturum yaşı (şu an kullanılmıyor, expires_at kullanılıyor)
-    
+
     Returns:
         int: Temizlenen oturum sayısı
     """
@@ -289,27 +291,25 @@ def cleanup_expired_sessions(_max_age_minutes: int = 1440) -> int:
 def get_username_from_request(request: Request) -> Optional[str]:
     """
     HTTP isteğinden kullanıcı adını çıkarır.
-    
+
     Öncelik sırası:
     1. Normal session cookie
     2. Remember me token
-    
+
     Args:
         request: FastAPI Request nesnesi
-    
+
     Returns:
         str veya None: Kullanıcı adı
     """
     get_session, Session, User, _, SESSION_COOKIE_NAME, remember_mgr = _get_imports()
-    
+
     # 1) Normal session cookie
     sid = request.cookies.get(SESSION_COOKIE_NAME)
     if sid:
         try:
             with get_session() as db:
-                sess = db.exec(
-                    select(Session).where(Session.id == sid)
-                ).first()
+                sess = db.exec(select(Session).where(Session.id == sid)).first()
 
                 if sess and (sess.expires_at is None or sess.expires_at > datetime.utcnow()):
                     user = db.get(User, sess.user_id)
@@ -328,10 +328,3 @@ def get_username_from_request(request: Request) -> Optional[str]:
         return username
 
     return None
-
-
-
-
-
-
-

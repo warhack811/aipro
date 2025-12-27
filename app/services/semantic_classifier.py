@@ -26,7 +26,7 @@ class SemanticAnalysis(BaseModel):
     should_use_internet: bool = Field(default=False)
     user_requests_search: bool = Field(default=False)
     user_forbids_search: bool = Field(default=False)
-    
+
     # YENİ ALANLAR - Cevap Kalitesi İyileştirmesi
     complexity: Literal["low", "medium", "high"] = Field(default="medium")
     creativity_level: Literal["low", "medium", "high"] = Field(default="medium")
@@ -151,7 +151,18 @@ def _post_process_overrides(raw: dict, message: str) -> dict:
         raw["data_freshness_needed"] = "high"
         raw["force_no_hallucination"] = True
     # Finance / currency
-    finance_patterns = ["dolar kaç", "dolar şu an", "euro kaç", "euro şu an", "altın kaç", "gram altın", "bitcoin kaç", "btc kaç", "kur kaç", "ne kadar"]
+    finance_patterns = [
+        "dolar kaç",
+        "dolar şu an",
+        "euro kaç",
+        "euro şu an",
+        "altın kaç",
+        "gram altın",
+        "bitcoin kaç",
+        "btc kaç",
+        "kur kaç",
+        "ne kadar",
+    ]
     if any(pat in lowered for pat in finance_patterns):
         raw["domain"] = "finance"
         raw["answer_mode"] = "strict_structured"
@@ -160,7 +171,10 @@ def _post_process_overrides(raw: dict, message: str) -> dict:
         raw["force_no_hallucination"] = True
     # Sports fixtures/standings
     team_keywords = ["galatasaray", "fenerbahçe", "fenerbahce", "beşiktaş", "besiktas", "gs", "fb", "bjk"]
-    if any(kw in lowered for kw in ["fikstür", "fikstürü", "maç fikstürü", "maç programı", "maç takvimi", "puan durumu", "puan tablosu"]) and any(t in lowered for t in team_keywords):
+    if any(
+        kw in lowered
+        for kw in ["fikstür", "fikstürü", "maç fikstürü", "maç programı", "maç takvimi", "puan durumu", "puan tablosu"]
+    ) and any(t in lowered for t in team_keywords):
         raw["domain"] = "sports"
         raw["answer_mode"] = "strict_structured"
         raw["is_structured_request"] = True
@@ -173,13 +187,17 @@ def _post_process_overrides(raw: dict, message: str) -> dict:
         raw["is_structured_request"] = True
         raw["data_freshness_needed"] = "high"
         raw["force_no_hallucination"] = True
-    if (any(tok in lowered for tok in ["dolar", "euro", "altın", "bitcoin", "btc"]) and any(tok in lowered for tok in ["kaç", "ne kadar"])):
+    if any(tok in lowered for tok in ["dolar", "euro", "altın", "bitcoin", "btc"]) and any(
+        tok in lowered for tok in ["kaç", "ne kadar"]
+    ):
         raw["domain"] = "finance"
         raw["answer_mode"] = "strict_structured"
         raw["is_structured_request"] = True
         raw["data_freshness_needed"] = "high"
         raw["force_no_hallucination"] = True
-    if (any(tok in lowered for tok in ["fikstür", "fikstürü", "puan durumu", "puan tablosu"]) and any(t in lowered for t in team_keywords)):
+    if any(tok in lowered for tok in ["fikstür", "fikstürü", "puan durumu", "puan tablosu"]) and any(
+        t in lowered for t in team_keywords
+    ):
         raw["domain"] = "sports"
         raw["answer_mode"] = "strict_structured"
         raw["is_structured_request"] = True
@@ -200,8 +218,10 @@ async def analyze_message_semantics(message: str, now_iso: Optional[str] = None)
     ]
 
     # Hızlı model kullan (semantic analiz için büyük model gereksiz)
-    semantic_model = getattr(settings, 'GROQ_SEMANTIC_MODEL', getattr(settings, 'GROQ_FAST_MODEL', settings.GROQ_DECIDER_MODEL))
-    
+    semantic_model = getattr(
+        settings, "GROQ_SEMANTIC_MODEL", getattr(settings, "GROQ_FAST_MODEL", settings.GROQ_DECIDER_MODEL)
+    )
+
     content, _ = await call_groq_api_safe_async(
         messages=payload,
         model=semantic_model,

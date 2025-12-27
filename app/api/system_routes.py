@@ -18,6 +18,7 @@ router.include_router(health_router)
 
 class FeatureToggleRequest(BaseModel):
     """Admin panelinden bir özelliği açıp kapatma isteği için şema."""
+
     key: str
     enabled: bool
 
@@ -33,9 +34,7 @@ async def list_features():
         "bela_mode",
         "groq_enabled",
     ]
-    return {
-        "features": {k: feature_enabled(k, True) for k in keys}
-    }
+    return {"features": {k: feature_enabled(k, True) for k in keys}}
 
 
 @router.post("/features/toggle")

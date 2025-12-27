@@ -14,6 +14,7 @@ class ChatResponse:
     latency_ms: int
     conversation_id: Optional[str] = None
 
+
 class ChatClient:
     """
     Real API client for POST /api/user/chat
@@ -87,4 +88,3 @@ class ChatClient:
         conv_id = data.get("conversation_id")
 
         return ChatResponse(text=text, raw=data, latency_ms=elapsed_ms, conversation_id=conv_id)
-

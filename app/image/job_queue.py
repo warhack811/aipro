@@ -40,11 +40,11 @@ class ImageJob:
 class ImageJobQueue:
     """
     Görsel üretim iş kuyruğu.
-    
+
     Worker lazy initialization ile başlatılır - ilk iş eklendiğinde
     event loop hazır olduğunda çalışır.
     """
-    
+
     def __init__(self):
         self._queue: "asyncio.Queue[ImageJob]" = asyncio.Queue()
         self._gpu_lock = asyncio.Lock()
@@ -69,14 +69,14 @@ class ImageJobQueue:
     async def _worker_loop(self) -> None:
         while True:
             job = await self._queue.get()
-            
+
             # İptal edilmiş mi kontrol et
             if job.job_id in self._cancelled_jobs:
                 logger.info(f"[IMAGE_QUEUE] ⏭️ Skipping cancelled job: {job.job_id}")
                 self._cancelled_jobs.discard(job.job_id)
                 self._queue.task_done()
                 continue
-            
+
             self._current_job = job
             await self._process_single_job(job)
             self._current_job = None
@@ -90,22 +90,18 @@ class ImageJobQueue:
                 logger.info(f"[IMAGE_QUEUE] 🛑 Job cancelled before start: {job.job_id}")
                 self._cancelled_jobs.discard(job.job_id)
                 return
-            
+
             switch_to_flux()
             # progress döngüsü generate_image_via_forge İÇİNDE
             # checkpoint_name'i Forge'a gönder
-            image_url = await generate_image_via_forge(
-                job.prompt,
-                job,
-                checkpoint_name=job.checkpoint_name
-            )
-            
+            image_url = await generate_image_via_forge(job.prompt, job, checkpoint_name=job.checkpoint_name)
+
             # Üretim sonrası cancelled kontrolü (interrupt sonrası)
             if job.job_id in self._cancelled_jobs:
                 logger.info(f"[IMAGE_QUEUE] 🛑 Job was cancelled during processing: {job.job_id}")
                 self._cancelled_jobs.discard(job.job_id)
                 return
-            
+
             job.on_done(image_url)
         except Exception as e:
             # Cancelled job'lar için error gönderme
@@ -113,7 +109,7 @@ class ImageJobQueue:
                 logger.info(f"[IMAGE_QUEUE] Job cancelled (exception ignored): {job.job_id}")
                 self._cancelled_jobs.discard(job.job_id)
                 return
-            
+
             logger.error(f"[IMAGE_QUEUE] Resim hatası: {e}")
             # Hata durumunu WebSocket üzerinden gönder
             try:
@@ -154,19 +150,19 @@ class ImageJobQueue:
         """İşi kuyruğa ekler ve worker'ı başlatır."""
         # Worker'ın başlatıldığından emin ol
         self._ensure_worker_started()
-        
+
         queue_pos = self._queue.qsize() + 1
         job.queue_pos = queue_pos
         self._queue.put_nowait(job)
         logger.info(f"[IMAGE_QUEUE] İş eklendi: {job.job_id}, pozisyon: {queue_pos}")
-        
+
         # QUEUED durumunu async olarak gönder
         try:
             loop = asyncio.get_running_loop()
             loop.create_task(self._send_queued_status(job, queue_pos))
         except RuntimeError:
             pass  # Event loop yok
-        
+
         return queue_pos
 
     async def cancel_job(self, job_id: str, username: str) -> bool:
@@ -181,7 +177,7 @@ class ImageJobQueue:
         # 1️⃣ KUYRUKTAN KALDIR
         temp_jobs = []
         found_job = None
-        
+
         while not self._queue.empty():
             try:
                 job = self._queue.get_nowait()
@@ -191,14 +187,14 @@ class ImageJobQueue:
                     temp_jobs.append(job)
             except asyncio.QueueEmpty:
                 break
-        
+
         # Diğer job'ları geri koy
         for job in temp_jobs:
             self._queue.put_nowait(job)
-        
+
         if found_job:
             logger.info(f"[IMAGE_QUEUE] 🗑️ Job removed from queue: {job_id}")
-            
+
             # Cancelled durumunu gönder
             try:
                 await send_image_progress(
@@ -213,16 +209,16 @@ class ImageJobQueue:
                 )
             except Exception as e:
                 logger.debug(f"[IMAGE_QUEUE] WS cancel notification failed: {e}")
-            
+
             return True
-        
+
         # 2️⃣ AKTİF JOB İSE FORGE'A INTERRUPT GÖNDER
         if self._current_job and self._current_job.job_id == job_id:
             logger.info(f"[IMAGE_QUEUE] ⏸️ Interrupting active job: {job_id}")
-            
+
             # Cancelled set'e ekle
             self._cancelled_jobs.add(job_id)
-            
+
             # Forge API interrupt
             try:
                 interrupt_url = f"{settings.FORGE_BASE_URL}/sdapi/v1/interrupt"
@@ -231,7 +227,7 @@ class ImageJobQueue:
                     logger.info(f"[IMAGE_QUEUE] Forge interrupt response: {response.status_code}")
             except Exception as e:
                 logger.warning(f"[IMAGE_QUEUE] ⚠️ Forge interrupt failed (job marked as cancelled): {e}")
-            
+
             # Cancelled durumunu gönder
             try:
                 await send_image_progress(
@@ -246,18 +242,15 @@ class ImageJobQueue:
                 )
             except Exception as e:
                 logger.debug(f"[IMAGE_QUEUE] WS cancel notification failed: {e}")
-            
+
             return True
-        
+
         # Job bulunamadı
         logger.warning(f"[IMAGE_QUEUE] ❓ Job not found for cancellation: {job_id}")
         return False
 
     def get_queue_status(self) -> dict:
-        return {
-            "pending_jobs": self._queue.qsize(),
-            "is_processing": self._gpu_lock.locked()
-        }
+        return {"pending_jobs": self._queue.qsize(), "is_processing": self._gpu_lock.locked()}
 
 
 # Tek instance

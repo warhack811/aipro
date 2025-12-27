@@ -24,16 +24,17 @@ _plugins: Dict[str, Any] = {}
 @runtime_checkable
 class PluginProtocol(Protocol):
     """Plugin arayuzu"""
+
     name: str
     version: str
-    
+
     def is_enabled(self) -> bool: ...
     def process_response(self, text: str, context: Optional[Dict] = None, options: Optional[Dict] = None) -> str: ...
 
 
 def register_plugin(plugin: Any) -> None:
     """Plugin'i sisteme kaydet"""
-    if hasattr(plugin, 'name'):
+    if hasattr(plugin, "name"):
         _plugins[plugin.name] = plugin
         logger.info(f"[PLUGIN] Registered: {plugin.name}")
     else:
@@ -53,10 +54,11 @@ def list_plugins() -> Dict[str, Any]:
 def load_plugins() -> None:
     """Tum plugin'leri yukle"""
     logger.info("[PLUGIN] Loading plugins...")
-    
+
     # Response Enhancement Plugin
     try:
         from app.plugins.response_enhancement.plugin import ResponseEnhancementPlugin
+
         plugin = ResponseEnhancementPlugin()
         register_plugin(plugin)
         logger.info(f"[PLUGIN] Loaded: response_enhancement v{plugin.version}")
@@ -64,10 +66,11 @@ def load_plugins() -> None:
         logger.warning(f"[PLUGIN] response_enhancement not available: {e}")
     except Exception as e:
         logger.error(f"[PLUGIN] Error loading response_enhancement: {e}")
-    
+
     # Async Image Plugin
     try:
         from app.plugins.async_image.plugin import AsyncImagePlugin
+
         plugin = AsyncImagePlugin()
         register_plugin(plugin)
         logger.info(f"[PLUGIN] Loaded: async_image v{plugin.version}")
@@ -75,7 +78,7 @@ def load_plugins() -> None:
         logger.debug(f"[PLUGIN] async_image not available: {e}")
     except Exception as e:
         logger.error(f"[PLUGIN] Error loading async_image: {e}")
-    
+
     logger.info(f"[PLUGIN] Total loaded: {len(_plugins)} plugins")
 
 

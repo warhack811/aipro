@@ -39,8 +39,8 @@ logger = logging.getLogger(__name__)
 
 # Sansür seviyeleri
 CENSORSHIP_UNRESTRICTED = 0  # Sansürsüz - her şeye izin
-CENSORSHIP_NORMAL = 1        # Normal - varsayılan
-CENSORSHIP_STRICT = 2        # Sıkı - NSFW yasak, otomatik local kapalı
+CENSORSHIP_NORMAL = 1  # Normal - varsayılan
+CENSORSHIP_STRICT = 2  # Sıkı - NSFW yasak, otomatik local kapalı
 
 # Varsayılan değerler
 DEFAULT_CENSORSHIP_LEVEL = CENSORSHIP_NORMAL
@@ -52,6 +52,7 @@ DEFAULT_CAN_USE_LOCAL = False  # Güvenli varsayılan
 # =============================================================================
 # HELPER FONKSİYONLAR
 # =============================================================================
+
 
 def _get_permissions(user: Optional["User"]) -> Dict[str, Any]:
     """
@@ -103,6 +104,7 @@ def _get_bool_permission(user: Optional["User"], key: str, default: bool) -> boo
 # =============================================================================
 # ANA İZİN FONKSİYONLARI
 # =============================================================================
+
 
 def user_can_use_local(user: Optional["User"]) -> bool:
     """
@@ -266,6 +268,7 @@ def is_censorship_unrestricted(user: Optional["User"]) -> bool:
 # NSFW POLİCY
 # =============================================================================
 
+
 def can_generate_nsfw_image(user: Optional["User"]) -> bool:
     """
     Kullanıcının NSFW görsel üretebilme iznini kontrol eder.
@@ -333,6 +336,7 @@ def can_auto_route_to_local(user: Optional["User"]) -> bool:
 # ÖZET BİLGİ
 # =============================================================================
 
+
 def get_user_permission_summary(user: Optional["User"]) -> Dict[str, Any]:
     """
     Kullanıcının tüm izin bilgilerini özet olarak döndürür.
@@ -365,4 +369,3 @@ def get_user_permission_summary(user: Optional["User"]) -> Dict[str, Any]:
         "can_generate_nsfw": can_generate_nsfw_image(user),
         "can_auto_route_local": can_auto_route_to_local(user),
     }
-

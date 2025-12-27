@@ -11,7 +11,7 @@ def test_basic_markdown():
     print("=" * 60)
     print("TEST 1: Temel Markdown Formatlaması")
     print("=" * 60)
-    
+
     input_text = """
 KURULUM ADIMLARI
 
@@ -21,7 +21,7 @@ Adım 1: Projeyi kur
 Adım 2: Bağımlılıkları yükle
 pip install komutu ile paketleri yükleyin.
     """
-    
+
     result = full_post_process(input_text)
     print("\n📥 GIRIŞ:")
     print(input_text)
@@ -35,7 +35,7 @@ def test_code_enhancement():
     print("=" * 60)
     print("TEST 2: Kod Bloğu Zenginleştirme")
     print("=" * 60)
-    
+
     input_text = """
 İşte bir örnek kod:
 
@@ -53,7 +53,7 @@ const greeting = () => {
 };
 ```
     """
-    
+
     result = full_post_process(input_text)
     print("\n📥 GIRIŞ:")
     print(input_text)
@@ -67,7 +67,7 @@ def test_emoji_callouts():
     print("=" * 60)
     print("TEST 3: Emoji ve Callout Kutuları")
     print("=" * 60)
-    
+
     input_text = """
 İpucu: Bu çok önemli bir bilgi
 
@@ -79,7 +79,7 @@ KURULUM
 
 Bu adımları takip edin.
     """
-    
+
     result = full_post_process(input_text)
     print("\n📥 GIRIŞ:")
     print(input_text)
@@ -93,7 +93,7 @@ def test_list_formatting():
     print("=" * 60)
     print("TEST 4: Liste Formatlaması")
     print("=" * 60)
-    
+
     input_text = """
 Yapılacaklar:
 
@@ -108,7 +108,7 @@ Numaralı liste:
 2.  İkinci adım
 3.Üçüncü adım
     """
-    
+
     result = full_post_process(input_text)
     print("\n📥 GIRIŞ:")
     print(input_text)
@@ -122,7 +122,7 @@ def test_turkish_rules():
     print("=" * 60)
     print("TEST 5: Türkçe Yazım Kuralları")
     print("=" * 60)
-    
+
     input_text = """
 bu bir cümle.sonra başka bir cümle gelir.
 
@@ -132,7 +132,7 @@ var mı ?
 
 için mi kullanıyoruz .
     """
-    
+
     result = full_post_process(input_text)
     print("\n📥 GIRIŞ:")
     print(input_text)
@@ -146,7 +146,7 @@ def test_format_levels():
     print("=" * 60)
     print("TEST 6: Format Seviyeleri (Minimal vs Normal vs Rich)")
     print("=" * 60)
-    
+
     input_text = """
 KURULUM
 
@@ -159,22 +159,22 @@ print("Hello")
 - Birinci madde
 - İkinci madde
     """
-    
+
     print("\n📥 ORIJINAL METİN:")
     print(input_text)
-    
+
     print("\n--- MINIMAL FORMAT ---")
-    minimal = full_post_process(input_text, get_preset_config('minimal'))
+    minimal = full_post_process(input_text, get_preset_config("minimal"))
     print(minimal)
-    
+
     print("\n--- NORMAL FORMAT ---")
-    normal = full_post_process(input_text, get_preset_config('normal'))
+    normal = full_post_process(input_text, get_preset_config("normal"))
     print(normal)
-    
+
     print("\n--- RICH FORMAT ---")
-    rich = full_post_process(input_text, get_preset_config('rich'))
+    rich = full_post_process(input_text, get_preset_config("rich"))
     print(rich)
-    
+
     print("\n")
 
 
@@ -183,7 +183,7 @@ def test_comprehensive():
     print("=" * 60)
     print("TEST 7: Kapsamlı Test (Tüm Özellikler)")
     print("=" * 60)
-    
+
     input_text = """
 PYTHON WEB UYGULAMASI NASIL YAPILIR
 
@@ -224,7 +224,7 @@ SONUÇ
 
 bu proje ile hızlı bir şekilde api geliştirebilirsiniz .değil mi ?
     """
-    
+
     result = full_post_process(input_text)
     print("\n📥 GIRIŞ:")
     print(input_text)
@@ -235,7 +235,7 @@ bu proje ile hızlı bir şekilde api geliştirebilirsiniz .değil mi ?
 
 if __name__ == "__main__":
     print("\n🚀 RESPONSE ENHANCEMENT SYSTEM - TEST SÜİTİ\n")
-    
+
     try:
         test_basic_markdown()
         test_code_enhancement()
@@ -244,12 +244,13 @@ if __name__ == "__main__":
         test_turkish_rules()
         test_format_levels()
         test_comprehensive()
-        
+
         print("=" * 60)
         print("✅ TÜM TESTLER TAMAMLANDI!")
         print("=" * 60)
-        
+
     except Exception as e:
         print(f"\n❌ HATA: {e}")
         import traceback
+
         traceback.print_exc()

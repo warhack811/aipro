@@ -81,12 +81,14 @@ def parse_sports_fixture_result(snippets: List[SearchSnippet], team_name: str) -
         if vs_m:
             opponent = vs_m.group(1).strip()
 
-        matches.append({
-            "date": date_val,
-            "home": team_name if vs_m and vs_m.start() < vs_m.end() else None,
-            "away": opponent,
-            "source_url": sn.url,
-        })
+        matches.append(
+            {
+                "date": date_val,
+                "home": team_name if vs_m and vs_m.start() < vs_m.end() else None,
+                "away": opponent,
+                "source_url": sn.url,
+            }
+        )
 
     return {"type": "sports_fixture", "team": team_name, "matches": matches or []}
 

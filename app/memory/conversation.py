@@ -12,10 +12,10 @@ Bu modül, sohbet ve mesaj kayıtlarını yönetir.
 
 Kullanım:
     from app.memory.conversation import create_conversation, append_message
-    
+
     # Yeni sohbet
     conv = create_conversation("john", first_message="Merhaba")
-    
+
     # Mesaj ekle
     append_message("john", conv.id, "user", "Nasılsın?")
 """
@@ -35,6 +35,7 @@ logger = logging.getLogger(__name__)
 # =============================================================================
 # USER RESOLVER
 # =============================================================================
+
 
 def _default_user_resolver(username: str) -> Optional[int]:
     """Varsayılan user resolver (hata verir)."""
@@ -64,6 +65,7 @@ def _resolve_user_id(username: str) -> int:
 # LAZY IMPORTS
 # =============================================================================
 
+
 def _get_imports():
     """Import döngüsünü önlemek için lazy import."""
     try:
@@ -79,27 +81,25 @@ def _get_imports():
 # SOHBET İŞLEMLERİ
 # =============================================================================
 
+
 def create_conversation(
-    username: str,
-    first_message: Optional[str] = None,
-    title: Optional[str] = None,
-    preset_id: Optional[int] = None
+    username: str, first_message: Optional[str] = None, title: Optional[str] = None, preset_id: Optional[int] = None
 ):
     """
     Yeni sohbet oluşturur.
-    
+
     Args:
         username: Kullanıcı adı
         first_message: İlk mesaj (başlık için kullanılır)
         title: Özel başlık
         preset_id: Kullanılacak preset ID'si
-    
+
     Returns:
         Conversation: Oluşturulan sohbet
     """
     get_session, Conversation, _ = _get_imports()
     user_id = _resolve_user_id(username)
-    
+
     # Otomatik başlık
     if not title:
         if first_message:
@@ -113,7 +113,7 @@ def create_conversation(
             title=title,
             preset_id=preset_id,
             created_at=datetime.utcnow(),
-            updated_at=datetime.utcnow()
+            updated_at=datetime.utcnow(),
         )
         try:
             session.add(new_conv)
@@ -130,17 +130,17 @@ def create_conversation(
 def list_conversations(username: str, limit: int = 50) -> List:
     """
     Kullanıcının sohbetlerini listeler.
-    
+
     Args:
         username: Kullanıcı adı
         limit: Maksimum sonuç
-    
+
     Returns:
         List[Conversation]: Sohbet listesi (en yeni üstte)
     """
     get_session, Conversation, _ = _get_imports()
     user_id = _resolve_user_id(username)
-    
+
     with get_session() as session:
         statement = (
             select(Conversation)
@@ -154,51 +154,41 @@ def list_conversations(username: str, limit: int = 50) -> List:
 def load_messages(username: str, conv_id: str) -> List:
     """
     Sohbetteki mesajları yükler.
-    
+
     Args:
         username: Kullanıcı adı
         conv_id: Sohbet ID'si
-    
+
     Returns:
         List[Message]: Mesaj listesi (kronolojik)
     """
     get_session, Conversation, Message = _get_imports()
     user_id = _resolve_user_id(username)
-    
+
     with get_session() as session:
         # Sahiplik kontrolü
         conv = session.get(Conversation, conv_id)
         if not conv or conv.user_id != user_id:
             logger.warning(f"[CONV] Yetkisiz erişim: {username} -> {conv_id}")
             return []
-        
+
         from sqlmodel import asc
-        
-        statement = (
-            select(Message)
-            .where(Message.conversation_id == conv_id)
-            .order_by(asc(Message.created_at))
-        )
+
+        statement = select(Message).where(Message.conversation_id == conv_id).order_by(asc(Message.created_at))
         return list(session.exec(statement).all())
 
 
-def append_message(
-    username: str,
-    conv_id: str,
-    role: str,
-    text: str,
-    extra_metadata: Optional[Dict[str, Any]] = None
-):
+def append_message(username: str, conv_id: str, role: str, text: str, extra_metadata: Optional[Dict[str, Any]] = None):
     """
     Sohbete mesaj ekler.
-    
+
     Args:
         username: Kullanıcı adı
         conv_id: Sohbet ID'si
         role: Mesaj rolü (user, bot, system)
         text: Mesaj içeriği
         extra_metadata: Ek bilgiler
-    
+
     Returns:
         Message: Eklenen mesaj
     """
@@ -216,7 +206,7 @@ def append_message(
             role=role,
             content=text,
             extra_metadata=extra_metadata or {},
-            created_at=datetime.utcnow()
+            created_at=datetime.utcnow(),
         )
 
         # Sohbet güncelleme zamanını da güncelle
@@ -235,18 +225,16 @@ def append_message(
 
 
 def update_message(
-    message_id: int,
-    new_content: Optional[str] = None,
-    new_metadata: Optional[Dict[str, Any]] = None
+    message_id: int, new_content: Optional[str] = None, new_metadata: Optional[Dict[str, Any]] = None
 ) -> bool:
     """
     Mevcut mesajı günceller.
-    
+
     Args:
         message_id: Güncellenecek mesaj ID'si
         new_content: Yeni içerik (None ise değişmez)
         new_metadata: Yeni metadata (None ise değişmez, dict ise merge edilir)
-    
+
     Returns:
         bool: Güncelleme başarılı ise True
     """
@@ -281,11 +269,11 @@ def update_message(
 def delete_conversation(username: str, conv_id: str) -> bool:
     """
     Sohbeti ve mesajlarını siler.
-    
+
     Args:
         username: Kullanıcı adı
         conv_id: Silinecek sohbet ID'si
-    
+
     Returns:
         bool: Silme başarılı ise True
     """
@@ -311,10 +299,10 @@ def delete_conversation(username: str, conv_id: str) -> bool:
 def get_conversation_summary_text(conv_id: str) -> Optional[str]:
     """
     Sohbet özetini döndürür.
-    
+
     Args:
         conv_id: Sohbet ID'si
-    
+
     Returns:
         str veya None: Özet metni
     """
@@ -322,9 +310,9 @@ def get_conversation_summary_text(conv_id: str) -> Optional[str]:
         from app.core.models import ConversationSummary
     except ImportError:
         from app.core.models import ConversationSummary
-    
+
     get_session, _, _ = _get_imports()
-    
+
     with get_session() as session:
         summary = session.get(ConversationSummary, conv_id)
         return summary.summary if summary else None
@@ -333,22 +321,22 @@ def get_conversation_summary_text(conv_id: str) -> Optional[str]:
 def get_recent_context(username: str, conv_id: str, max_messages: int = 4) -> Optional[str]:
     """
     Son mesajları string olarak döndürür.
-    
+
     Args:
         username: Kullanıcı adı
         conv_id: Sohbet ID'si
         max_messages: Maksimum mesaj sayısı
-    
+
     Returns:
         str veya None: Son mesajlar formatlanmış string
     """
     messages = load_messages(username, conv_id)
     if not messages:
         return None
-    
+
     # Son N mesajı al
     recent = messages[-max_messages:] if len(messages) > max_messages else messages
-    
+
     # Formatla
     lines = []
     for msg in recent:
@@ -357,6 +345,5 @@ def get_recent_context(username: str, conv_id: str, max_messages: int = 4) -> Op
         if content:
             prefix = "Kullanıcı" if role == "user" else "Asistan"
             lines.append(f"{prefix}: {content[:200]}")
-    
-    return "\n".join(lines) if lines else None
 
+    return "\n".join(lines) if lines else None

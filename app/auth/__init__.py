@@ -14,7 +14,7 @@ Alt Modüller:
 Hızlı Kullanım:
     from app.auth.dependencies import get_current_user, get_current_admin_user
     from app.auth.user_manager import create_user, verify_password
-    
+
     # Route'da kullanıcı kontrolü
     @router.get("/profile")
     async def profile(user: User = Depends(get_current_active_user)):
@@ -53,7 +53,7 @@ from app.auth.user_manager import (
 __all__ = [
     # Dependencies
     "get_current_user",
-    "get_current_active_user", 
+    "get_current_active_user",
     "get_current_admin_user",
     "SESSION_COOKIE_NAME",
     # User management

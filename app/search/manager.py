@@ -26,23 +26,18 @@ class SearchQuery:
 @dataclass
 class SearchSnippet:
     """LLM'e gönderilecek standardize edilmiş arama sonucu."""
+
     title: str
     url: str
     snippet: str
 
 
 def _convert_serper_results(results: List[SerperResult]) -> List[SearchSnippet]:
-    return [
-        SearchSnippet(title=r.title, url=r.url, snippet=r.snippet)
-        for r in results
-    ]
+    return [SearchSnippet(title=r.title, url=r.url, snippet=r.snippet) for r in results]
 
 
 def _convert_bing_results(results: List[BingResult]) -> List[SearchSnippet]:
-    return [
-        SearchSnippet(title=r.title, url=r.url, snippet=r.snippet)
-        for r in results
-    ]
+    return [SearchSnippet(title=r.title, url=r.url, snippet=r.snippet) for r in results]
 
 
 async def search_queries_async(query_items: List[Dict[str, str]]) -> Dict[str, List[SearchSnippet]]:
@@ -74,16 +69,12 @@ async def search_queries_async(query_items: List[Dict[str, str]]) -> Dict[str, L
             snippets: List[SearchSnippet] = []
 
             # 1) Serper (ana kaynak)
-            serper_results: List[SerperResult] = await serper_search_async(
-                q.query, max_results=5, client=client
-            )
+            serper_results: List[SerperResult] = await serper_search_async(q.query, max_results=5, client=client)
             if serper_results:
                 snippets = _convert_serper_results(serper_results)
             else:
                 # 2) Bing fallback
-                bing_results: List[BingResult] = await bing_search_async(
-                    q.query, max_results=5, client=client
-                )
+                bing_results: List[BingResult] = await bing_search_async(q.query, max_results=5, client=client)
                 if bing_results:
                     snippets = _convert_bing_results(bing_results)
                 else:
